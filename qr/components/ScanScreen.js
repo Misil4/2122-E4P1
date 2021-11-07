@@ -27,8 +27,6 @@ export default class ScanScreen extends React.Component {
     console.log(e)
   }
 
-
-
   render() {
     return (
       <QRCodeScanner

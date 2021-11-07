@@ -16,6 +16,8 @@ target 'applogin' do
 
   pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'apploginTests' do
     inherit! :complete
     # Pods for testing
