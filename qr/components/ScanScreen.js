@@ -15,60 +15,11 @@ import { RNCamera } from 'react-native-camera';
 
 export default class ScanScreen extends React.Component {
 
-onSuccess = e => {
-  Linking.openURL(e.data).catch(err =>
-  console.error('An error occured', err)
-  );
-};
-
-/*onSuccess = (e) => {
-    this.setState({dataCode : e.data})
-};*/
-
-
-
   render() {
-    let dataCode = "";
-
     return (
       <QRCodeScanner
-        onRead={this.onSuccess}
-        //flashMode={RNCamera.Constants.FlashMode.torch}
-        topContent={
-          <Text style={styles.centerText}>
-            Dame el QR brodi
-          </Text>
-        }
-        bottomContent={
-          
-          <TouchableOpacity style={styles.buttonTouchable}>
-            <Text>{dataCode}</Text>
-            <Text style={styles.buttonText}>OK. Got it!</Text>
-          </TouchableOpacity>
-        }
+
       />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  centerText: {
-    flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777'
-  },
-  textBold: {
-    fontWeight: '500',
-    color: '#000'
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)'
-  },
-  buttonTouchable: {
-    padding: 16
-  }
-});
-
-AppRegistry.registerComponent('default', () => ScanScreen);
