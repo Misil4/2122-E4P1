@@ -12,7 +12,7 @@ export default class Index extends Component{
         return(
             <><Text>Contenido Aqui Arriba</Text>
 
-            <View style={{flex:1, justifyContent: "flex-end", flexDirection: "row", alignSelf:"center", paddingTop: 480}}>
+            <View style={{flex:1, flexDirection: "row", position:"absolute", bottom: 5, alignSelf: "center"}}>
                 <TouchableOpacity onPress={this.NavigateToQrReader}>
                     <Icon name="scan1" size={50}></Icon>
                 </TouchableOpacity>
