@@ -141,12 +141,6 @@ const authentification = (props) => {
               />
             )}
           </View>
-          <Text style={styles.footerHeading}>
-            Google SignIn in React Native
-          </Text>
-          <Text style={styles.footerText}>
-            www.aboutreact.com
-          </Text>
         </View>
       </SafeAreaView>
     );
