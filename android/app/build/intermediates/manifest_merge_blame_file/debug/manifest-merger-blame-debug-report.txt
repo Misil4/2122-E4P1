@@ -9,100 +9,100 @@
 9        android:targetSdkVersion="30" />
 10
 11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-11-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\debug\AndroidManifest.xml:5:5-77
-11-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\debug\AndroidManifest.xml:5:22-75
+11-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/debug/AndroidManifest.xml:5:5-77
+11-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/debug/AndroidManifest.xml:5:22-75
 12    <uses-permission android:name="android.permission.INTERNET" />
-12-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:4:5-67
-12-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:4:22-64
+12-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:4:5-67
+12-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:4:22-64
 13    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-13-->[com.facebook.flipper:flipper:0.99.0] C:\Users\misil\.gradle\caches\transforms-3\85722bbced5f75f7128f01e28eb86f9e\transformed\jetified-flipper-0.99.0\AndroidManifest.xml:16:5-76
-13-->[com.facebook.flipper:flipper:0.99.0] C:\Users\misil\.gradle\caches\transforms-3\85722bbced5f75f7128f01e28eb86f9e\transformed\jetified-flipper-0.99.0\AndroidManifest.xml:16:22-73
+13-->[com.facebook.flipper:flipper:0.99.0] /home/ander_6_/.gradle/caches/transforms-3/85722bbced5f75f7128f01e28eb86f9e/transformed/jetified-flipper-0.99.0/AndroidManifest.xml:16:5-76
+13-->[com.facebook.flipper:flipper:0.99.0] /home/ander_6_/.gradle/caches/transforms-3/85722bbced5f75f7128f01e28eb86f9e/transformed/jetified-flipper-0.99.0/AndroidManifest.xml:16:22-73
 14
 15    <application
-15-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:6:5-24:19
+15-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:6:5-24:19
 16        android:name="com.nav.MainApplication"
-16-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:7:7-38
+16-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:7:7-38
 17        android:allowBackup="false"
-17-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:11:7-34
+17-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:11:7-34
 18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-18-->[androidx.core:core:1.5.0] C:\Users\misil\.gradle\caches\transforms-3\9eba7cef7293f195e486b5c1bb290770\transformed\core-1.5.0\AndroidManifest.xml:24:18-86
+18-->[androidx.core:core:1.5.0] /home/ander_6_/.gradle/caches/transforms-3/9eba7cef7293f195e486b5c1bb290770/transformed/core-1.5.0/AndroidManifest.xml:24:18-86
 19        android:debuggable="true"
 20        android:icon="@mipmap/ic_launcher"
-20-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:9:7-41
+20-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:9:7-41
 21        android:label="@string/app_name"
-21-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:8:7-39
+21-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:8:7-39
 22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:10:7-52
+22-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:10:7-52
 23        android:theme="@style/AppTheme"
-23-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:12:7-38
+23-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:12:7-38
 24        android:usesCleartextTraffic="true" >
-24-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\debug\AndroidManifest.xml:8:9-44
+24-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/debug/AndroidManifest.xml:8:9-44
 25        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-25-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\debug\AndroidManifest.xml:11:9-86
-25-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\debug\AndroidManifest.xml:11:19-83
+25-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/debug/AndroidManifest.xml:11:9-86
+25-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/debug/AndroidManifest.xml:11:19-83
 26        <activity
-26-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:13:7-23:18
+26-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:13:7-23:18
 27            android:name="com.nav.MainActivity"
-27-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:14:9-37
+27-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:14:9-37
 28            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
-28-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:16:9-86
+28-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:16:9-86
 29            android:label="@string/app_name"
-29-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:15:9-41
+29-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:15:9-41
 30            android:launchMode="singleTask"
-30-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:17:9-40
+30-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:17:9-40
 31            android:windowSoftInputMode="adjustResize" >
-31-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:18:9-51
+31-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:18:9-51
 32            <intent-filter>
-32-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:19:9-22:25
+32-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:19:9-22:25
 33                <action android:name="android.intent.action.MAIN" />
-33-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:20:13-65
-33-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:20:21-62
+33-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:20:13-65
+33-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:20:21-62
 34
 35                <category android:name="android.intent.category.LAUNCHER" />
-35-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:21:13-73
-35-->C:\Users\misil\Documents\2122-e4p1-1\android\app\src\main\AndroidManifest.xml:21:23-70
+35-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:21:13-73
+35-->/home/ander_6_/Proyecto/2122-e4p1/android/app/src/main/AndroidManifest.xml:21:23-70
 36            </intent-filter>
 37        </activity>
 38        <activity
-38-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:23:9-27:75
+38-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:23:9-27:75
 39            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
-39-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:24:13-93
+39-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:24:13-93
 40            android:excludeFromRecents="true"
-40-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:25:13-46
+40-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:25:13-46
 41            android:exported="false"
-41-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:26:13-37
+41-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:26:13-37
 42            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-42-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:27:13-72
+42-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:27:13-72
 43        <!--
 44            Service handling Google Sign-In user revocation. For apps that do not integrate with
 45            Google Sign-In, this service will never be started.
 46        -->
 47        <service
-47-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:33:9-37:51
+47-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:33:9-37:51
 48            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
-48-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:34:13-89
+48-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:34:13-89
 49            android:exported="true"
-49-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:35:13-36
+49-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:35:13-36
 50            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
-50-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:36:13-107
+50-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:36:13-107
 51            android:visibleToInstantApps="true" />
-51-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\misil\.gradle\caches\transforms-3\d2eeb25f3ac5cfe84272088df801bfd5\transformed\jetified-play-services-auth-19.2.0\AndroidManifest.xml:37:13-48
+51-->[com.google.android.gms:play-services-auth:19.2.0] /home/ander_6_/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/AndroidManifest.xml:37:13-48
 52
 53        <activity
-53-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\69e3ce336582193956a6d722255aa138\transformed\jetified-play-services-base-17.5.0\AndroidManifest.xml:23:9-26:75
+53-->[com.google.android.gms:play-services-base:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/69e3ce336582193956a6d722255aa138/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:23:9-26:75
 54            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-54-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\69e3ce336582193956a6d722255aa138\transformed\jetified-play-services-base-17.5.0\AndroidManifest.xml:24:13-79
+54-->[com.google.android.gms:play-services-base:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/69e3ce336582193956a6d722255aa138/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:24:13-79
 55            android:exported="false"
-55-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\69e3ce336582193956a6d722255aa138\transformed\jetified-play-services-base-17.5.0\AndroidManifest.xml:25:13-37
+55-->[com.google.android.gms:play-services-base:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/69e3ce336582193956a6d722255aa138/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:25:13-37
 56            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-56-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\69e3ce336582193956a6d722255aa138\transformed\jetified-play-services-base-17.5.0\AndroidManifest.xml:26:13-72
+56-->[com.google.android.gms:play-services-base:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/69e3ce336582193956a6d722255aa138/transformed/jetified-play-services-base-17.5.0/AndroidManifest.xml:26:13-72
 57
 58        <meta-data
-58-->[com.google.android.gms:play-services-basement:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\291ee97d94c34b3b92343e3d987c6580\transformed\jetified-play-services-basement-17.5.0\AndroidManifest.xml:23:9-25:69
+58-->[com.google.android.gms:play-services-basement:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/291ee97d94c34b3b92343e3d987c6580/transformed/jetified-play-services-basement-17.5.0/AndroidManifest.xml:23:9-25:69
 59            android:name="com.google.android.gms.version"
-59-->[com.google.android.gms:play-services-basement:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\291ee97d94c34b3b92343e3d987c6580\transformed\jetified-play-services-basement-17.5.0\AndroidManifest.xml:24:13-58
+59-->[com.google.android.gms:play-services-basement:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/291ee97d94c34b3b92343e3d987c6580/transformed/jetified-play-services-basement-17.5.0/AndroidManifest.xml:24:13-58
 60            android:value="@integer/google_play_services_version" />
-60-->[com.google.android.gms:play-services-basement:17.5.0] C:\Users\misil\.gradle\caches\transforms-3\291ee97d94c34b3b92343e3d987c6580\transformed\jetified-play-services-basement-17.5.0\AndroidManifest.xml:25:13-66
+60-->[com.google.android.gms:play-services-basement:17.5.0] /home/ander_6_/.gradle/caches/transforms-3/291ee97d94c34b3b92343e3d987c6580/transformed/jetified-play-services-basement-17.5.0/AndroidManifest.xml:25:13-66
 61    </application>
 62
 63</manifest>

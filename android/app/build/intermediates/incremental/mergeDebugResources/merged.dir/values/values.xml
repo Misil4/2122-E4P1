@@ -750,16 +750,16 @@
     <string name="common_open_on_phone">Open on phone</string>
     <string name="common_signin_button_text">Sign in</string>
     <string name="common_signin_button_text_long">Sign in with Google</string>
-    <string name="default_web_client_id" translatable="false">115400714007-fen0rh1erb6725qf0mpp6ab7fcv6ilta.apps.googleusercontent.com</string>
+    <string name="default_web_client_id" translatable="false">822986748161-tjihgo6gikf5mboac2l2pfo8rs7g9irc.apps.googleusercontent.com</string>
     <string name="error_icon_content_description">Error</string>
     <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
     <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
-    <string name="gcm_defaultSenderId" translatable="false">115400714007</string>
-    <string name="google_api_key" translatable="false">AIzaSyDEn6OS6YrVir03lPjCEbsE2fdcWyWG-b0</string>
-    <string name="google_app_id" translatable="false">1:115400714007:android:620002bddb1e7c18b47952</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDEn6OS6YrVir03lPjCEbsE2fdcWyWG-b0</string>
-    <string name="google_storage_bucket" translatable="false">authentification-2d3c6.appspot.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">822986748161</string>
+    <string name="google_api_key" translatable="false">AIzaSyC7LryhDd-RO3y63HA0wMN79ymFNcXruEM</string>
+    <string name="google_app_id" translatable="false">1:822986748161:android:f84195de2f73b39ef32b00</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyC7LryhDd-RO3y63HA0wMN79ymFNcXruEM</string>
+    <string name="google_storage_bucket" translatable="false">fir-97978.appspot.com</string>
     <string name="header_description" translatable="false">Heading</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
     <string description="Content description for an icon that appears in the title area of a dialog" name="icon_content_description">Dialog Icon</string>
@@ -809,7 +809,7 @@
     <string name="path_password_eye_mask_visible" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
     <string name="progressbar_description" translatable="false">Progress Bar</string>
-    <string name="project_id" translatable="false">authentification-2d3c6</string>
+    <string name="project_id" translatable="false">fir-97978</string>
     <string name="radiogroup_description" translatable="false">Radio Group</string>
     <string name="rn_tab_description" translatable="false">Tab</string>
     <string name="scrollbar_description" translatable="false">Scroll Bar</string>
@@ -3050,6 +3050,15 @@
     </style>
     <style name="SpinnerDatePickerStyle" ns2:targetApi="lollipop" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
+    </style>
+    <style name="SplashScreen_Fullscreen" parent="SplashScreen_SplashTheme">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="SplashScreen_SplashAnimation">
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+    <style name="SplashScreen_SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/SplashScreen_SplashAnimation</item>
     </style>
     <style name="Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
     <item name="cornerFamily">rounded</item>

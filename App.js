@@ -1,15 +1,21 @@
-import React, { Component } from "react";
+'use strict';
 
+import React, { Component } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/home/index'
 import HomeQrReader from './src/home/qrReader'
 import HomeQrGenerator from './src/home/qrGenerator'
 import authentification from "./src/home/authentification";
+import SplashScreen from 'react-native-splash-screen'
 
 const HomeStack = createNativeStackNavigator();
 
 export default class App extends Component{
+
+  componentDidMount() {
+      SplashScreen.hide();
+  }
 
   render(){
     return(
