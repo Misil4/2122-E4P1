@@ -1,10 +1,17 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "/home/misil/Documentos/2122-e4p1/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
                     "source": "/home/misil/.gradle/caches/transforms-3/5efe111fb39d3b328ea0b546310bdd34/transformed/appcompat-1.3.0/res/values-watch-v20/values-watch-v20.xml",
+=======
+            "outputFile": "/home/aitor/Documentos/Trabajos/React/proyectomain/2122-e4p1/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-watch-v20/values-watch-v20.xml",
+            "map": [
+                {
+                    "source": "/home/aitor/.gradle/caches/transforms-3/5efe111fb39d3b328ea0b546310bdd34/transformed/appcompat-1.3.0/res/values-watch-v20/values-watch-v20.xml",
+>>>>>>> qr
                     "from": {
                         "startLines": "2,5,8",
                         "startColumns": "4,4,4",
@@ -23,7 +30,11 @@
                     }
                 },
                 {
+<<<<<<< HEAD
                     "source": "/home/misil/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/res/values-watch-v20/values.xml",
+=======
+                    "source": "/home/aitor/.gradle/caches/transforms-3/d2eeb25f3ac5cfe84272088df801bfd5/transformed/jetified-play-services-auth-19.2.0/res/values-watch-v20/values.xml",
+>>>>>>> qr
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11",
                         "startColumns": "0,0,0,0,0,0,0,0",

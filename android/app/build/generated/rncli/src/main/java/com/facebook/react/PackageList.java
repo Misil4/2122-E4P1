@@ -13,14 +13,25 @@ import java.util.ArrayList;
 
 // @react-native-google-signin/google-signin
 import com.reactnativegooglesignin.RNGoogleSigninPackage;
+// react-native-camera
+import org.reactnative.camera.RNCameraPackage;
+// react-native-permissions
+import com.zoontek.rnpermissions.RNPermissionsPackage;
 // react-native-safe-area-context
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
+<<<<<<< HEAD
 // react-native-splash-screen
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+=======
+// react-native-svg
+import com.horcrux.svg.SvgPackage;
+>>>>>>> qr
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// react-native-webview
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 
 public class PackageList {
   private Application application;
@@ -67,10 +78,18 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new RNGoogleSigninPackage(),
+      new RNCameraPackage(),
+      new RNPermissionsPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
+<<<<<<< HEAD
       new SplashScreenReactPackage(),
       new VectorIconsPackage()
+=======
+      new SvgPackage(),
+      new VectorIconsPackage(),
+      new RNCWebViewPackage()
+>>>>>>> qr
     ));
   }
 }
