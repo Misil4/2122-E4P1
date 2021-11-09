@@ -21,14 +21,14 @@ import com.zoontek.rnpermissions.RNPermissionsPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
+// react-native-splash-screen
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 // react-native-svg
 import com.horcrux.svg.SvgPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
 // react-native-webview
 import com.reactnativecommunity.webview.RNCWebViewPackage;
-// react-native-splash-screen
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 public class PackageList {
   private Application application;
@@ -79,10 +79,10 @@ public class PackageList {
       new RNPermissionsPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
+      new SplashScreenReactPackage(),
       new SvgPackage(),
       new VectorIconsPackage(),
-      new RNCWebViewPackage(),
-      new SplashScreenReactPackage()
+      new RNCWebViewPackage()
     ));
   }
 }
