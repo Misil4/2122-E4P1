@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './src/home/index'
-import HomeQrReader from './src/home/qrReader'
-import HomeQrGenerator from './src/home/qrGenerator'
+import QrReader from "./src/home/qrReader";
+import QrGenerator from "./src/home/qrGenerator";
 import Authentification from "./src/home/authentification";
 import SplashScreen from 'react-native-splash-screen'
 
@@ -24,8 +24,8 @@ export default class App extends Component{
         <HomeStack.Navigator>
           <HomeStack.Screen name="Log In" component={Authentification} />
           <HomeStack.Screen name="PantallaDeInicio" component={HomeScreen} />
-          <HomeStack.Screen name="QrReader" component={HomeQrReader} />
-          <HomeStack.Screen name="QrGenerator" component={HomeQrGenerator} />
+          <HomeStack.Screen name="QrReader" component={QrReader} />
+          <HomeStack.Screen name="QrGenerator" component={QrGenerator} />
         </HomeStack.Navigator>
       </NavigationContainer>
     )
