@@ -22,7 +22,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-const authentification = () => {
+const authentification = (props) => {
   const [userInfo, setUserInfo] = useState(null);
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading ,setLoading] = useState(false);
@@ -43,7 +43,7 @@ const authentification = () => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-      alert('User is already signed in');
+      props.navigation.navigate('PantallaDeInicio')
       // Set User Info if user is already signed in
       _getCurrentUserInfo();
     } else {
@@ -78,21 +78,23 @@ const authentification = () => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      console.log('User Info --> ', userInfo);
-      setUserInfo(userInfo);
+      props.navigation.navigate('PantallaDeInicio')
       setLoading(false);
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('User Cancelled the Login Flow');
+        setLoading(false);
       } else if (error.code === statusCodes.IN_PROGRESS) {
         alert('Signing In');
       } else if (
           error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
         ) {
         alert('Play Services Not Available or Outdated');
+        setLoading(false);
       } else {
         alert(error.message);
+        setLoading(false);
       }
     }
   };
@@ -121,9 +123,6 @@ const authentification = () => {
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-          <Text style={styles.titleText}>
-            Example of Google Sign In in React Native
-          </Text>
           <View style={styles.container}>
             {userInfo !== null ? (
               <>
@@ -152,12 +151,6 @@ const authentification = () => {
               />
             )}
           </View>
-          <Text style={styles.footerHeading}>
-            Google SignIn in React Native
-          </Text>
-          <Text style={styles.footerText}>
-            www.aboutreact.com
-          </Text>
         </View>
       </SafeAreaView>
     );

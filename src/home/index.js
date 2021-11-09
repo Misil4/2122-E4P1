@@ -19,9 +19,6 @@ export default class Index extends Component{
                 <TouchableOpacity onPress={this.NavigateToQrGenerator}>
                     <Icon name="qrcode" size={50}></Icon>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.NavigatetoGoogle}>
-                    <Icon name="google" size={50}></Icon>
-                </TouchableOpacity>
             </View></>
         )
     }
