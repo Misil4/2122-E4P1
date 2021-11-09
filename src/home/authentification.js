@@ -26,6 +26,7 @@ const authentification = (props) => {
   const [userInfo, setUserInfo] = useState(null);
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading ,setLoading] = useState(false);
+  const [login,setLogin] = useState(false);
 
   useEffect(() => {
     // Initial configuration
@@ -46,7 +47,7 @@ const authentification = (props) => {
       alert('User is already signed in');
       // Set User Info if user is already signed in
       props.navigation.navigate('PantallaDeInicio')
-      _getCurrentUserInfo();
+      setLogin(true);
     } else {
       console.log('Please Login');
     }
@@ -81,6 +82,7 @@ const authentification = (props) => {
       const userInfo = await GoogleSignin.signIn();
       props.navigation.navigate('PantallaDeInicio')
       setLoading(false);
+      setLogin(true);
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -107,6 +109,7 @@ const authentification = (props) => {
       await GoogleSignin.signOut();
       // Removing user Info
       setUserInfo(null); 
+      setLogin(false);
     } catch (error) {
       console.error(error);
     }
@@ -124,7 +127,7 @@ const authentification = (props) => {
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.container}>
-            {userInfo !== null ? (
+            {login !== false ? (
               <>
                 <TouchableOpacity
                   style={styles.buttonStyle}
