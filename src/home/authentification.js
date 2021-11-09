@@ -43,8 +43,9 @@ const authentification = (props) => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-      props.navigation.navigate('PantallaDeInicio')
+      alert('User is already signed in');
       // Set User Info if user is already signed in
+      props.navigation.navigate('PantallaDeInicio')
       _getCurrentUserInfo();
     } else {
       console.log('Please Login');
@@ -91,7 +92,6 @@ const authentification = (props) => {
           error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
         ) {
         alert('Play Services Not Available or Outdated');
-        setLoading(false);
       } else {
         alert(error.message);
         setLoading(false);
@@ -126,16 +126,6 @@ const authentification = (props) => {
           <View style={styles.container}>
             {userInfo !== null ? (
               <>
-                <Image
-                  source={{uri: userInfo.user.photo}}
-                  style={styles.imageStyle}
-                />
-                <Text style={styles.text}>
-                  Name: {userInfo.user.name}
-                </Text>
-                <Text style={styles.text}>
-                  Email: {userInfo.user.email}
-                </Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
@@ -151,6 +141,12 @@ const authentification = (props) => {
               />
             )}
           </View>
+          <Text style={styles.footerHeading}>
+            Google SignIn in React Native
+          </Text>
+          <Text style={styles.footerText}>
+            www.aboutreact.com
+          </Text>
         </View>
       </SafeAreaView>
     );
