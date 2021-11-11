@@ -12,7 +12,6 @@ const geolocation = () => {
        })
     const permissionHandle = async () => {
 
-        console.log('here')
      
      
         let permission = await RNLocation.checkPermission({
@@ -23,7 +22,6 @@ const geolocation = () => {
         });
      
         let location;
-console.log(location);
 if(!permission) {
     permission = await RNLocation.requestPermission({
        ios: "whenInUse",
@@ -37,12 +35,10 @@ if(!permission) {
          }
        }
      })
-     console.log(permission)
      location = await RNLocation.getLatestLocation({timeout: 100})
      setLocationData({latitude : location.latitude,longitude : location.longitude,timestamp : location.timestamp});
      setMapOn(true);
         }   else {
-    console.log("Here 7")
     location = await RNLocation.getLatestLocation({timeout: 100})
                 setLocationData({latitude : location.latitude,longitude : location.longitude,timestamp : location.timestamp});
                 setMapOn(true);
@@ -61,7 +57,6 @@ if(!permission) {
        <Button
          title="Send Location"
         />
-        {console.log(locationData,"hola amigos")}
          </View>
          {mapOn !== false ? <MapView
                 style={styles.map}
