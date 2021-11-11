@@ -19,6 +19,9 @@ export default class Index extends Component{
                 <TouchableOpacity onPress={this.NavigateToQrGenerator}>
                     <Icon name="qrcode" size={50}></Icon>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={this.NavigatetoGeo}>
+                    <Icon name="picture" size={50}></Icon>
+                </TouchableOpacity>
             </View></>
         )
     }
@@ -30,7 +33,7 @@ export default class Index extends Component{
     NavigateToQrGenerator = () => {
         this.props.navigation.navigate('QrGenerator')
     }
-    NavigatetoGoogle = () => {
-        this.props.navigation.navigate('Google')
+    NavigatetoGeo = () => {
+        this.props.navigation.navigate('Geo')
     }
 }
