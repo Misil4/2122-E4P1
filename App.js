@@ -8,6 +8,7 @@ import QrReader from "./src/home/qrReader";
 import QrGenerator from "./src/home/qrGenerator";
 import Authentification from "./src/home/authentification";
 import SplashScreen from 'react-native-splash-screen'
+import UsersList from "./src/home/UsersList";
 
 const HomeStack = createNativeStackNavigator();
 
