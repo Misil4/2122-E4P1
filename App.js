@@ -8,7 +8,7 @@ import QrReader from "./src/home/qrReader";
 import QrGenerator from "./src/home/qrGenerator";
 import Authentification from "./src/home/authentification";
 import SplashScreen from 'react-native-splash-screen'
-import UsersList from "./src/home/UsersList";
+import UsersList from "./src/home/usersList";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -27,6 +27,7 @@ export default class App extends Component{
           <HomeStack.Screen name="PantallaDeInicio" component={HomeScreen} />
           <HomeStack.Screen name="QrReader" component={QrReader} />
           <HomeStack.Screen name="QrGenerator" component={QrGenerator} />
+          <HomeStack.Screen name="UserList" component={UsersList} />
         </HomeStack.Navigator>
       </NavigationContainer>
     )
