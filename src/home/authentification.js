@@ -13,6 +13,7 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  Button,
 } from 'react-native';
 
 // Import Google Signin
@@ -134,6 +135,7 @@ const authentification = (props) => {
                   onPress={_signOut}>
                   <Text>Logout</Text>
                 </TouchableOpacity>
+                <Button color='grey' title='>' onPress={() => props.navigation.navigate('Inicio')}></Button>
               </>
             ) : (
               <GoogleSigninButton
