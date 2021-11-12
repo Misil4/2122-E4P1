@@ -45,7 +45,6 @@ const authentification = (props) => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-      alert('User is already signed in');
       // Set User Info if user is already signed in
       props.navigation.navigate('Inicio')
       setLogin(true);
