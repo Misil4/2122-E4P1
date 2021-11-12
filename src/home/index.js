@@ -10,44 +10,8 @@ export default class Index extends Component{
 
     render(){
         return(
-            <><Text>Contenido Aqui Arriba</Text>
+            <Text>Contenido Aqui Arriba</Text>
 
-            <View style={{flex:1, flexDirection: "row", position:"absolute", bottom: 5, alignSelf: "center"}}>
-                <TouchableOpacity onPress={this.NavigateToQrReader}>
-                    <Icon name="scan1" size={50}></Icon>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.NavigateToQrGenerator}>
-                    <Icon name="qrcode" size={50}></Icon>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.NavigateToSettings}>
-                    <Icon name="setting" size={50}></Icon>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.NavigateToGarbageLocation}>
-                    <Icon name="delete" size={50}></Icon>
-                </TouchableOpacity>
-            </View></>
         )
     }
-
-    NavigateToQrReader = () => {
-        this.props.navigation.navigate('QrReader')
-    }
-
-    NavigateToQrGenerator = () => {
-        this.props.navigation.navigate('QrGenerator')
-    }
-<<<<<<< HEAD
-=======
-    NavigatetoGoogle = () => {
-        this.props.navigation.navigate('Google')
-    }
-
-    NavigateToSettings = () => {
-        this.props.navigation.navigate('Settings')
-    }
-
-    NavigateToGarbageLocation = () => {
-        this.props.navigation.navigate('GarbageLocation')
-    }
->>>>>>> 8f62f344abd8cb28c9da4f0c146f0d9b5c117174
 }

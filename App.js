@@ -29,6 +29,8 @@ export default class App extends Component{
           <drawer.Screen name="Inicio" component={HomeScreen} />
           <drawer.Screen name="QrReader" component={QrReader} />
           <drawer.Screen name="QrGenerator" component={QrGenerator} />
+          <drawer.Screen name="Settings" component={Settings} />
+          <drawer.Screen name="Garbage" component={GarbageLocation} />
         </drawer.Navigator>
       </NavigationContainer>
     )
