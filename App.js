@@ -8,6 +8,8 @@ import QrReader from "./src/home/qrReader";
 import QrGenerator from "./src/home/qrGenerator";
 import Authentification from "./src/home/authentification";
 import SplashScreen from 'react-native-splash-screen'
+import Settings from "./src/home/Settings";
+import GarbageLocation from "./src/home/GarbageLocation";
 
 const drawer = createDrawerNavigator();
 
