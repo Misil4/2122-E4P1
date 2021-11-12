@@ -28,9 +28,6 @@ export default class App extends Component{
           <HomeStack.Screen name="PantallaDeInicio" component={HomeScreen} />
           <HomeStack.Screen name="QrReader" component={QrReader} />
           <HomeStack.Screen name="QrGenerator" component={QrGenerator} />
-          <HomeStack.Screen name="Settings" component={Settings} />
-          <HomeStack.Screen name="GarbageLocation" component={GarbageLocation} />
-          
         </HomeStack.Navigator>
       </NavigationContainer>
     )
