@@ -10,7 +10,7 @@ export default class QrGenerator extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, justifyContent:'center', alignItems:'center', backgroundColor:"#"}}>
+      <View style={{flex: 1, justifyContent:'center', alignItems:'center', backgroundColor:"lightgrey"}}>
       <QRCode 
       value="Osakidetza bai"
       size={250}
