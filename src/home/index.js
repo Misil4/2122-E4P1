@@ -10,16 +10,7 @@ export default class Index extends Component{
 
     render(){
         return(
-            <><Text>Contenido Aqui Arriba</Text>
-
-            <View style={{flex:1, flexDirection: "row", position:"absolute", bottom: 5, alignSelf: "center"}}>
-                <TouchableOpacity onPress={this.NavigateToQrReader}>
-                    <Icon name="scan1" size={50}></Icon>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.NavigateToQrGenerator}>
-                    <Icon name="qrcode" size={50}></Icon>
-                </TouchableOpacity>
-            </View></>
+            <Text>Contenido Aqui Arriba</Text>
         )
     }
 
@@ -29,8 +20,5 @@ export default class Index extends Component{
 
     NavigateToQrGenerator = () => {
         this.props.navigation.navigate('QrGenerator')
-    }
-    NavigatetoGoogle = () => {
-        this.props.navigation.navigate('Google')
     }
 }

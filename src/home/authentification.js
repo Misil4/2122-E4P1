@@ -46,7 +46,7 @@ const authentification = (props) => {
     if (isSignedIn) {
       alert('User is already signed in');
       // Set User Info if user is already signed in
-      props.navigation.navigate('PantallaDeInicio')
+      props.navigation.navigate('Inicio')
       setLogin(true);
     } else {
       console.log('Please Login');
@@ -80,7 +80,7 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      props.navigation.navigate('PantallaDeInicio')
+      props.navigation.navigate('Inicio')
       setLoading(false);
       setLogin(true);
     } catch (error) {
