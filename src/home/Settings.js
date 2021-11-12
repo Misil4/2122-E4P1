@@ -3,7 +3,6 @@ import { Platform, StyleSheet, Text, View, Button } from "react-native";
 
 import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
-
  
  
 export default class Settings extends Component {
@@ -35,10 +34,10 @@ export default class Settings extends Component {
              this.onToggle(isOnBlueToggleSwitch);
            }}
          />
-         
          <RNPickerSelect
             onValueChange={(value) => console.log(value)}
             placeholder={placeholder}
+            style={defaultStyles}
             items={[
                 { label: 'Euskera', value: 'euskera' },
                 { label: 'Castellano', value: 'castellano' },
@@ -63,3 +62,20 @@ export default class Settings extends Component {
      marginBottom: 5
    }
  });
+
+ const defaultStyles = StyleSheet.create({
+  viewContainer: {
+    padding: 70
+  },
+modalViewMiddle: {
+  height: 45,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 10,
+  backgroundColor: '#f8f8f8',
+  borderTopWidth: 1,
+  borderTopColor: '#dedede',
+  zIndex: 2,
+},
+});

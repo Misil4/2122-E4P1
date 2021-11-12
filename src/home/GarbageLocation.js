@@ -5,7 +5,7 @@ import { StyleSheet, View, Image, Text } from "react-native";
 
 export default class GarbageLocation extends Component {
     render() {
-        let image ={uri:'https://www.pngkey.com/png/full/94-944198_icono-de-ubicacin-en-el-mapa-location-clipart.png'};
+        let image ={uri:'https://www.gauss-friends.org/wp-content/uploads/2020/04/location-pin-connectsafely-37.png'};
 
         return (
             <View style = {styles.listItemContainer}>
