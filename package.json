@@ -23,6 +23,7 @@
     "react-dark-mode-toggle-2": "^2.0.2",
     "react-native": "0.66.2",
     "react-native-camera": "^4.2.1",
+    "react-native-elements": "git+https://github.com/react-native-elements/react-native-elements.git#dist",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-location": "^2.5.0",
     "react-native-maps": "^0.29.4",
