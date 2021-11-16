@@ -19,6 +19,12 @@ export default class Index extends Component{
                 <TouchableOpacity onPress={this.NavigateToQrGenerator}>
                     <Icon name="qrcode" size={50}></Icon>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={this.NavigateToQrUserslist}>
+                    <Icon name="usersList" size={50}></Icon>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.NavigatetoWasteReport}>
+                    <Icon name="wasteReport" size={50}></Icon>
+                </TouchableOpacity>
             </View></>
         )
     }
@@ -32,5 +38,11 @@ export default class Index extends Component{
     }
     NavigatetoGoogle = () => {
         this.props.navigation.navigate('Google')
+    }
+    NavigateToQrUserslist = () => {
+        this.props.navigation.navigate('UsersList')
+    }
+    NavigatetoWasteReport = () => {
+        this.props.navigation.navigate('WasteReport')
     }
 }
