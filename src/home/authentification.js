@@ -1,9 +1,9 @@
 // Example of Google Sign In in React Native Android and iOS App
 // https://aboutreact.com/example-of-google-sign-in-in-react-native/
-
+import axios from 'axios';
 // Import React in our code
 import React, {useState, useEffect} from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Import all the components we are going to use
 import {
   SafeAreaView,
@@ -46,7 +46,7 @@ const authentification = (props) => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
       // Set User Info if user is already signed in
-      props.navigation.navigate('Inicio')
+      _getCurrentUserInfo()
       setLogin(true);
     } else {
       console.log('Please Login');
@@ -57,7 +57,13 @@ const authentification = (props) => {
   const _getCurrentUserInfo = async () => {
     try {
       let info = await GoogleSignin.signInSilently();
-      console.log('User Info --> ', info);
+      const userData = await AsyncStorage.getItem("user_data");
+      if (!userData) {
+      axios.post('https://ballin-api-stage.herokuapp.com/users',info)
+      .then((response) =>AsyncStorage.setItem("user_data",JSON.stringify(response.data)))
+      .then((error) =>console.log(error))
+      }
+      console.log(JSON.parse(userData));
       setUserInfo(info);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
@@ -80,7 +86,7 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      props.navigation.navigate('Inicio')
+      _getCurrentUserInfo()
       setLoading(false);
       setLogin(true);
     } catch (error) {
