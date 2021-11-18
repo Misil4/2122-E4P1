@@ -24,7 +24,6 @@ import {
 } from '@react-native-google-signin/google-signin';
 
 const authentification = (props) => {
-  const [userInfo, setUserInfo] = useState(null);
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading ,setLoading] = useState(false);
   const [login,setLogin] = useState(false);
@@ -46,8 +45,16 @@ const authentification = (props) => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
       // Set User Info if user is already signed in
-      _getCurrentUserInfo()
+      const userRol = await AsyncStorage.getItem("user_rol")
+      setLoading(false);
       setLogin(true);
+      if (userRol === "admin") {
+        props.navigation.navigate("Inicio");
+      }
+      else if (userRol === "user") {
+        props.navigation.navigate("QrGenerator");
+      }
+      else {console.log("error")}
     } else {
       console.log('Please Login');
     }
@@ -57,20 +64,9 @@ const authentification = (props) => {
   const _getCurrentUserInfo = async () => {
     try {
       let info = await GoogleSignin.signInSilently();
-      const userRol = await AsyncStorage.getItem("user_rol");
-      if (!userRol) {
-      axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
-      .then((response) =>AsyncStorage.setItem("user_rol",response.data.data.rol))
+      await axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
+      .then((response) => AsyncStorage.setItem("user_rol",response.data.data.rol))
       .then((error) =>console.log(error))
-      }
-      else if (userRol==="admin") {
-        console.log("admin")
-        console.log(userRol)
-      }
-      else {
-        console.log(userRol)
-      }
-      setUserInfo(info);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         alert('User has not signed in yet');
@@ -92,9 +88,17 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      _getCurrentUserInfo()
+      await _getCurrentUserInfo()
+      const userRol = await AsyncStorage.getItem("user_rol")
       setLoading(false);
       setLogin(true);
+      if (userRol === "admin") {
+        props.navigation.navigate("Inicio");
+      }
+      else if (userRol === "user") {
+        props.navigation.navigate("QrGenerator");
+      }
+      else {console.log("error")}
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -120,8 +124,8 @@ const authentification = (props) => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       // Removing user Info
-      setUserInfo(null); 
       setLogin(false);
+      await AsyncStorage.removeItem("user_rol");
     } catch (error) {
       console.error(error);
     }
