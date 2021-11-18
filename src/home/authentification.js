@@ -59,15 +59,16 @@ const authentification = (props) => {
       let info = await GoogleSignin.signInSilently();
       const userRol = await AsyncStorage.getItem("user_rol");
       if (!userRol) {
-      axios.post('https://ballin-api-stage.herokuapp.com/users',info)
+      axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
       .then((response) =>AsyncStorage.setItem("user_rol",response.data.data.rol))
       .then((error) =>console.log(error))
       }
       else if (userRol==="admin") {
-        console.log(admin)
+        console.log("admin")
+        console.log(userRol)
       }
       else {
-        
+        console.log(userRol)
       }
       setUserInfo(info);
     } catch (error) {
