@@ -46,13 +46,16 @@ const authentification = (props) => {
     if (isSignedIn) {
       // Set User Info if user is already signed in
       const userRol = await AsyncStorage.getItem("user_rol")
+      const userEmail = await AsyncStorage.getItem("user_email")
       setLoading(false);
       setLogin(true);
       if (userRol === "admin") {
+        console.log(userRol)
         props.navigation.navigate("Inicio");
       }
       else if (userRol === "user") {
-        props.navigation.navigate("QrGenerator");
+        console.log(userRol)
+        props.navigation.navigate("QrGenerator", {email:userEmail} );
       }
       else {console.log("error")}
     } else {
@@ -65,7 +68,7 @@ const authentification = (props) => {
     try {
       let info = await GoogleSignin.signInSilently();
       await axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
-      .then((response) => AsyncStorage.setItem("user_rol",response.data.data.rol))
+      .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol)})
       .then((error) =>console.log(error))
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
