@@ -11,6 +11,7 @@ import SplashScreen from 'react-native-splash-screen'
 import Settings from "./src/home/Settings";
 import GarbageLocation from "./src/home/GarbageLocation";
 import geolocation from "./src/home/geolocation";
+import UsersList from "./src/home/usersList";
 
 const drawer = createDrawerNavigator();
 
@@ -33,6 +34,7 @@ export default class App extends Component{
           <drawer.Screen name="Settings" component={Settings} />
           <drawer.Screen name="Garbage" component={GarbageLocation} />
           <drawer.Screen name="Geolocalization" component={geolocation}/>
+          <drawer.Screen name="Lista Usuarios" component={UsersList} />
         </drawer.Navigator>
       </NavigationContainer>
     )
