@@ -29,7 +29,7 @@ list ()  {
       <ListItem key={i} bottomDivider>
         <Avatar
   size="medium"
-  title="BP"
+  title={element.name.substring(0,2).toUpperCase()}
   onPress={() => console.log("Works!")}
   activeOpacity={0.7}
 />
