@@ -37,7 +37,7 @@ const authentification = (props) => {
     // Initial configuration
     GoogleSignin.configure({
       // Mandatory method to call before calling signIn()
-      scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+      //scopes: ['https://www.googleapis.com/auth/drive.readonly'],
       // Repleace with your webClientId
       // Generated from Firebase console
       webClientId: '822986748161-tjihgo6gikf5mboac2l2pfo8rs7g9irc.apps.googleusercontent.com',

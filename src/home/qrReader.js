@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import axios from 'axios';
 
 import {
@@ -14,40 +14,29 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 
-export default class QrReader extends React.Component {
-  constructor()
-  {
-    super()
-    this.state = {
-      email: ""
-    } 
+const QrReader =() => {
+  const [data,setData] = useState({email : ""})
+
+  const onSuccess = e => {
+    setData({ email: e.data})
+    updateUserStatus()
   }
 
-  onSuccess = e => {
-    this.setState({ email: e.data})
-    this.updateUserStatus().then((response) => console.log(response))
-  }
-
-  updateUserStatus = async () => {
+  const updateUserStatus = async () => {
     //peticion a axios y hacer put
-    await axios.put("https://ballin-api-stage.herokuapp.com/users",this.state.email)
-      .then((response) => console.log(response))
-      .then((error) => console.log(error))
-
-      
-    
+    await axios.put("https://ballin-api-stage.herokuapp.com/users",data)
+      .then((response) => console.log(response.data))
+      .then((error) => console.log(error))  
 }
-
-  render() {
     return (
       <QRCodeScanner
         reactivate={true}
         reactivateTimeout={3000}
         showMarker
-        onRead={this.onSuccess}
+        onRead={onSuccess}
         topContent={
           <Text style={styles.centerText}>
-            {this.state.email =this.onRead}
+            {data.email}
           </Text>
         }
         bottomContent={
@@ -58,7 +47,6 @@ export default class QrReader extends React.Component {
         }
       />
     );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -80,3 +68,4 @@ const styles = StyleSheet.create({
     padding: 16
   }
 });
+export default QrReader
