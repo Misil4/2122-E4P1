@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import {
   AppRegistry,
@@ -18,14 +19,24 @@ export default class QrReader extends React.Component {
   {
     super()
     this.state = {
-      qr: ""
+      email: ""
     } 
   }
 
   onSuccess = e => {
-    this.setState({ qr: e.data})
-    console.log(e)
+    this.setState({ email: e.data})
+    this.updateUserStatus().then((response) => console.log(response))
   }
+
+  updateUserStatus = async () => {
+    //peticion a axios y hacer put
+    await axios.put("https://ballin-api-stage.herokuapp.com/users",this.state.email)
+      .then((response) => console.log(response))
+      .then((error) => console.log(error))
+
+      
+    
+}
 
   render() {
     return (
@@ -36,7 +47,7 @@ export default class QrReader extends React.Component {
         onRead={this.onSuccess}
         topContent={
           <Text style={styles.centerText}>
-            {this.state.qr}
+            {this.state.email =this.onRead}
           </Text>
         }
         bottomContent={
