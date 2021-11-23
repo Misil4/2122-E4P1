@@ -53,8 +53,8 @@ const authentification = (props) => {
       // Set User Info if user is already signed in
       setLoading(false);
       setLogin(true);
-      console.log(rol)
-      console.log(email)
+      console.log("signed in "+rol);
+      console.log("signed in rr"+email)
       if (rol === "admin") {
         props.navigation.navigate("Lista Usuarios");
       }
@@ -100,6 +100,8 @@ const authentification = (props) => {
       setLogin(true);
       const userRol =await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
+      console.log("getuserinfo "+userRol);
+      console.log("getuserinfo "+userEmail);
       if (userRol=== "admin") {
         props.navigation.navigate("Lista Usuarios");
       }
@@ -133,7 +135,6 @@ const authentification = (props) => {
       await GoogleSignin.signOut();
       // Removing user Info
       setLogin(false);
-      await AsyncStorage.removeItem("user_rol");
     } catch (error) {
       console.error(error);
     }

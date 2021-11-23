@@ -34,38 +34,25 @@ export default class Geolocation extends React.Component {
  }
    permissionHandle = async () => {
  
-     RNLocation.configure({
-       distanceFilter: 5.0
-      })
-   
-       let permission = await RNLocation.checkPermission({
-         ios: 'whenInUse', // or 'always'
-         android: {
-           detail: 'coarse' // or 'fine'
-         }
-       });
-   
-       let location;
-if(!permission) {
-   permission = await RNLocation.requestPermission({
-      ios: "whenInUse",
-      android: {
-        detail: "fine",
-        rationale: {
-          title: "We need to access your location",
-          message: "We use your location to show where you are on the map",
-          buttonPositive: "OK",
-          buttonNegative: "Cancel"
-        }
-      }
-    })
-    location = await RNLocation.getLatestLocation({timeout: 100})
+    RNLocation.configure({
+  distanceFilter: 5.0,
+  desiredAccuracy : {
+    android : "highAccuracy"
+  }
+})
+
+RNLocation.requestPermission({
+  ios: "whenInUse",
+  android: {
+    detail: "coarse"
+  }
+}).then(async granted => {
+    if (granted) {
+      location =  await RNLocation.getLatestLocation({enableHighAccuracy: true,timeout: 100})
     this.setState({locationData :{latitude : location.latitude,longitude : location.longitude,timestamp : location.timestamp},mapOn : true })
-       }   else {
-   location = await RNLocation.getLatestLocation({timeout: 100})
-   this.setState({locationData :{latitude : location.latitude,longitude : location.longitude,timestamp : location.timestamp},mapOn : true })
-   }
-}
+        }
+      })
+    }
 componentDidMount() {
  this.permissionHandle()
 }
@@ -98,7 +85,7 @@ render() {
 const styles = StyleSheet.create({
    map: {
        flex: 1,
-       margin : 100,
-       height: 500
+       margin : "auto",
+       height: "auto"
    },
 });
