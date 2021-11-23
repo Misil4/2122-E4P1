@@ -31,7 +31,7 @@ const QrReader =() => {
     return (
       <QRCodeScanner
         reactivate={true}
-        reactivateTimeout={3000}
+        reactivateTimeout={7000}
         showMarker
         onRead={onSuccess}
         topContent={
