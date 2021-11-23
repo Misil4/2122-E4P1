@@ -19,8 +19,8 @@ const App  = () => {
   const [rol,setRol] = useState(false)
   useEffect(() => {
       SplashScreen.hide();
-      []
-  })
+      getRol().then((response) => setRol(response))
+  },[])
   const getRol = async () => {
     const value= await getAsyncStorageKey("user_rol");
     return value

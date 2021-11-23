@@ -42,6 +42,8 @@ const authentification = (props) => {
       // Generated from Firebase console
       webClientId: '822986748161-tjihgo6gikf5mboac2l2pfo8rs7g9irc.apps.googleusercontent.com',
     });
+    getAsyncStorageKey("user_rol").then(response => {setRol(response);console.log(response)})
+    getAsyncStorageKey("user_email").then(response => {setEmail(response);console.log(response)})
     // Check if user is already signed in
     _isSignedIn();
   }, []);
@@ -49,18 +51,15 @@ const authentification = (props) => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
       // Set User Info if user is already signed in
-      const userRol = await getAsyncStorageKey("user_rol")
-      const userEmail = await getAsyncStorageKey("user_email")
       setLoading(false);
       setLogin(true);
-      if (userRol === "admin") {
-        setRol(userRol)
+      console.log(rol)
+      console.log(email)
+      if (rol === "admin") {
         props.navigation.navigate("Lista Usuarios");
       }
-      else if (userRol === "user") {
-        setRol(userRol)
-        setEmail(userEmail)
-        props.navigation.navigate("QrGenerator", {email:userEmail} );
+      else if (rol=== "user") {
+        props.navigation.navigate("QrGenerator", {email:email} );
       }
       else {console.log("error")}
     } else {
@@ -73,7 +72,7 @@ const authentification = (props) => {
     try {
       let info = await GoogleSignin.signInSilently();
       await axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
-      .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email).then((response) => console.log(true)); AsyncStorage.setItem("user_rol",response.data.data.rol).then((response) => console.log(true))})
+      .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);})
       .then((error) =>console.log(error))
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
@@ -97,18 +96,14 @@ const authentification = (props) => {
       });
       const userInfo = await GoogleSignin.signIn();
       await _getCurrentUserInfo()
-      const userRol = await getAsyncStorageKey("user_rol")
-      const userEmail = await getAsyncStorageKey("user_email")
       setLoading(false);
       setLogin(true);
-      console.log(userRol);
-      if (userRol === "admin") {
-        setRol(userRol)
+      const userRol =await getAsyncStorageKey("user_rol")
+      const userEmail = await getAsyncStorageKey("user_email")
+      if (userRol=== "admin") {
         props.navigation.navigate("Lista Usuarios");
       }
       else if (userRol === "user") {
-        setRol(userRol);
-        setEmail(userEmail);
         props.navigation.navigate("QrGenerator", {email:userEmail});
       }
       else {console.log("error")}
