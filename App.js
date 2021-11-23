@@ -12,6 +12,7 @@ import Settings from "./src/home/Settings";
 import GarbageLocation from "./src/home/GarbageLocation";
 import geolocation from "./src/home/geolocation";
 import UsersList from "./src/home/usersList";
+import WasteReport from "./src/home/wasteReport";
 const drawer = createDrawerNavigator();
 
 
@@ -43,6 +44,7 @@ const App  = () => {
       <drawer.Navigator>
           <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
           <drawer.Screen name="QrGenerator" component={QrGenerator} />
+          <drawer.Screen name="Denunciar Basura" component={WasteReport} />
           </drawer.Navigator>
     );
   }
