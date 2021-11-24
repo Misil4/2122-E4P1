@@ -13,16 +13,18 @@ const UserTestList = () => {
  return (
    <View>
     
-    <Button
+    <Button style={{paddingBottom:100}}
   icon={
-    <Icon
-      size={15}
+    
+    <Icon 
+      name="trash"
+      size={45}
       color="white"
     />
   }
- 
-  title="Denunciar Basuras"
+  title=""
 />
+
    </View>
  )
 }

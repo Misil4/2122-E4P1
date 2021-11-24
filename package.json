@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@coreui/icons": "^2.1.0",
+    "@coreui/icons-angular": "^2.0.0-alpha.1",
     "@react-native-async-storage/async-storage": "github:react-native-community/async-storage",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-google-signin/google-signin": "^7.0.1",
@@ -24,6 +26,7 @@
     "react": "17.0.2",
     "react-dark-mode-toggle": "^0.2.0",
     "react-dark-mode-toggle-2": "^2.0.2",
+    "react-icons": "^4.3.1",
     "react-native": "0.66.2",
     "react-native-camera": "^4.2.1",
     "react-native-elements": "git+https://github.com/react-native-elements/react-native-elements.git#dist",
