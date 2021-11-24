@@ -123,24 +123,25 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     backTextWhite: {
-        color: '#FFF',
+        color: 'white',
     },
     rowFront: {
         alignItems: 'center',
         backgroundColor: 'white', //Color de fondo 
         borderBottomColor: 'black',
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         justifyContent: 'center',
-        height: 50,
+        height: 70,
         
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: '#DDD',
+        backgroundColor: 'lightblue',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingLeft: 15,
+
     },
     backRightBtn: {
         alignItems: 'center',
@@ -149,6 +150,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: 75,
+        
     },
     backRightBtnLeft: {
         right: 75,
