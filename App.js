@@ -19,12 +19,13 @@ const drawer = createDrawerNavigator();
 const App  = () => {
   const [rol,setRol] = useState(false)
   useEffect(() => {
-      SplashScreen.hide();
-      getRol().then((response) => setRol(response))
+      SplashScreen.hide()
+      getRol()
   },[])
   const getRol = async () => {
     const value= await getAsyncStorageKey("user_rol");
-    return value
+    console.log("el valor es "+value)
+    setRol(value)
   }
   function Admin() {
     return (
@@ -48,7 +49,6 @@ const App  = () => {
           </drawer.Navigator>
     );
   }
-  getRol().then((response) => setRol(response))
     return(
       <>
       {rol === "admin" ?  <NavigationContainer>{Admin()}</NavigationContainer> : <NavigationContainer>{User()}</NavigationContainer>}
