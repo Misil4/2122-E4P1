@@ -6,6 +6,7 @@ import {
     TouchableHighlight,
     View,
     Image,
+    Alert,
 } from 'react-native';
 
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -28,13 +29,27 @@ export default function Basic() {
         }
     };*/
 
-    const deleteRow = (rowMap, rowKey) => { // Para eliminar una linea al pulsar el boton delete 
+    const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
         const newData = [...listData]; //Destructuring
         const prevIndex = listData.findIndex(item => item.key === rowKey);
         newData.splice(prevIndex, 1);
         setListData(newData);
     };
-    
+
+    const createButtonAlert = () =>
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => deleteRow()}
+      ]
+    );
+
     const renderItem = data => (
         <TouchableHighlight
             onPress={() => console.log('You touched me')}
@@ -76,7 +91,7 @@ export default function Basic() {
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
-                onPress={() => deleteRow(rowMap, data.item.key)}
+                onPress={() => createButtonAlert()}
             >
                 <Image style={styles.avatar}
                 source={trashImg}
