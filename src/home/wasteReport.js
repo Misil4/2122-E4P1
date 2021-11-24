@@ -13,7 +13,7 @@ const UserTestList = () => {
  return (
    <View>
     
-    <Button style={{paddingBottom:100}}
+    <Button style={{paddingBottom:100} }
   icon={
     
     <Icon 
@@ -28,6 +28,8 @@ const UserTestList = () => {
    </View>
  )
 }
+
+
 export default class Geolocation extends React.Component {
  constructor(props) {
    super(props);
@@ -76,10 +78,6 @@ componentDidMount() {
 render() {
    return (
        <SafeAreaProvider>
-       <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
-    </View>
-    <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
-        </View>
         {this.state.mapOn !== false ? <MapView
                style={styles.map}
                initialRegion={{
@@ -102,7 +100,8 @@ render() {
 const styles = StyleSheet.create({
    map: {
        flex: 1,
-       margin : 100,
+       margin : 0,
        height: 500
    },
 });
+
