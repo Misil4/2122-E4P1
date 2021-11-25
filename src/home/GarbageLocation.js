@@ -19,24 +19,33 @@ export default function Basic() {
     const trashImg ={uri:'https://img.myloview.es/posters/trash-bin-or-trash-can-symbol-icon-or-logo-700-156325989.jpg'};
     const chatImg ={uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Circle-icons-chat.svg/512px-Circle-icons-chat.svg.png'};
     const [listData, setListData] = useState(
-        Array(1)
+        Array()
             .fill('')
             .map((_, i) => ({}))
     );
+    const [userData, setUserData] = useState({
 
+    })   
     useEffect(() => {
         getAllGarbage();
       }, [])
-
+    
     const getAllGarbage = () => {
         axios.get('https://ballin-api-stage.herokuapp.com/garbages')
         .then((response) => {
             let allGarbages = response.data.garbages
             setListData(allGarbages)
-            //console.log(allGarbages)
+            console.log(allGarbages[0].user)
+
+        axios.get("https://ballin-api-stage.herokuapp.com/users/" + allGarbages[0].user)
+        .then((response) => setUserData(response.data))
+        .then(error=> console.error(error))
+            //console.log(response)
+            
         })
-        //.then((error) => console.log(error))  
+        //.then((error) => console.log(error))
     }
+
         //Otro axios para usuarios
     const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
         const newData = [...listData]; //Destructuring
@@ -68,16 +77,16 @@ export default function Basic() {
         >
             <View style = {styles.listItemContainer}>
              <View style = {styles.avatarContainer}>
-             {console.log(data.item.location.latitude)}
+             
              </View>
              <View style = {styles.chatDetailsContainer}>
                <View style = {styles.chatDetailsContainerWrap}>
                 <View style = {styles.nameContainer}>
-                 <Text style = {styles.nameText}>{data.item.user}</Text>
+                 <Text style = {styles.nameText}>{userData.user.name}</Text>
                  <Text style={styles.msgText}>{data.item.message}</Text>
                 </View>
                 <View style = {styles.dateContainer}>
-                  <Text style = {styles.dateText}>{data.item.location.timestamp}
+                  <Text style = {styles.dateText}>Hora
                   </Text>
                 </View>
              </View>
@@ -111,6 +120,7 @@ export default function Basic() {
     );
 
     return (
+        
         <View style={styles.container}>
             <SwipeListView
                 data={listData}
@@ -121,8 +131,9 @@ export default function Basic() {
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
-                
+               
             />
+            
         </View>
     );
 }
