@@ -19,9 +19,9 @@ export default function Basic() {
     const trashImg ={uri:'https://img.myloview.es/posters/trash-bin-or-trash-can-symbol-icon-or-logo-700-156325989.jpg'};
     const chatImg ={uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Circle-icons-chat.svg/512px-Circle-icons-chat.svg.png'};
     const [listData, setListData] = useState(
-        Array(2)
+        Array(1)
             .fill('')
-            .map((_, i) => ({ key: `${i}`, text: `item #${i}` }))
+            .map((_, i) => ({}))
     );
 
     useEffect(() => {
@@ -31,12 +31,13 @@ export default function Basic() {
     const getAllGarbage = () => {
         axios.get('https://ballin-api-stage.herokuapp.com/garbages')
         .then((response) => {
-            const allGarbages = response.data.garbages
+            let allGarbages = response.data.garbages
             setListData(allGarbages)
-        }
-        )}
-        
-
+            //console.log(allGarbages)
+        })
+        //.then((error) => console.log(error))  
+    }
+        //Otro axios para usuarios
     const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
         const newData = [...listData]; //Destructuring
         const prevIndex = listData.findIndex(item => item.key === rowKey);
@@ -67,16 +68,16 @@ export default function Basic() {
         >
             <View style = {styles.listItemContainer}>
              <View style = {styles.avatarContainer}>
-             {console.log(data.item)}
+             {console.log(data.item.location.latitude)}
              </View>
              <View style = {styles.chatDetailsContainer}>
                <View style = {styles.chatDetailsContainerWrap}>
                 <View style = {styles.nameContainer}>
                  <Text style = {styles.nameText}>{data.item.user}</Text>
-                 <Text style={styles.msgText}>A 1 km de distancia</Text>
+                 <Text style={styles.msgText}>{data.item.message}</Text>
                 </View>
                 <View style = {styles.dateContainer}>
-                  <Text style = {styles.dateText}>13/11/2021 14:02
+                  <Text style = {styles.dateText}>{data.item.location.timestamp}
                   </Text>
                 </View>
              </View>
