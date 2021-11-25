@@ -59,10 +59,6 @@ componentDidMount() {
 render() {
    return (
        <SafeAreaProvider>
-       <View style={{marginTop: 10, padding: 10, borderRadius: 10, width: '40%'}}>
-    </View>
-    <View style={{marginTop: 10, padding: 10, borderRadiusPUT: 10, width: '40%'}}>
-        </View>
         {this.state.mapOn !== false ? <MapView
                style={styles.map}
                initialRegion={{
