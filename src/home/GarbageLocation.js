@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import { SwipeListView } from 'react-native-swipe-list-view';
+import axios from 'axios';
 
 
 
@@ -18,22 +19,30 @@ export default function Basic() {
     const trashImg ={uri:'https://img.myloview.es/posters/trash-bin-or-trash-can-symbol-icon-or-logo-700-156325989.jpg'};
     const chatImg ={uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Circle-icons-chat.svg/512px-Circle-icons-chat.svg.png'};
     const [listData, setListData] = useState(
-        Array(20)
+        Array(2)
             .fill('')
             .map((_, i) => ({ key: `${i}`, text: `item #${i}` }))
     );
 
-   /* const closeRow = (rowMap, rowKey) => {
-        if (rowMap[rowKey]) {
-            rowMap[rowKey].closeRow();
+    useEffect(() => {
+        getAllGarbage();
+      }, [])
+
+    const getAllGarbage = () => {
+        axios.get('https://ballin-api-stage.herokuapp.com/garbages')
+        .then((response) => {
+            const allGarbages = response.data.garbages
+            setListData(allGarbages)
         }
-    };*/
+        )}
+        
 
     const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
         const newData = [...listData]; //Destructuring
         const prevIndex = listData.findIndex(item => item.key === rowKey);
         newData.splice(prevIndex, 1);
         setListData(newData);
+        
     };
 
     const createButtonAlert = () =>
@@ -58,12 +67,12 @@ export default function Basic() {
         >
             <View style = {styles.listItemContainer}>
              <View style = {styles.avatarContainer}>
-             
+             {console.log(data.item)}
              </View>
              <View style = {styles.chatDetailsContainer}>
                <View style = {styles.chatDetailsContainerWrap}>
                 <View style = {styles.nameContainer}>
-                 <Text style = {styles.nameText}>Usuario que ha reportado: Landa</Text>
+                 <Text style = {styles.nameText}>{data.item.user}</Text>
                  <Text style={styles.msgText}>A 1 km de distancia</Text>
                 </View>
                 <View style = {styles.dateContainer}>
