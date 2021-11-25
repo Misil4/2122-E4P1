@@ -28,6 +28,7 @@ export default function Basic() {
     })   
     useEffect(() => {
         getAllGarbage();
+        getUserName();
       }, [])
     
     const getAllGarbage = () => {
@@ -35,16 +36,18 @@ export default function Basic() {
         .then((response) => {
             let allGarbages = response.data.garbages
             setListData(allGarbages)
-            console.log(allGarbages[0].user)
-
-        axios.get("https://ballin-api-stage.herokuapp.com/users/" + allGarbages[0].user)
-        .then((response) => setUserData(response.data))
-        .then(error=> console.error(error))
-            //console.log(response)
+            //console.log(allGarbages[0].user)
             
         })
-        //.then((error) => console.log(error))
+        .then((error) => console.log(error))
     }
+
+    const getUserName = () => {
+        axios.get("https://ballin-api-stage.herokuapp.com/users/" + listData[0].user)
+       .then((response) => setUserData(response.data))
+       .then(error=> console.error(error)) //Error undefined
+           console.log(userData)
+   }
 
         //Otro axios para usuarios
     const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
@@ -82,7 +85,7 @@ export default function Basic() {
              <View style = {styles.chatDetailsContainer}>
                <View style = {styles.chatDetailsContainerWrap}>
                 <View style = {styles.nameContainer}>
-                 <Text style = {styles.nameText}>{userData.user.name}</Text>
+                 <Text style = {styles.nameText}>Punto reportado por: {userData.user.name}</Text>
                  <Text style={styles.msgText}>{data.item.message}</Text>
                 </View>
                 <View style = {styles.dateContainer}>
