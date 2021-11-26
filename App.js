@@ -13,6 +13,8 @@ import GarbageLocation from "./src/home/GarbageLocation";
 import geolocation from "./src/home/geolocation";
 import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
+import wasteLocation from "./src/home/wasteLocation";
+
 const drawer = createDrawerNavigator();
 
 
@@ -36,6 +38,7 @@ const App  = () => {
           <drawer.Screen name="Geolocalization" component={geolocation}/>
           <drawer.Screen name="Lista Usuarios" component={UsersList} />
           <drawer.Screen name="Garbage" component={GarbageLocation} />
+          <drawer.Screen name="Ubicacion de basuras" component={wasteLocation} />
         </drawer.Navigator>
     );
   }
