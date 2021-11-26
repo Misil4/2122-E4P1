@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import { Button } from "react-native-elements";
 import RNLocation from 'react-native-location';
 import MapView,{Marker} from 'react-native-maps';
@@ -44,6 +44,24 @@ RNLocation.requestPermission({
       })
     }
 
+    const createButtonAlert = () =>
+    Alert.alert(
+      "Enviar",
+      "¿Estás seguro?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: async() => {
+          list={data: data, user: email}
+          await axios.post('https://ballin-api-stage.herokuapp.com/garbages/', list)
+          .then(response => console.log(response))
+          .then(error => console.log(error))
+        }}
+      ]
+    );
    return (
     <SafeAreaProvider>
         {mapOn !== false ? <MapView
@@ -59,12 +77,10 @@ RNLocation.requestPermission({
           latitudeDelta: 0.01,
           longitudeDelta: 0.01}} />
         </MapView> : null}
-        <Button buttonStyle={{backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius:10}} title="&#9842;" titleStyle={{fontSize:40, marginBottom: 10}} onPress={async() => {
-        list={data: data, user: email}
-        await axios.post('https://ballin-api-stage.herokuapp.com/garbages/', list)
-        .then(response => console.log(response))
-        .then(error => console.log(error))
-      }}></Button>
+        <Button buttonStyle={{backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius:10}} title="&#9842;" titleStyle={{fontSize:40, marginBottom: 10}} 
+        onPress={() => createButtonAlert()}>
+
+        </Button>
     </SafeAreaProvider>
    )
 }
