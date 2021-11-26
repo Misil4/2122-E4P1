@@ -32,10 +32,10 @@ const App  = () => {
         <drawer.Navigator>
           <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
           <drawer.Screen name="QrReader" component={QrReader} />
-          <drawer.Screen name="Settings" component={Settings} />
           <drawer.Screen name="Geolocalization" component={geolocation}/>
           <drawer.Screen name="Lista Usuarios" component={UsersList} />
           <drawer.Screen name="Garbage" component={GarbageLocation} />
+          <drawer.Screen name="Settings" component={Settings} />
         </drawer.Navigator>
     );
   }
@@ -46,6 +46,7 @@ const App  = () => {
           <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
           <drawer.Screen name="QrGenerator" component={QrGenerator} />
           <drawer.Screen name="Denunciar Basura" component={WasteReport} />
+          <drawer.Screen name="Settings" component={Settings} />
           </drawer.Navigator>
     );
   }
