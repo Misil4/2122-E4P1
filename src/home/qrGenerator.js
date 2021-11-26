@@ -14,7 +14,7 @@ export default class QrGenerator extends Component {
  render() {
   
    return (
-     <View style={{flex: 1, justifyContent:'center', alignItems:'center', backgroundColor:"lightgrey"}}>
+     <View style={{flex: 1, justifyContent:'center', alignItems:'center', backgroundColor:"white"}}>
        {console.log(this.props.route.params.email)}
      <QRCode
      value= {this.props.route.params.email}

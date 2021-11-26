@@ -15,9 +15,9 @@ import axios from 'axios';
 
 
 export default function Basic() {
-    const locationImg ={uri:'https://www.gauss-friends.org/wp-content/uploads/2020/04/location-pin-connectsafely-37.png'};
-    const trashImg ={uri:'https://img.myloview.es/posters/trash-bin-or-trash-can-symbol-icon-or-logo-700-156325989.jpg'};
-    const chatImg ={uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Circle-icons-chat.svg/512px-Circle-icons-chat.svg.png'};
+    const locationImg ={uri:'https://cdn-icons.flaticon.com/png/512/2838/premium/2838912.png?token=exp=1637927594~hmac=aff0900730a45ffb26fcd8a27c0c6609'};
+    const trashImg ={uri:'https://cdn-icons-png.flaticon.com/512/3096/3096673.png'};
+    const chatImg ={uri:'https://cdn-icons.flaticon.com/png/512/2076/premium/2076218.png?token=exp=1637927914~hmac=5c7094ec6ca044a4ddb9e90b1bd1461b'};
     const [listData, setListData] = useState(
         Array()
             .fill('')
@@ -52,8 +52,8 @@ export default function Basic() {
 
     const createButtonAlert = () =>
     Alert.alert(
-      "Alert Title",
-      "My Alert Msg",
+      "Eliminar",
+      "¿Estás seguro?",
       [
         {
           text: "Cancel",
@@ -77,11 +77,11 @@ export default function Basic() {
              <View style = {styles.chatDetailsContainer}>
                <View style = {styles.chatDetailsContainerWrap}>
                 <View style = {styles.nameContainer}>
-                 <Text style = {styles.nameText}>Punto reportado por: </Text>
+                 <Text style = {styles.nameText}>{data.item.user}</Text>
                  <Text style={styles.msgText}>{data.item.message}</Text>
                 </View>
                 <View style = {styles.dateContainer}>
-                  <Text style = {styles.dateText}>Hora
+                  <Text style = {styles.dateText}>{data.item.location.timestamp.substring(0,21)}
                   </Text>
                 </View>
              </View>
@@ -207,8 +207,8 @@ const styles = StyleSheet.create({
     },
     avatar: {
         borderRadius: 30,
-        width: 60,
-        height: 60
+        width: 40,
+        height: 40
     }
 
 });
