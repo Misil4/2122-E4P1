@@ -17,42 +17,40 @@ const drawer = createDrawerNavigator();
 
 
 const App  = () => {
-  const [rol,setRol] = useState(false)
+  const [rol,setRol] = useState("user")
   useEffect(() => {
       SplashScreen.hide()
       getRol()
-  },[])
+  },[rol])
   const getRol = async () => {
     const value= await getAsyncStorageKey("user_rol");
     console.log("el valor es "+value)
     setRol(value)
   }
-  function Admin() {
-    return (
-        <drawer.Navigator>
-          <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
-          <drawer.Screen name="QrReader" component={QrReader} />
-          <drawer.Screen name="Geolocalization" component={geolocation}/>
-          <drawer.Screen name="Lista Usuarios" component={UsersList} />
-          <drawer.Screen name="Garbage" component={GarbageLocation} />
-          <drawer.Screen name="Settings" component={Settings} />
-        </drawer.Navigator>
-    );
-  }
-  
-  function User() {
-    return (
-      <drawer.Navigator>
-          <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
-          <drawer.Screen name="QrGenerator" component={QrGenerator} />
-          <drawer.Screen name="Denunciar Basura" component={WasteReport} />
-          <drawer.Screen name="Settings" component={Settings} />
-          </drawer.Navigator>
-    );
-  }
     return(
       <>
-      {rol === "admin" ?  <NavigationContainer>{Admin()}</NavigationContainer> : <NavigationContainer>{User()}</NavigationContainer>}
+      {console.log(rol)}
+      <NavigationContainer>
+      <drawer.Navigator mode="modal">
+        {rol === "admin" ? (
+          <>
+        <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
+        <drawer.Screen name="QrReader" component={QrReader} />
+        <drawer.Screen name="Geolocalization" component={geolocation}/>
+        <drawer.Screen name="Lista Usuarios" component={UsersList} />
+        <drawer.Screen name="Garbage" component={GarbageLocation} />
+        <drawer.Screen name="Settings" component={Settings} />
+        </>
+        ) : (
+          <>
+          <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
+        <drawer.Screen name="QrGenerator" component={QrGenerator} />
+        <drawer.Screen name="Denunciar Basura" component={WasteReport} />
+        <drawer.Screen name="Settings" component={Settings} />
+        </>
+        )}
+      </drawer.Navigator>
+      </NavigationContainer>
       </>
     )
   }

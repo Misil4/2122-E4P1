@@ -56,10 +56,10 @@ const authentification = (props) => {
       console.log("signed in "+rol);
       console.log("signed in rr"+email)
       if (rol === "admin") {
-        props.navigation.navigate("Lista Usuarios");
+      props.navigation.navigate("Lista Usuarios");
       }
       else if (rol=== "user") {
-        props.navigation.navigate("QrGenerator", {email:email} );
+       props.navigation.navigate("QrGenerator", {email:email} );
       }
       else {console.log("error")}
     } else {
@@ -72,7 +72,7 @@ const authentification = (props) => {
     try {
       let info = await GoogleSignin.signInSilently();
       await axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
-      .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);})
+      .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);setEmail(response.data.data.email);setRol(response.data.data.rol)})
       .then((error) =>console.log(error))
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
@@ -149,6 +149,7 @@ const authentification = (props) => {
   } else {
     return (
       <SafeAreaView style={{flex: 1}}>
+        {console.log("el rol es "+rol)}
         <View style={styles.container}>
           <View style={styles.container}>
             {login !== false ? (
