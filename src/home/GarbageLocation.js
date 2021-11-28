@@ -11,6 +11,7 @@ import {
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Entypo'
 
 
 
@@ -93,24 +94,17 @@ export default function Basic(props) {
     );
     const renderHiddenItem = (data, rowMap) => (
         <View style={styles.rowBack}>
-            <Image style={styles.avatar}
-                source={chatImg}
-                />
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
-               onPress={() => props.navigation.navigate('Ubicacion de basuras')}
+               onPress={() => props.navigation.navigate('Ubicacion de basuras', {latitude : data.item.location.latitude,longitude : data.item.location.longitude})}
             >
-                <Image style={styles.avatar}
-                source={locationImg}
-                />
+                <Icon name="location-pin" size={42} />
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 onPress={() => createButtonAlert()}
             >
-                <Image style={styles.avatar}
-                source={trashImg}
-                />
+               <Icon name="trash" size={32} />
             </TouchableOpacity>
         </View>
     );
