@@ -2,47 +2,74 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Alert } from "react-native";
 import { Button } from "react-native-elements";
-import RNLocation from 'react-native-location';
 import MapView,{Marker} from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { getAsyncStorageKey } from "./authentification";
+import Geolocation from 'react-native-geolocation-service';
+
 
 let list ={}
 
-const Geolocation = props => {
+const WasteReport = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
   const [data, setData] = useState({
     latitude : null, longitude : null, timestamp : null
   })
+  const hasLocationPermission = async () => {
+
+    if (Platform.OS === 'android' && Platform.Version < 23) {
+      return true;
+    }
+
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (hasPermission) {
+      return true;
+    }
+
+    const status = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+
+    if (status === PermissionsAndroid.RESULTS.GRANTED) {
+      return true;
+    }
+
+    if (status === PermissionsAndroid.RESULTS.DENIED) {
+      ToastAndroid.show(
+        'Location permission denied by user.',
+        ToastAndroid.LONG,
+      );
+    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+      ToastAndroid.show(
+        'Location permission revoked by user.',
+        ToastAndroid.LONG,
+      );
+    }
+    return false;
+  };
 
 useEffect(()=>{
   getAsyncStorageKey("user_email").then(response => {setEmail(response);console.log(response)})
-  permissionHandle()
+  if (hasLocationPermission) {
+    Geolocation.getCurrentPosition(
+        (position) => {
+          setData({latitude : position.coords.latitude,longitude : position.coords.longitude,timestamp : position.timestamp})
+          setMapOn(true)       },
+        (error) => {
+          // See error code charts below.
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }
 },[])
 
 
-   const permissionHandle = async () => {
-    RNLocation.configure({
-    distanceFilter: 5.0,
-    desiredAccuracy : {
-    android : "highAccuracy"
-  }
-})
-
-RNLocation.requestPermission({
-  ios: "whenInUse",
-  android: {
-    detail: "coarse"
-  }
-}).then(async granted => {
-    if (granted) {
-      location =  await RNLocation.getLatestLocation({enableHighAccuracy: true,timeout: 100})
-    setData({latitude : location.latitude,longitude : location.longitude,timestamp : location.timestamp})
-    setMapOn(true)
-        }
-      })
-    }
+   
 
     const createButtonAlert = () =>
     Alert.alert(
@@ -55,6 +82,7 @@ RNLocation.requestPermission({
           style: "cancel"
         },
         { text: "OK", onPress: async() => {
+          console.log(data)
           list={data: data, user: email}
           await axios.post('https://ballin-api-stage.herokuapp.com/garbages/', list)
           .then(response => console.log(response))
@@ -93,4 +121,4 @@ const styles = StyleSheet.create({
        height: "auto"
    }
 });
-export default Geolocation;
+export default WasteReport;

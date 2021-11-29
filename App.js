@@ -10,7 +10,6 @@ import Authentification, { getAsyncStorageKey } from "./src/home/authentificatio
 import SplashScreen from 'react-native-splash-screen'
 import Settings from "./src/home/Settings";
 import GarbageLocation from "./src/home/GarbageLocation";
-import geolocation from "./src/home/geolocation";
 import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
@@ -38,7 +37,6 @@ const App  = () => {
           <>
         <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
         <drawer.Screen name="QrReader" component={QrReader} />
-        <drawer.Screen name="Geolocalization" component={geolocation}/>
         <drawer.Screen name="Lista Usuarios" component={UsersList} />
         <drawer.Screen name="Garbage" component={GarbageLocation} />
         <drawer.Screen name="Ubicación de basuras" component={wasteLocation} 
