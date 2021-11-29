@@ -11,13 +11,9 @@ import {
 
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/Entypo'
 
-
-
-export default function Basic() {
-    const locationImg ={uri:'https://cdn-icons.flaticon.com/png/512/2838/premium/2838912.png?token=exp=1637927594~hmac=aff0900730a45ffb26fcd8a27c0c6609'};
-    const trashImg ={uri:'https://cdn-icons-png.flaticon.com/512/3096/3096673.png'};
-    const chatImg ={uri:'https://cdn-icons.flaticon.com/png/512/2076/premium/2076218.png?token=exp=1637927914~hmac=5c7094ec6ca044a4ddb9e90b1bd1461b'};
+export default function Basic(props) {
     const [listData, setListData] = useState(
         Array()
             .fill('')
@@ -92,24 +88,17 @@ export default function Basic() {
     );
     const renderHiddenItem = (data, rowMap) => (
         <View style={styles.rowBack}>
-            <Image style={styles.avatar}
-                source={chatImg}
-                />
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                //onPress={() => closeRow(rowMap, data.item.key)}
+               onPress={() => props.navigation.navigate('Ubicación de basuras', {latitude : data.item.location.latitude,longitude : data.item.location.longitude})}
             >
-                <Image style={styles.avatar}
-                source={locationImg}
-                />
+                <Icon name="location-pin" size={42} />
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 onPress={() => createButtonAlert()}
             >
-                <Image style={styles.avatar}
-                source={trashImg}
-                />
+               <Icon name="trash" size={32} />
             </TouchableOpacity>
         </View>
     );
