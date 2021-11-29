@@ -13,7 +13,7 @@ const wasteLocation = (props) => {
       <MapView
         onPress={() => {}}
         style={styles.map}
-        initialRegion={{
+        region={{
           latitude: props.route.params.latitude,
           longitude: props.route.params.longitude,
           latitudeDelta: 0.04,
