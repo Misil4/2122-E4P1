@@ -38,7 +38,10 @@ const App  = () => {
           <drawer.Screen name="Geolocalization" component={geolocation}/>
           <drawer.Screen name="Lista Usuarios" component={UsersList} />
           <drawer.Screen name="Garbage" component={GarbageLocation} />
-          <drawer.Screen name="Ubicacion de basuras" component={wasteLocation} />
+          <drawer.Screen name="Ubicacion de basuras" component={wasteLocation}
+          options={{
+            drawerItemStyle: { height: 0 }
+          }} />
         </drawer.Navigator>
     );
   }
