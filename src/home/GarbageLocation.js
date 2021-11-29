@@ -76,11 +76,11 @@ export default function Basic(props) {
              <View style = {styles.chatDetailsContainer}>
                <View style = {styles.chatDetailsContainerWrap}>
                 <View style = {styles.nameContainer}>
-                 <Text style = {styles.nameText}>Punto reportado por: </Text>
+                 <Text style = {styles.nameText}>{data.item.user} </Text>
                  <Text style={styles.msgText}>{data.item.message}</Text>
                 </View>
                 <View style = {styles.dateContainer}>
-                  <Text style = {styles.dateText}>Hora
+                  <Text style = {styles.dateText}>{data.item.location.timestamp.substring(0,21)}
                   </Text>
                 </View>
              </View>
