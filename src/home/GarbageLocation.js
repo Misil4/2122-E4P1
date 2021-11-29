@@ -45,8 +45,17 @@ export default function Basic(props) {
         setListData(newData);
         
     };
+    const updateStatusComplete = async(data) =>{
+        //console.log(data.item._id)
+        const list = {
+            id_basura:data.item._id
+        }
+        await axios.put("https://ballin-api-stage.herokuapp.com/garbages",list)
+        .then((response) => console.log(response.data))
+        .then((error) => console.log(error)) 
+  }
 
-    const createButtonAlert = () =>
+    const createButtonAlert = (data) =>
     Alert.alert(
       "Eliminar",
       "¿Estás seguro?",
@@ -56,7 +65,7 @@ export default function Basic(props) {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "OK", onPress: () => deleteRow()}
+        { text: "OK", onPress: () => updateStatusComplete(data)}
       ]
     );
 
@@ -96,7 +105,7 @@ export default function Basic(props) {
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
-                onPress={() => createButtonAlert()}
+                onPress={() => createButtonAlert(data)}
             >
                <Icon name="trash" size={32} />
             </TouchableOpacity>
