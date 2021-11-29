@@ -17,9 +17,6 @@ import Icon from 'react-native-vector-icons/Entypo'
 
 
 export default function Basic(props) {
-    const locationImg ={uri:'https://www.gauss-friends.org/wp-content/uploads/2020/04/location-pin-connectsafely-37.png'};
-    const trashImg ={uri:'https://img.myloview.es/posters/trash-bin-or-trash-can-symbol-icon-or-logo-700-156325989.jpg'};
-    const chatImg ={uri:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Circle-icons-chat.svg/512px-Circle-icons-chat.svg.png'};
     const [listData, setListData] = useState(
         Array()
             .fill('')

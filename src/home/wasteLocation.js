@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, View, PermissionsAndroid, } from "react-native";
-import MapView, { Circle, Polyline } from "react-native-maps";
+import MapView, { Circle, Marker, Polyline } from "react-native-maps";
 import Geolocation from "react-native-geolocation-service";
 
 const wasteLocation = (props) => {
@@ -19,9 +19,9 @@ const wasteLocation = (props) => {
           latitudeDelta: 0.04,
           longitudeDelta: 0.05,
         }}
-        showsUserLocation
+        
         loadingEnabled
-      ></MapView>
+      ><Marker coordinate={{ latitude : props.route.params.latitude , longitude : props.route.params.longitude }} /></MapView>
     </View>
   );
 }
