@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-
+import auth from '@react-native-firebase/auth';
 // Import Google Signin
 import {
   GoogleSignin,
@@ -70,10 +70,21 @@ const authentification = (props) => {
 
   const _getCurrentUserInfo = async () => {
     try {
-      let info = await GoogleSignin.signInSilently();
-      await axios.post('https://ballin-api-stage.herokuapp.com/users',info.user)
+      const { idToken } = await GoogleSignin.signIn();
+
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  // Sign-in the user with the credential
+  const token = auth().signInWithCredential(googleCredential);
+  console.log(token)
+     const data = {
+       idToken : token
+     }
+
+     /* await axios.post('https://ballin-api-stage.herokuapp.com/users',data)
       .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);setEmail(response.data.data.email);setRol(response.data.data.rol)})
-      .then((error) =>console.log(error))
+      .then((error) =>console.log(error))*/
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         alert('User has not signed in yet');
