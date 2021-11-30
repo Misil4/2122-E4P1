@@ -3,11 +3,37 @@
 //import Geolocation from 'react-native-geolocation-service';
 
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, View, PermissionsAndroid, } from "react-native";
+import {  StyleSheet, View, PermissionsAndroid, Alert, } from "react-native";
+import { Button, } from "react-native-elements";
 import MapView, { Circle, Marker, Polyline } from "react-native-maps";
-import Geolocation from "react-native-geolocation-service";
+import axios from "axios";
+
+
 
 const wasteLocation = (props) => {
+  const updateStatusComplete = async(id) =>{
+  //console.log(data.item._id)
+  const list = {
+      id_basura:id
+  }
+  await axios.put("https://ballin-api-stage.herokuapp.com/garbages",list)
+  .then((response) => console.log(response.data))
+  .then((error) => console.log(error)) 
+}
+
+const createButtonAlert = (id) =>
+Alert.alert(
+"Eliminar",
+"¿Estás seguro?",
+[
+  {
+    text: "Cancel",
+    onPress: () => console.log("Cancel Pressed"),
+    style: "cancel"
+  },
+  { text: "OK", onPress: () => {updateStatusComplete(id); props.navigation.navigate('Garbage')} }
+]
+);
   return (
     <View style={styles.container}>
       <MapView
@@ -22,6 +48,13 @@ const wasteLocation = (props) => {
         
         loadingEnabled
       ><Marker coordinate={{ latitude : props.route.params.latitude , longitude : props.route.params.longitude }} /></MapView>
+        <View style={{ flexDirection: "row" ,marginLeft: 20, justifyContent: 'space-evenly' }}>
+        <Button buttonStyle={{backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius:10}} title="&#8630;" titleStyle={{fontSize:60, marginBottom: 0}} 
+        onPress={() => props.navigation.navigate('Garbage') } />
+        <Button buttonStyle={{backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius:10}} title="&#9842;" titleStyle={{fontSize:40, marginBottom: 10}}
+         onPress={() => createButtonAlert(props.route.params.id) }
+          />  
+</View>
     </View>
   );
 }
