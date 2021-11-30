@@ -99,7 +99,7 @@ export default function Basic(props) {
         <View style={styles.rowBack}>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
-               onPress={() => props.navigation.navigate('Ubicación de basuras', {latitude : data.item.location.latitude,longitude : data.item.location.longitude})}
+               onPress={() => props.navigation.navigate('Ubicación de basuras', {latitude : data.item.location.latitude,longitude : data.item.location.longitude, id: data.item._id})}
             >
                 <Icon name="location-pin" size={42} />
             </TouchableOpacity>
