@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
+import keychain from 'keychain'
 import auth from '@react-native-firebase/auth'
 // Import Google Signin
 import {
@@ -69,9 +70,10 @@ const authentification = (props) => {
   };
   const _getCurrentUserInfo = async () => {
     try {
-      GoogleSignin.signIn()
+      
+      const data =GoogleSignin.signIn()
   .then((data) => {
-    const credential = auth.GoogleAuthProvider.credential(data.idToken);
+    const credential = auth.GoogleAuthProvider.credential(data.idToken)
     return auth().signInWithCredential(credential);
   })
   .then((user) => {
@@ -80,9 +82,18 @@ const authentification = (props) => {
 
     user.user.getIdToken(/* forceRefresh */ true).then(async function(idToken) {
         const data = {
-          idToken : idToken
+          idToken : idToken,
+          email : user.user.email
         }
-        await axios.post('https://ballin-api-stage.herokuapp.com/users',data)
+        const token = await getAsyncStorageKey("access_token");
+        if (!token) {
+        await axios.post('https://ballin-api-stage.herokuapp.com/token',data)
+        .then((response) =>{
+          keychain.setPassword({ account: 'token', service: 'Authorization', password:response.data.access_token  });
+          keychain.setPassword({ account: 'refresh_token', service: 'Authorization', password:response.data.refresh_token  })})
+        .then((error) =>console.log(error))
+    }
+    await axios.post('https://ballin-api-stage.herokuapp.com/users',user.user,{headers : {'Authorization': keychain.getPassword('token')}})
         .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);setEmail(response.data.data.email);setRol(response.data.data.rol)})
         .then((error) =>console.log(error))
     })
