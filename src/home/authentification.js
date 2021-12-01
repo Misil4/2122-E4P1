@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth'
 // Import Google Signin
 import {
   GoogleSignin,
@@ -67,24 +67,30 @@ const authentification = (props) => {
     }
     setGettingLoginStatus(false);
   };
-
   const _getCurrentUserInfo = async () => {
     try {
-      const { idToken } = await GoogleSignin.signIn();
+      GoogleSignin.signIn()
+  .then((data) => {
+    const credential = auth.GoogleAuthProvider.credential(data.idToken);
+    return auth().signInWithCredential(credential);
+  })
+  .then((user) => {
 
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // ** Now that the user is signed in, you can get the ID Token. **
 
-  // Sign-in the user with the credential
-  const token = auth().signInWithCredential(googleCredential);
-  console.log(token)
-     const data = {
-       idToken : token
-     }
+    user.user.getIdToken(/* forceRefresh */ true).then(async function(idToken) {
+        const data = {
+          idToken : idToken
+        }
+        await axios.post('https://ballin-api-stage.herokuapp.com/users',data)
+        .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);setEmail(response.data.data.email);setRol(response.data.data.rol)})
+        .then((error) =>console.log(error))
+    })
 
-     /* await axios.post('https://ballin-api-stage.herokuapp.com/users',data)
-      .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);setEmail(response.data.data.email);setRol(response.data.data.rol)})
-      .then((error) =>console.log(error))*/
+  })
+  .catch((error) => {
+    const { code, message } = error;
+  });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         alert('User has not signed in yet');
@@ -137,7 +143,6 @@ const authentification = (props) => {
       }
     }
   };
-
   const _signOut = async () => {
     setGettingLoginStatus(true);
     // Remove user session from the device.

@@ -15,6 +15,7 @@
     "@coreui/icons-angular": "^2.0.0-alpha.1",
     "@react-native-async-storage/async-storage": "github:react-native-community/async-storage",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-firebase/app": "^13.0.1",
     "@react-native-firebase/auth": "^13.0.1",
     "@react-native-google-signin/google-signin": "^7.0.1",
     "@react-native-picker/picker": "^2.2.0",
