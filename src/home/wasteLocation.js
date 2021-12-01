@@ -7,16 +7,18 @@ import {  StyleSheet, View, PermissionsAndroid, Alert, } from "react-native";
 import { Button, } from "react-native-elements";
 import MapView, { Circle, Marker, Polyline } from "react-native-maps";
 import axios from "axios";
+import {getAsyncStorageKey} from './authentification'
 
 
 
 const wasteLocation = (props) => {
   const updateStatusComplete = async(id) =>{
   //console.log(data.item._id)
+  const token = getAsyncStorageKey('token')
   const list = {
       id_basura:id
   }
-  await axios.put("https://ballin-api-stage.herokuapp.com/garbages",list)
+  await axios.put("https://ballin-api-stage.herokuapp.com/garbages",list,{headers : {'Authorization': token}})
   .then((response) => console.log(response.data))
   .then((error) => console.log(error)) 
 }

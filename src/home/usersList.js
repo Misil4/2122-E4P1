@@ -1,40 +1,43 @@
 'use strict';
  
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListItem,Badge,Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View,Text,ActivityIndicator } from 'react-native';
+import { getAsyncStorageKey } from './authentification';
  
-export default class UsersList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { usersListData: [],loading : true };
-}
-
-componentDidMount(){
-  axios.get('https://ballin-api-stage.herokuapp.com/users')
+const UsersList = (props) => {
+   const [usersListData,setUserListData] = useState([]);
+   const [loading,setLoading] =useState(true);
+const getAllUsers = async () => {
+  const token = await getAsyncStorageKey('token')
+  console.log(token)
+  await axios.get('https://ballin-api-stage.herokuapp.com/users',{headers : {'Authorization': token}})
 .then(res => {
-    this.setState({ usersListData: res.data.users,loading : false });
+  setUserListData(res.data.users);
+  setLoading(false);
 })
 .catch(function (error) {
     console.log(error);
 })
 }
-render(){
-  if (this.state.loading) {
+useEffect(() => {
+  getAllUsers()
+},[])
+  if (loading) {
     return (
       <View style={{margin : "auto"}}>
       <ActivityIndicator size="large" color="#0000ff" />
     </View>
   );
   }
-  return (<SafeAreaProvider><View>{this.state.usersListData.map((element,i) => {
+  return (<SafeAreaProvider>{console.log(usersListData)}<View>{usersListData.map((element,i) => {
     return (
       <ListItem key={i} bottomDivider>
         <Avatar
   size="medium"
-  title={element.name.substring(0,2).toUpperCase()}
+  title={"H"}
   onPress={() => console.log("Works!")}
   activeOpacity={0.7}
   titleStyle={{color : "black"}}
@@ -53,8 +56,7 @@ render(){
   </SafeAreaProvider>
   )
 }
-}
-
+export default UsersList
 
 
 

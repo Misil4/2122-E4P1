@@ -8,10 +8,10 @@ import {
     Image,
     Alert,
 } from 'react-native';
-
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
+import { getAsyncStorageKey } from './authentification';
 
 export default function Basic(props) {
     const [listData, setListData] = useState(
@@ -26,8 +26,9 @@ export default function Basic(props) {
         getAllGarbage();
       }, [])
     
-    const getAllGarbage = () => {
-        axios.get('https://ballin-api-stage.herokuapp.com/garbages')
+    const getAllGarbage = async () => {
+        const token = await getAsyncStorageKey('token')
+        await axios.get('https://ballin-api-stage.herokuapp.com/garbages',{headers : {'Authorization': token}})
         .then((response) => {
             let allGarbages = response.data.garbages
             setListData(allGarbages)
