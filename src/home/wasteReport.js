@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Alert } from "react-native";
+import { StyleSheet, Alert,PermissionsAndroid } from "react-native";
 import { Button } from "react-native-elements";
 import MapView,{Marker} from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -9,52 +9,38 @@ import Geolocation from 'react-native-geolocation-service';
 
 
 let list ={}
-
+export async function requestLocationPermission() 
+{
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        'title': 'Example App',
+        'message': 'Example App access to your location '
+      }
+    )
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      return true
+    } else {
+      return false
+    }
+  } catch (err) {
+    console.warn(err)
+  }
+}
 const WasteReport = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
+  const [token,setToken] =useState('');
   const [data, setData] = useState({
     latitude : null, longitude : null, timestamp : null
   })
-  const hasLocationPermission = async () => {
-
-    if (Platform.OS === 'android' && Platform.Version < 23) {
-      return true;
-    }
-
-    const hasPermission = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-
-    if (hasPermission) {
-      return true;
-    }
-
-    const status = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-
-    if (status === PermissionsAndroid.RESULTS.GRANTED) {
-      return true;
-    }
-
-    if (status === PermissionsAndroid.RESULTS.DENIED) {
-      ToastAndroid.show(
-        'Location permission denied by user.',
-        ToastAndroid.LONG,
-      );
-    } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      ToastAndroid.show(
-        'Location permission revoked by user.',
-        ToastAndroid.LONG,
-      );
-    }
-    return false;
-  };
 
 useEffect(()=>{
+  getAsyncStorageKey('token').then(response => {setToken(response);console.log(response)})
   getAsyncStorageKey("user_email").then(response => {setEmail(response);console.log(response)})
-  if (hasLocationPermission) {
+  requestLocationPermission()
+  if (requestLocationPermission()) {
     Geolocation.getCurrentPosition(
         (position) => {
           setData({latitude : position.coords.latitude,longitude : position.coords.longitude,timestamp : position.timestamp})
