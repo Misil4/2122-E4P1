@@ -2,8 +2,7 @@
 // https://aboutreact.com/example-of-google-sign-in-in-react-native/
 import axios from 'axios';
 // Import React in our code
-import React, {useState, useEffect} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState, useEffect } from 'react';
 // Import all the components we are going to use
 import {
   SafeAreaView,
@@ -22,16 +21,13 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-export const getAsyncStorageKey = async (key) => {
-  const value = await AsyncStorage.getItem(key);
-  return value;
-}
+import { getAsyncStorageKey, setAsyncStorageKey } from '../../helpers/asynctorage';
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
-  const [loading ,setLoading] = useState(false);
-  const [login,setLogin] = useState(false);
-  const [rol,setRol] = useState(false);
-  const [email,setEmail] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [login, setLogin] = useState(false);
+  const [rol, setRol] = useState('');
+  const [email, setEmail] = useState('')
 
   useEffect(() => {
     // Initial configuration
@@ -42,8 +38,8 @@ const authentification = (props) => {
       // Generated from Firebase console
       webClientId: '822986748161-tjihgo6gikf5mboac2l2pfo8rs7g9irc.apps.googleusercontent.com',
     });
-    getAsyncStorageKey("user_rol").then(response => {setRol(response);console.log(response)})
-    getAsyncStorageKey("user_email").then(response => {setEmail(response);console.log(response)})
+    getAsyncStorageKey("user_rol").then(response => { setRol(response); console.log(response) })
+    getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
     // Check if user is already signed in
     _isSignedIn();
   }, []);
@@ -53,15 +49,15 @@ const authentification = (props) => {
       // Set User Info if user is already signed in
       setLoading(false);
       setLogin(true);
-      console.log("signed in "+rol);
-      console.log("signed in rr"+email)
+      console.log("signed in " + rol);
+      console.log("signed in rr" + email)
       if (rol === "admin") {
-      props.navigation.navigate("Lista Usuarios");
+        props.navigation.navigate("Lista Usuarios");
       }
-      else if (rol=== "user") {
-       props.navigation.navigate("QrGenerator", {email:email} );
+      else if (rol === "user") {
+        props.navigation.navigate("QrGenerator", { email: email });
       }
-      else {console.log("error")}
+      else { console.log("error") }
     } else {
       console.log('Please Login');
     }
@@ -69,40 +65,42 @@ const authentification = (props) => {
   };
   const _getCurrentUserInfo = async () => {
     try {
-      
-      const data =GoogleSignin.signIn()
-  .then((data) => {
-    const credential = auth.GoogleAuthProvider.credential(data.idToken)
-    return auth().signInWithCredential(credential);
-  })
-  .then((user) => {
 
-    // ** Now that the user is signed in, you can get the ID Token. **
-
-    user.user.getIdToken(/* forceRefresh */ true).then(async function(idToken) {
-        const data = {
-          idToken : idToken,
-          email : user.user.email
-        }
-        const token =  await getAsyncStorageKey('token')
-        console.log(token)
-        if (!token) {
-        await axios.post('https://ballin-api-stage.herokuapp.com/token',data)
-        .then((response) =>{
-          AsyncStorage.setItem('token',response.data.data.access_token);
-          AsyncStorage.setItem('refresh_token',response.data.data.refresh_token)
+      const data = GoogleSignin.signIn()
+        .then((data) => {
+          const credential = auth.GoogleAuthProvider.credential(data.idToken)
+          return auth().signInWithCredential(credential);
         })
-        .then((error) =>console.log(error))
-    }
-    await axios.post('https://ballin-api-stage.herokuapp.com/users',user.user,{headers : {'Authorization': token}})
-        .then((response) =>{AsyncStorage.setItem("user_email", response.data.data.email); AsyncStorage.setItem("user_rol",response.data.data.rol);setEmail(response.data.data.email);setRol(response.data.data.rol)})
-        .then((error) =>console.log(error))
-    })
+        .then((user) => {
+          // ** Now that the user is signed in, you can get the ID Token. **
 
-  })
-  .catch((error) => {
-    const { code, message } = error;
-  });
+          user.user.getIdToken(/* forceRefresh */ true).then(async function (idToken) {
+            const data = {
+              idToken: idToken,
+              email: user.user.email
+            }
+            const token = await getAsyncStorageKey('token')
+
+            if (!token) {
+              await axios.post('https://ballin-api-stage.herokuapp.com/token', data)
+                .then(async (response) => {
+                  await setAsyncStorageKey('token', response.data.data.access_token)
+                  await setAsyncStorageKey('refresh_token', response.data.data.refresh_token)
+                })
+                .then((error) => console.log(error))
+            }
+            await axios.post('https://ballin-api-stage.herokuapp.com/users', user.user, { headers: { 'Authorization': token } })
+              .then(async (response) => {
+                await setAsyncStorageKey("user_email", response.data.data.email);
+                await setAsyncStorageKey("user_rol", response.data.data.rol); setEmail(response.data.data.email); setRol(response.data.data.rol)
+              })
+              .then((error) => console.log(error))
+          })
+
+        })
+        .catch((error) => {
+          const { code, message } = error;
+        });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         alert('User has not signed in yet');
@@ -113,7 +111,6 @@ const authentification = (props) => {
       }
     }
   };
-
   const _signIn = async () => {
     // It will prompt google Signin Widget
     try {
@@ -127,17 +124,17 @@ const authentification = (props) => {
       await _getCurrentUserInfo()
       setLoading(false);
       setLogin(true);
-      const userRol =await getAsyncStorageKey("user_rol")
+      const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
-      console.log("getuserinfo "+userRol);
-      console.log("getuserinfo "+userEmail);
-      if (userRol=== "admin") {
+      console.log("getuserinfo " + userRol);
+      console.log("getuserinfo " + userEmail);
+      if (userRol === "admin") {
         props.navigation.navigate("Lista Usuarios");
       }
       else if (userRol === "user") {
-        props.navigation.navigate("QrGenerator", {email:userEmail});
+        props.navigation.navigate("QrGenerator", { email: userEmail });
       }
-      else {console.log("error")}
+      else { console.log("error") }
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -146,8 +143,8 @@ const authentification = (props) => {
       } else if (error.code === statusCodes.IN_PROGRESS) {
         alert('Signing In');
       } else if (
-          error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
-        ) {
+        error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+      ) {
         alert('Play Services Not Available or Outdated');
       } else {
         alert(error.message);
@@ -176,8 +173,8 @@ const authentification = (props) => {
     );
   } else {
     return (
-      <SafeAreaView style={{flex: 1}}>
-        {console.log("el rol es "+rol)}
+      <SafeAreaView style={{ flex: 1 }}>
+        {console.log("el rol es " + rol)}
         <View style={styles.container}>
           <View style={styles.container}>
             {login !== false ? (
@@ -187,11 +184,11 @@ const authentification = (props) => {
                   onPress={_signOut}>
                   <Text>Logout</Text>
                 </TouchableOpacity>
-                <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate('Lista Usuarios') : props.navigation.navigate('QrGenerator',{email : email})}></Button>
+                <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate('Lista Usuarios') : props.navigation.navigate('QrGenerator', { email: email })}></Button>
               </>
             ) : (
               <GoogleSigninButton
-                style={{width: 312, height: 48}}
+                style={{ width: 312, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
                 onPress={_signIn}
