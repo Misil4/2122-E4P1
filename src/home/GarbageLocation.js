@@ -28,7 +28,7 @@ export default function Basic(props) {
 
     const getAllGarbage = async () => {
         const token = await getAsyncStorageKey('token')
-        await axios.get('https://ballin-api-stage.herokuapp.com/garbages', { headers: { 'Authorization': token } })
+        await axios.get('https://ballin-api-production.herokuapp.com/garbages', { headers: { 'Authorization': token } })
             .then((response) => {
                 let allGarbages = response.data.garbages
                 setListData(allGarbages)
@@ -51,7 +51,7 @@ export default function Basic(props) {
         const list = {
             id_basura: data.item._id
         }
-        await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
+        await axios.put("https://ballin-api-production.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
             .then((response) => console.log(response.data))
             .then((error) => console.log(error))
     }

@@ -13,7 +13,7 @@ const UsersList = (props) => {
   const getAllUsers = async () => {
     const token = await getAsyncStorageKey('token')
     console.log(token)
-    await axios.get('https://ballin-api-stage.herokuapp.com/users', { headers: { 'Authorization': token } })
+    await axios.get('https://ballin-api-production.herokuapp.com/users', { headers: { 'Authorization': token } })
       .then(res => {
         setUserListData(res.data.users);
         setLoading(false);

@@ -26,7 +26,7 @@ const QrReader = () => {
   const updateUserStatus = async () => {
     //peticion a axios y hacer put
     const token = await getAsyncStorageKey('token')
-    await axios.put("https://ballin-api-stage.herokuapp.com/users", data, { headers: { 'Authorization': token } })
+    await axios.put("https://ballin-api-production.herokuapp.com/users", data, { headers: { 'Authorization': token } })
       .then((response) => console.log(response.data))
       .then((error) => console.log(error))
   }

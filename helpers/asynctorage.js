@@ -9,8 +9,8 @@ export const getAsyncStorageKey = async (key) => {
     console.log("todo hecho")
   }
   export const setAsyncStorageKey = async (key,value) => {
-          await AsyncStorage.setItem(key,value) 
+          return await AsyncStorage.setItem(key,value)
   }
   export const removeAsyncStorageKey = async (key) => {
-       await AsyncStorage.removeItem(key)
+       return await AsyncStorage.removeItem(key)
   }

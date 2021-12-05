@@ -18,7 +18,7 @@ const wasteLocation = (props) => {
     const list = {
       id_basura: id
     }
-    await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
+    await axios.put("https://ballin-api-production.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
       .then((response) => console.log(response.data))
       .then((error) => console.log(error))
   }
