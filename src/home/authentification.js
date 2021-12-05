@@ -50,7 +50,7 @@ const authentification = (props) => {
       setLoading(false);
       setLogin(true);
       console.log("signed in " + rol);
-      console.log("signed in rr" + email)
+      console.log("signed in " + email)
       if (rol === "admin") {
         props.navigation.navigate("Lista Usuarios");
       }
@@ -174,7 +174,7 @@ const authentification = (props) => {
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {console.log("el rol es " + rol)}
+        {console.log("the rol is " + rol)}
         <View style={styles.container}>
           <View style={styles.container}>
             {login !== false ? (

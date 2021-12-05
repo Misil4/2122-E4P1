@@ -11,7 +11,7 @@ import {
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
-import { getAsyncStorageKey } from './authentification';
+import { getAsyncStorageKey } from '../../helpers/asynctorage';
 
 export default function Basic(props) {
     const [listData, setListData] = useState(
@@ -21,54 +21,54 @@ export default function Basic(props) {
     );
     const [userData, setUserData] = useState({
 
-    })   
+    })
     useEffect(() => {
         getAllGarbage();
-      }, [])
-    
+    }, [])
+
     const getAllGarbage = async () => {
         const token = await getAsyncStorageKey('token')
-        await axios.get('https://ballin-api-stage.herokuapp.com/garbages',{headers : {'Authorization': token}})
-        .then((response) => {
-            let allGarbages = response.data.garbages
-            setListData(allGarbages)
-            //console.log(allGarbages[0].user)
-            
-        })
-        .then((error) => console.log(error))
+        await axios.get('https://ballin-api-stage.herokuapp.com/garbages', { headers: { 'Authorization': token } })
+            .then((response) => {
+                let allGarbages = response.data.garbages
+                setListData(allGarbages)
+                //console.log(allGarbages[0].user)
+
+            })
+            .then((error) => console.log(error))
     }
 
-        //Otro axios para usuarios
+    //Otro axios para usuarios
     const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
         const newData = [...listData]; //Destructuring
         const prevIndex = listData.findIndex(item => item.key === rowKey);
         newData.splice(prevIndex, 1);
         setListData(newData);
-        
+
     };
-    const updateStatusComplete = async(data) =>{
+    const updateStatusComplete = async (data) => {
         //console.log(data.item._id)
         const list = {
-            id_basura:data.item._id
+            id_basura: data.item._id
         }
-        await axios.put("https://ballin-api-stage.herokuapp.com/garbages",list, {headers : {'Authorization': token}})
-        .then((response) => console.log(response.data))
-        .then((error) => console.log(error)) 
-  }
+        await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
+            .then((response) => console.log(response.data))
+            .then((error) => console.log(error))
+    }
 
     const createButtonAlert = (data) =>
-    Alert.alert(
-      "Eliminar",
-      "¿Estás seguro?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => updateStatusComplete(data)}
-      ]
-    );
+        Alert.alert(
+            "Eliminar",
+            "¿Estás seguro?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => updateStatusComplete(data) }
+            ]
+        );
 
     const renderItem = data => (
         <TouchableHighlight
@@ -76,23 +76,23 @@ export default function Basic(props) {
             style={styles.rowFront}
             underlayColor={'white'}
         >
-            <View style = {styles.listItemContainer}>
-             <View style = {styles.avatarContainer}>
-             
-             </View>
-             <View style = {styles.chatDetailsContainer}>
-               <View style = {styles.chatDetailsContainerWrap}>
-                <View style = {styles.nameContainer}>
-                 <Text style = {styles.nameText}>{data.item.user}</Text>
-                 <Text style={styles.msgText}>{data.item.message}</Text>
+            <View style={styles.listItemContainer}>
+                <View style={styles.avatarContainer}>
+
                 </View>
-                <View style = {styles.dateContainer}>
-                  <Text style = {styles.dateText}>{data.item.location.timestamp.substring(0,21)}
-                  </Text>
+                <View style={styles.chatDetailsContainer}>
+                    <View style={styles.chatDetailsContainerWrap}>
+                        <View style={styles.nameContainer}>
+                            <Text style={styles.nameText}>{data.item.user}</Text>
+                            <Text style={styles.msgText}>{data.item.message}</Text>
+                        </View>
+                        <View style={styles.dateContainer}>
+                            <Text style={styles.dateText}>{data.item.location.timestamp.substring(0, 21)}
+                            </Text>
+                        </View>
+                    </View>
                 </View>
-             </View>
-              </View>
-            </View> 
+            </View>
 
         </TouchableHighlight>
     );
@@ -100,7 +100,7 @@ export default function Basic(props) {
         <View style={styles.rowBack}>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
-               onPress={() => props.navigation.navigate('Ubicación de basuras', {latitude : data.item.location.latitude,longitude : data.item.location.longitude, id: data.item._id})}
+                onPress={() => props.navigation.navigate('Ubicación de basuras', { latitude: data.item.location.latitude, longitude: data.item.location.longitude, id: data.item._id })}
             >
                 <Icon name="location-pin" size={42} />
             </TouchableOpacity>
@@ -108,13 +108,13 @@ export default function Basic(props) {
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 onPress={() => createButtonAlert(data)}
             >
-               <Icon name="trash" size={32} />
+                <Icon name="trash" size={32} />
             </TouchableOpacity>
         </View>
     );
 
     return (
-        
+
         <View style={styles.container}>
             <SwipeListView
                 data={listData}
@@ -125,9 +125,9 @@ export default function Basic(props) {
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
-               
+
             />
-            
+
         </View>
     );
 }
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         justifyContent: 'center',
         height: 70,
-        
+
     },
     rowBack: {
         alignItems: 'center',
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         width: 75,
-        
+
     },
     backRightBtnLeft: {
         right: 75,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     backRightBtnRight: {
         right: 0,
     },
-    listItemContainer: { /*Hemendik hasita*/ 
+    listItemContainer: { /*Hemendik hasita*/
         flex: 1,
         flexDirection: "row",
         padding: 1

@@ -13,42 +13,42 @@ import {
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
-import { getAsyncStorageKey } from './authentification';
+import { getAsyncStorageKey } from '../../helpers/asynctorage';
 
-const QrReader =() => {
-  const [data,setData] = useState({email : ""})
+const QrReader = () => {
+  const [data, setData] = useState({ email: "" })
 
   const onSuccess = e => {
-    setData({ email: e.data})
+    setData({ email: e.data })
     updateUserStatus()
   }
 
   const updateUserStatus = async () => {
     //peticion a axios y hacer put
     const token = await getAsyncStorageKey('token')
-    await axios.put("https://ballin-api-stage.herokuapp.com/users",data,{headers : {'Authorization': token}})
+    await axios.put("https://ballin-api-stage.herokuapp.com/users", data, { headers: { 'Authorization': token } })
       .then((response) => console.log(response.data))
-      .then((error) => console.log(error))  
-}
-    return (
-      <QRCodeScanner
-        reactivate={true}
-        reactivateTimeout={7000}
-        showMarker
-        onRead={onSuccess}
-        topContent={
-          <Text style={styles.centerText}>
-            {data.email}
-          </Text>
-        }
-        bottomContent={
-          
-          <TouchableOpacity style={styles.buttonTouchable}>
-            <Text style={styles.buttonText}></Text>
-          </TouchableOpacity>
-        }
-      />
-    );
+      .then((error) => console.log(error))
+  }
+  return (
+    <QRCodeScanner
+      reactivate={true}
+      reactivateTimeout={7000}
+      showMarker
+      onRead={onSuccess}
+      topContent={
+        <Text style={styles.centerText}>
+          {data.email}
+        </Text>
+      }
+      bottomContent={
+
+        <TouchableOpacity style={styles.buttonTouchable}>
+          <Text style={styles.buttonText}></Text>
+        </TouchableOpacity>
+      }
+    />
+  );
 }
 
 const styles = StyleSheet.create({
