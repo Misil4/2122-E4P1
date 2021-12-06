@@ -51,12 +51,7 @@ const App  = () => {
     <drawer.Navigator>
     <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
     <drawer.Screen name="QrGenerator" component={QrGenerator} />
-        <drawer.Screen name="Lista Usuarios" component={UsersList} />
-        <drawer.Screen name="Garbage" component={GarbageLocation} />
-        <drawer.Screen name="Ubicación de basuras" component={wasteLocation} 
-        options={{
-          drawerItemStyle: { height: 0 }
-        }} />
+        <drawer.Screen name="Garbage" component={WasteReport} />
         <drawer.Screen name="Settings" component={Settings} />
         </drawer.Navigator>
     )

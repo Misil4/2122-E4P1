@@ -14,7 +14,7 @@ import { getAsyncStorageKey } from "../../helpers/asynctorage";
 const wasteLocation = (props) => {
   const updateStatusComplete = async (id) => {
     //console.log(data.item._id)
-    const token = getAsyncStorageKey('token')
+    const token = await getAsyncStorageKey('token')
     const list = {
       id_basura: id
     }

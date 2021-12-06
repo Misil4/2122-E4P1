@@ -38,15 +38,8 @@ export default function Basic(props) {
             .then((error) => console.log(error))
     }
 
-    //Otro axios para usuarios
-    const deleteRow = (rowKey) => { // Para eliminar una linea al pulsar el boton delete 
-        const newData = [...listData]; //Destructuring
-        const prevIndex = listData.findIndex(item => item.key === rowKey);
-        newData.splice(prevIndex, 1);
-        setListData(newData);
-
-    };
     const updateStatusComplete = async (data) => {
+        const token = await getAsyncStorageKey('token')
         //console.log(data.item._id)
         const list = {
             id_basura: data.item._id
