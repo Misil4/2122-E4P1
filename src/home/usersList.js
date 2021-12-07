@@ -6,6 +6,7 @@ import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { tokenExpired } from '../../helpers/jwt';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
@@ -13,6 +14,7 @@ const UsersList = (props) => {
   const getAllUsers = async () => {
     const token = await getAsyncStorageKey('token')
     console.log(token)
+    tokenExpired(token)
     await axios.get('https://ballin-api-production.herokuapp.com/users', { headers: { 'Authorization': token } })
       .then(res => {
         setUserListData(res.data.users);

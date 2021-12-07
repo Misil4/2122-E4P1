@@ -86,7 +86,8 @@ const authentification = (props) => {
     console.log(idTokenResult.token)
 
     //Validate User Token
-    axios.post('https://ballin-api-production.herokuapp.com/token', {
+    
+    await axios.post('https://ballin-api-production.herokuapp.com/token', {
       token: idTokenResult.token,
       email : userInfo.user.email
     })

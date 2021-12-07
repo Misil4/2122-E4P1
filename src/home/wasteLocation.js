@@ -8,6 +8,7 @@ import { Button, } from "react-native-elements";
 import MapView, { Circle, Marker, Polyline } from "react-native-maps";
 import axios from "axios";
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
+import { tokenExpired } from '../../helpers/jwt';
 
 
 
@@ -18,6 +19,7 @@ const wasteLocation = (props) => {
     const list = {
       id_basura: id
     }
+    tokenExpired(token)
     await axios.put("https://ballin-api-production.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
       .then((response) => console.log(response.data))
       .then((error) => console.log(error))

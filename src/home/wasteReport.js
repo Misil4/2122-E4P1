@@ -6,6 +6,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Geolocation from 'react-native-geolocation-service';
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
+import { tokenExpired } from '../../helpers/jwt';
 
 
 let list = {}
@@ -71,6 +72,7 @@ const WasteReport = props => {
           text: "OK", onPress: async () => {
             console.log(data)
             list = { data: data, user: email }
+            tokenExpired(token)
             await axios.post('https://ballin-api-production.herokuapp.com/garbages/', list, { headers: { 'Authorization': token } })
               .then(response => console.log(response))
               .then(error => console.log(error))

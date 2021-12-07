@@ -14,6 +14,7 @@ import {
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { tokenExpired } from '../../helpers/jwt';
 
 const QrReader = () => {
   const [data, setData] = useState({ email: "" })
@@ -26,6 +27,7 @@ const QrReader = () => {
   const updateUserStatus = async () => {
     //peticion a axios y hacer put
     const token = await getAsyncStorageKey('token')
+    tokenExpired(token)
     await axios.put("https://ballin-api-production.herokuapp.com/users", data, { headers: { 'Authorization': token } })
       .then((response) => console.log(response.data))
       .then((error) => console.log(error))

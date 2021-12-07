@@ -20,52 +20,52 @@ const drawer = createDrawerNavigator();
 const stack = createStackNavigator();
 
 
-const App  = () => {
-  const [rol,setRol] = useState("user")
+const App = () => {
+  const [rol, setRol] = useState("user")
   useEffect(() => {
-      SplashScreen.hide()
-      getRol()
-  },[rol])
+    SplashScreen.hide()
+    getRol()
+  }, [rol])
   const getRol = async () => {
-    const value= await getAsyncStorageKey("user_rol");
-    console.log("el valor es "+value)
+    const value = await getAsyncStorageKey("user_rol");
+    console.log("el valor es " + value)
     setRol(value)
   }
   const Admin = () => {
     return (
-    <drawer.Navigator>
-      <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
+      <drawer.Navigator>
+        <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false, swipeEnabled: false }} />
         <drawer.Screen name="QrReader" component={QrReader} />
         <drawer.Screen name="Lista Usuarios" component={UsersList} />
         <drawer.Screen name="Garbage" component={GarbageLocation} />
-        <drawer.Screen name="Ubicación de basuras" component={wasteLocation} 
-        options={{
-          drawerItemStyle: { height: 0 }
-        }} />
+        <drawer.Screen name="Ubicación de basuras" component={wasteLocation}
+          options={{
+            drawerItemStyle: { height: 0 }
+          }} />
         <drawer.Screen name="Settings" component={Settings} />
-    </drawer.Navigator>
+      </drawer.Navigator>
     )
   }
   const User = () => {
     return (
-    <drawer.Navigator>
-    <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false , swipeEnabled: false}}/>
-    <drawer.Screen name="QrGenerator" component={QrGenerator} />
+      <drawer.Navigator>
+        <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false, swipeEnabled: false }} />
+        <drawer.Screen name="QrGenerator" component={QrGenerator} />
         <drawer.Screen name="Garbage" component={WasteReport} />
         <drawer.Screen name="Settings" component={Settings} />
-        </drawer.Navigator>
+      </drawer.Navigator>
     )
   }
-    return(
-      <>
+  return (
+    <>
       {console.log(rol)}
       <NavigationContainer>
-      <stack.Navigator>
-        <stack.Screen name="Admin" component={Admin} options={{headerShown:false}} />
-        <stack.Screen name="User" component={User} options={{headerShown:false}}/>
-      </stack.Navigator>
+        <stack.Navigator>
+          <stack.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
+          <stack.Screen name="User" component={User} options={{ headerShown: false }} />
+        </stack.Navigator>
       </NavigationContainer>
-      </>
-    )
-  }
+    </>
+  )
+}
 export default App;

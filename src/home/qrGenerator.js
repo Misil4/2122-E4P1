@@ -5,6 +5,7 @@ import {
   View
 } from 'react-native';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { tokenExpired } from '../../helpers/jwt';
 const QrGenerator = (props) => {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "white" }}>

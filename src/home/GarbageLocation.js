@@ -12,7 +12,8 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
-import { isJwtExpired } from 'jwt-check-expiration';
+import { tokenExpired } from '../../helpers/jwt';
+
 
 export default function Basic(props) {
     const [listData, setListData] = useState(
@@ -29,8 +30,8 @@ export default function Basic(props) {
 
     const getAllGarbage = async () => {
         const token = await getAsyncStorageKey('token')
-        console.log('isExpired is:', isJwtExpired(token));
-        await axios.get('https://serverpruebas.herokuapp.com/garbages', { headers: { 'Authorization': token } })
+        tokenExpired(token)
+        await axios.get('https://ballin-api-production.herokuapp.com/garbages', { headers: { 'Authorization': token } })
             .then((response) => {
                 let allGarbages = response.data.garbages
                 setListData(allGarbages)
@@ -47,7 +48,8 @@ export default function Basic(props) {
         const list = {
             id_basura: data.item._id
         }
-        await axios.put("https://serverpruebas.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
+        tokenExpired(token)
+        await axios.put("https://ballin-api-production.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
             .then((response) => console.log(response.data))
             .then((error) => console.log(error))
     }
