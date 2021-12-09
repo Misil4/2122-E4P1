@@ -14,7 +14,14 @@ import GarbageLocation from "./src/home/GarbageLocation";
 import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
+import socketIO from 'socket.io-client';
 
+export const socket = socketIO('https://serverpruebas.herokuapp.com', {
+  
+      transports: ['websocket'],
+      jsonp: false,
+      
+    });
 
 const drawer = createDrawerNavigator();
 const stack = createStackNavigator();

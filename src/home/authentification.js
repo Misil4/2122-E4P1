@@ -21,7 +21,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey,setAsyncStorageKey, removeAsyncStorageKey} from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const authentification = (props) => {
@@ -174,6 +174,8 @@ const authentification = (props) => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
+      await removeAsyncStorageKey('token');
+      await removeAsyncStorageKey('refresh_token');
       // Removing user Info
       setLogin(false);
     } catch (error) {

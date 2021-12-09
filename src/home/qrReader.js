@@ -15,23 +15,31 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
+import { socket } from '../../App';
 
 const QrReader = () => {
   const [data, setData] = useState({ email: "" })
 
   const onSuccess = e => {
     setData({ email: e.data })
+    
     updateUserStatus()
   }
+  const badge_update = data => {
+    console.log("Email en qrreader")
+    console.log(data)
+    // console.log(predicted_details);
+    socket.emit("badge_update", data.email);
+  };
 
   const updateUserStatus = async () => {
     //peticion a axios y hacer put
     const token = await getAsyncStorageKey('token')
     tokenExpired(token)
-    await axios.put("https://ballin-api-production.herokuapp.com/users", data, { headers: { 'Authorization': token } })
-      .then((response) => console.log(response.data))
-      .then((error) => console.log(error))
-  }
+    badge_update(data)
+    
+    }
+
   return (
     <QRCodeScanner
       reactivate={true}

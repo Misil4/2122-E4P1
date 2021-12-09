@@ -13,6 +13,7 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
+import { socket } from '../../App';
 
 
 export default function Basic(props) {
@@ -24,11 +25,26 @@ export default function Basic(props) {
     const [userData, setUserData] = useState({
 
     })
+    const getData = trash => {
+        //console.log(users)
+        setListData(trash)
+      }
+
+      changeData = () => socket.emit("get_trash");
+    const getAllGarbage = async () => {
+        const token = await getAsyncStorageKey("token")
+        tokenExpired(token)
+        socket.emit("garbage_data");
+        socket.on("get_trash", getData)
+        setLoading(false)
+    
+      }
     useEffect(() => {
         getAllGarbage();
+        socket.on("change_data", changeData);
     }, [])
 
-    const getAllGarbage = async () => {
+    /*const getAllGarbage = async () => {
         const token = await getAsyncStorageKey('token')
         tokenExpired(token)
         await axios.get('https://ballin-api-production.herokuapp.com/garbages', { headers: { 'Authorization': token } })
@@ -39,7 +55,7 @@ export default function Basic(props) {
 
             })
             .then((error) => console.log(error))
-    }
+    }*/
 
     const updateStatusComplete = async (data) => {
         const token = await getAsyncStorageKey('token')
