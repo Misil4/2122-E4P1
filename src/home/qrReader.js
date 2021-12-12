@@ -16,27 +16,28 @@ import { RNCamera } from 'react-native-camera';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
+import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 
 const QrReader = () => {
-  const [data, setData] = useState({ email: "" })
-
-  const onSuccess = e => {
-    setData({ email: e.data })
+const [data,setData] = useStateWithPromise({email : ''})
+  const onSuccess = async (e) => {
+    await setData({ email: e.data })
     
-    updateUserStatus()
+   updateUserStatus(e.data)
   }
-  const badge_update = data => {
-    console.log("Email en qrreader")
-    console.log(data)
+  const badge_update = (email) => {
+    console.log("BADGE UPDATE DATA")
+    console.log(email)
     // console.log(predicted_details);
-    socket.emit("badge_update", data.email);
+    socket.emit("badge_update", email);
   };
 
-  const updateUserStatus = async () => {
+  const updateUserStatus = async (email) => {
     //peticion a axios y hacer put
+    console.log(email)
     const token = await getAsyncStorageKey('token')
     tokenExpired(token)
-    badge_update(data)
+    badge_update(email)
     
     }
 

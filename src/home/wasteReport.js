@@ -73,7 +73,7 @@ const WasteReport = props => {
             console.log(data)
             list = { data: data, user: email }
             tokenExpired(token)
-            await axios.post('https://ballin-api-production.herokuapp.com/garbages/', list, { headers: { 'Authorization': token } })
+            await axios.post('https://ballin-api-stage.herokuapp.com/garbages/', list, { headers: { 'Authorization': token } })
               .then(response => console.log(response))
               .then(error => console.log(error))
           }
