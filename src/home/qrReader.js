@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component, useState } from 'react';
+import React, { Component, } from 'react';
 import axios from 'axios';
 
 import {
@@ -16,29 +16,28 @@ import { RNCamera } from 'react-native-camera';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
+import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 
 const QrReader = () => {
-  const [data, setData] = useState({ email: "" })
+  const [data, setData] = useStateWithPromise({ email: "" })
 
-  const onSuccess = e => {
-    setData({ email: e.data })
-    
+  const onSuccess = async (e) => {
+    await setData({ email: e.data })
     updateUserStatus()
   }
-  const badge_update = data => {
+  const badge_update = () => {
     console.log("Email en qrreader")
     console.log(data)
     // console.log(predicted_details);
-    socket.emit("badge_update", data.email);
+    socket.emit("badge_update", data);
   };
 
-  const updateUserStatus = async () => {
+  const updateUserStatus = () => {
     //peticion a axios y hacer put
-    const token = await getAsyncStorageKey('token')
-    tokenExpired(token)
-    badge_update(data)
-    
-    }
+    tokenExpired()
+    badge_update()
+
+  }
 
   return (
     <QRCodeScanner

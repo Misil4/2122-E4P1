@@ -33,7 +33,7 @@ export default function Basic(props) {
       changeData = () => socket.emit("get_trash");
     const getAllGarbage = async () => {
         const token = await getAsyncStorageKey("token")
-        tokenExpired(token)
+        tokenExpired()
         socket.emit("garbage_data");
         socket.on("get_trash", getData)
         setLoading(false)
@@ -43,29 +43,14 @@ export default function Basic(props) {
         getAllGarbage();
         socket.on("change_data", changeData);
     }, [])
-
-    /*const getAllGarbage = async () => {
-        const token = await getAsyncStorageKey('token')
-        tokenExpired(token)
-        await axios.get('https://ballin-api-production.herokuapp.com/garbages', { headers: { 'Authorization': token } })
-            .then((response) => {
-                let allGarbages = response.data.garbages
-                setListData(allGarbages)
-                //console.log(allGarbages[0].user)
-
-            })
-            .then((error) => console.log(error))
-    }*/
-
     const updateStatusComplete = async (data) => {
         const token = await getAsyncStorageKey('token')
-        console.log('isExpired is:', isJwtExpired(token));
         //console.log(data.item._id)
         const list = {
             id_basura: data.item._id
         }
-        tokenExpired(token)
-        await axios.put("https://ballin-api-production.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
+        tokenExpired()
+        await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
             .then((response) => console.log(response.data))
             .then((error) => console.log(error))
     }

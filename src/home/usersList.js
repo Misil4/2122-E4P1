@@ -21,8 +21,7 @@ const UsersList = (props) => {
   const changeData = () => socket.emit("get_users");
 
   const getAllUsers = async () => {
-    const token = await getAsyncStorageKey("token")
-    tokenExpired(token)
+    tokenExpired()
     socket.emit("user_data");
     socket.on("get_users", getData)
     setLoading(false)

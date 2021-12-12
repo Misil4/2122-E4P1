@@ -16,7 +16,7 @@ import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
 
-export const socket = socketIO('https://serverpruebas.herokuapp.com', {
+export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
   
       transports: ['websocket'],
       jsonp: false,
