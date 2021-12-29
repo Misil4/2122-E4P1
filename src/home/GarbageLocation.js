@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Entypo'
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
+import { ScrollView } from 'react-native';
 
 
 export default function Basic(props) {
@@ -28,17 +29,17 @@ export default function Basic(props) {
     const getData = trash => {
         //console.log(users)
         setListData(trash)
-      }
+    }
 
-      changeData = () => socket.emit("get_trash");
+    changeData = () => socket.emit("get_trash");
     const getAllGarbage = async () => {
         const token = await getAsyncStorageKey("token")
         tokenExpired()
         socket.emit("garbage_data");
         socket.on("get_trash", getData)
         setLoading(false)
-    
-      }
+
+    }
     useEffect(() => {
         getAllGarbage();
         socket.on("change_data", changeData);
@@ -115,18 +116,19 @@ export default function Basic(props) {
     return (
 
         <View style={styles.container}>
-            <SwipeListView
-                data={listData}
-                renderItem={renderItem}
-                renderHiddenItem={renderHiddenItem}
-                rightOpenValue={-150}
-                leftOpenValue={75}
-                previewRowKey={'0'}
-                previewOpenValue={-40}
-                previewOpenDelay={3000}
+            <ScrollView>
+                <SwipeListView
+                    data={listData}
+                    renderItem={renderItem}
+                    renderHiddenItem={renderHiddenItem}
+                    rightOpenValue={-150}
+                    leftOpenValue={75}
+                    previewRowKey={'0'}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
 
-            />
-
+                />
+            </ScrollView>
         </View>
     );
 }
