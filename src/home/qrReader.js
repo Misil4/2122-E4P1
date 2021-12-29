@@ -19,25 +19,27 @@ import { socket } from '../../App';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 
 const QrReader = () => {
-  const [data, setData] = useStateWithPromise({ email: "" })
-
+const [data,setData] = useStateWithPromise({email : ''})
   const onSuccess = async (e) => {
     await setData({ email: e.data })
-    updateUserStatus()
+    
+   updateUserStatus(e.data)
   }
-  const badge_update = () => {
-    console.log("Email en qrreader")
-    console.log(data)
+  const badge_update = (email) => {
+    console.log("BADGE UPDATE DATA")
+    console.log(email)
     // console.log(predicted_details);
-    socket.emit("badge_update", data);
+    socket.emit("badge_update", email);
   };
 
-  const updateUserStatus = () => {
+  const updateUserStatus = async (email) => {
     //peticion a axios y hacer put
-    tokenExpired()
-    badge_update()
-
-  }
+    console.log(email)
+    const token = await getAsyncStorageKey('token')
+    tokenExpired(token)
+    badge_update(email)
+    
+    }
 
   return (
     <QRCodeScanner

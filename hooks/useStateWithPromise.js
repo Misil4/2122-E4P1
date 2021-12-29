@@ -1,5 +1,4 @@
-import React,{useCallback,useRef,useState,useEffect} from "react";
-
+import { useRef,useState,useEffect,useCallback } from "react";
 export const useStateWithPromise = (initialState) => {
     const [state, setState] = useState(initialState);
     const resolverRef = useRef(null);

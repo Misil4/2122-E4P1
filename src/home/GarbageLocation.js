@@ -49,7 +49,7 @@ export default function Basic(props) {
         const list = {
             id_basura: data.item._id
         }
-        tokenExpired()
+        tokenExpired(token)
         await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
             .then((response) => console.log(response.data))
             .then((error) => console.log(error))
