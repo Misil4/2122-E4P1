@@ -26,25 +26,22 @@ export default function Basic(props) {
     const [userData, setUserData] = useState({
 
     })
-    const getData = trash => {
-        //console.log(users)
-        setListData(trash)
-    }
 
-    changeData = () => socket.emit("get_trash");
+    const getData = trash => {
+        console.log("USERS")
+        console.log(users)
+        setUserListData(trash)
+      }
+
     const getAllGarbage = async () => {
-        const token = await getAsyncStorageKey("token")
-        tokenExpired()
+        await tokenExpired()
         socket.emit("garbage_data");
         socket.on("get_trash", getData)
         setLoading(false)
+    
+      }
 
-    }
-    useEffect(() => {
-        getAllGarbage();
-        socket.on("change_data", changeData);
-    }, [])
-    const updateStatusComplete = async (data) => {
+          /*const updateStatusComplete = async (data) => {
         const token = await getAsyncStorageKey('token')
         //console.log(data.item._id)
         const list = {
@@ -54,7 +51,11 @@ export default function Basic(props) {
         await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
             .then((response) => console.log(response.data))
             .then((error) => console.log(error))
-    }
+    }*/
+
+    useEffect(() => {
+        getAllGarbage();
+    }, [])
 
     const createButtonAlert = (data) =>
         Alert.alert(
@@ -87,13 +88,12 @@ export default function Basic(props) {
                             <Text style={styles.msgText}>{data.item.message}</Text>
                         </View>
                         <View style={styles.dateContainer}>
-                            <Text style={styles.dateText}>{data.item.location.timestamp.substring(0, 21)}
+                            <Text style={styles.dateText}>{/*data.item.location.timestamp.substring(0, 21)*/}
                             </Text>
                         </View>
                     </View>
                 </View>
             </View>
-
         </TouchableHighlight>
     );
     const renderHiddenItem = (data, rowMap) => (
