@@ -28,16 +28,15 @@ export default function Basic(props) {
     })
 
     const getData = trash => {
-        console.log("USERS")
-        console.log(users)
-        setUserListData(trash)
+        console.log("Trash")
+        console.log(trash)
+        setListData(trash)
       }
 
     const getAllGarbage = async () => {
         await tokenExpired()
         socket.emit("garbage_data");
         socket.on("get_trash", getData)
-        setLoading(false)
     
       }
 
