@@ -64,7 +64,7 @@ export default function Basic(props) {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => DeleteGarbages() }
+                { text: "OK", onPress: () => DeleteGarbages(data.item._id) }
             ]
         );
 
