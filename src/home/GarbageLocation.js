@@ -39,21 +39,19 @@ export default function Basic(props) {
         socket.on("get_trash", getData)
     
       }
-
-          /*const updateStatusComplete = async (data) => {
-        const token = await getAsyncStorageKey('token')
-        //console.log(data.item._id)
-        const list = {
-            id_basura: data.item._id
-        }
-        tokenExpired(token)
-        await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
-            .then((response) => console.log(response.data))
-            .then((error) => console.log(error))
-    }*/
+      const DeleteGarbages =  (id) => {
+            console.log("GARBAGE ID")
+            console.log(id)
+            socket.emit("garbage_update", id);
+          };
+          const UpdateGarbages = async () => {
+            await tokenExpired()
+            socket.on("change_trash", getData)
+          }
 
     useEffect(() => {
         getAllGarbage();
+        UpdateGarbages();
     }, [])
 
     const createButtonAlert = (data) =>
@@ -66,7 +64,7 @@ export default function Basic(props) {
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },
-                { text: "OK", onPress: () => updateStatusComplete(data) }
+                { text: "OK", onPress: () => DeleteGarbages() }
             ]
         );
 
@@ -115,7 +113,6 @@ export default function Basic(props) {
     return (
 
         <View style={styles.container}>
-            <ScrollView>
                 <SwipeListView
                     data={listData}
                     renderItem={renderItem}
@@ -127,7 +124,6 @@ export default function Basic(props) {
                     previewOpenDelay={3000}
 
                 />
-            </ScrollView>
         </View>
     );
 }

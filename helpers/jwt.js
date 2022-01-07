@@ -3,6 +3,8 @@ import { isJwtExpired } from "jwt-check-expiration";
 import { getAsyncStorageKey, setAsyncStorageKey } from "./asynctorage";
 
 export const tokenExpired = async () => {
+    const token = await getAsyncStorageKey('token');
+    if (isJwtExpired(token)) {
     const refreshToken = await getAsyncStorageKey('refresh_token')
     const userEmail = await getAsyncStorageKey('user_email')
     const data = {
@@ -21,4 +23,5 @@ export const tokenExpired = async () => {
             console.log("RESPONSE ERROR TOKEN VERIFICATION");
             console.log(error);
         })
+    }
 }
