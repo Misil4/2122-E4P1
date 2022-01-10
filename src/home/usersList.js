@@ -8,6 +8,7 @@ import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
+import { NavigationContainer } from '@react-navigation/native';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
@@ -65,7 +66,7 @@ const UsersList = (props) => {
           <Avatar
             size="medium"
             title={element.name}
-            onPress={() => console.log("Works!")}
+            onPress={() => props.navigation.navigate("Admin",{screen : "Chat",params :{user : element}})}
             activeOpacity={0.7}
             titleStyle={{ color: "black" }}
           />

@@ -15,12 +15,12 @@ import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
+import Chat from "./src/home/chat/chat";
 
-export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
+export const socket = socketIO('http://192.168.1.152:3001/', {
   
       transports: ['websocket'],
       jsonp: false,
-      
     });
 
 const drawer = createDrawerNavigator();
@@ -45,7 +45,10 @@ const App = () => {
         <drawer.Screen name="QrReader" component={QrReader} />
         <drawer.Screen name="Lista Usuarios" component={UsersList} />
         <drawer.Screen name="Garbage" component={GarbageLocation} />
-        <drawer.Screen name="Ubicación de basuras" component={wasteLocation}
+        <drawer.Screen name="Chat" component={Chat}  options={{
+            drawerItemStyle: { height: 0 }
+          }} />
+        <drawer.Screen name="Ubicación de basuras" component={wasteLocation} 
           options={{
             drawerItemStyle: { height: 0 }
           }} />

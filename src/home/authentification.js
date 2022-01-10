@@ -1,6 +1,7 @@
 // Example of Google Sign In in React Native Android and iOS App
 // https://aboutreact.com/example-of-google-sign-in-in-react-native/
 import axios from 'axios';
+import { socket } from '../../App';
 // Import React in our code
 import React, { useState, useEffect } from 'react';
 // Import all the components we are going to use
@@ -57,9 +58,11 @@ const authentification = (props) => {
       console.log("signed in " + rol);
       console.log("signed in " + email)
       if (user_rol === "admin") {
+
         props.navigation.navigate("Admin",{screen : "Lista Usuarios"});
       }
       else if (user_rol === "user") {
+        socket.emit("join",user_email);
         props.navigation.navigate("User",{screen :'QrGenerator',params :{email : user_email}})
       }
       else { console.log("error") }
@@ -145,9 +148,11 @@ const authentification = (props) => {
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
+        
         props.navigation.navigate("Admin",{screen : "Lista Usuarios"});
       }
       else if (userRol === "user") {
+        socket.emit("join",userEmail);
         props.navigation.navigate("User",{screen :'QrGenerator',params :{email : userEmail}})
       }
       else { console.log("error") }
