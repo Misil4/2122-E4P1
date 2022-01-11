@@ -17,7 +17,7 @@ import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
 import Chat from "./src/home/chat/chat";
 
-export const socket = socketIO('http://192.168.1.222:3001/', {
+export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
   
       transports: ['websocket'],
       jsonp: false,
@@ -61,7 +61,7 @@ const App = () => {
       <drawer.Navigator>
         <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false, swipeEnabled: false }} />
         <drawer.Screen name="QrGenerator" component={QrGenerator} />
-        <drawer.Screen name="Garbage" component={WasteReport} />
+        <drawer.Screen name="Mi Localización" component={WasteReport} />
         <drawer.Screen name="Settings" component={Settings} />
       </drawer.Navigator>
     )

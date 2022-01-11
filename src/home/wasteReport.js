@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Alert, PermissionsAndroid } from "react-native";
+import { View, StyleSheet, Alert, PermissionsAndroid } from "react-native";
 import { Button } from "react-native-elements";
 import MapView, { Marker } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -96,10 +96,13 @@ const WasteReport = props => {
         longitudeDelta: 0.01
       }} />
       </MapView> : null}
-      <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 }} title="&#9842;" titleStyle={{ fontSize: 40, marginBottom: 10 }}
-        onPress={() => createButtonAlert()}>
-
-      </Button>
+      <View style={{ flexDirection: "row", marginLeft: 20, justifyContent: 'space-evenly' }}>
+        <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 }} title="Basura" titleStyle={{ fontSize: 18, marginBottom: 8 }}
+          onPress={() => createButtonAlert()}>
+        </Button>
+        <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 , marginRight: 70}} title="Chat" titleStyle={{ fontSize: 18, marginBottom: 8 }}>
+        </Button>
+      </View>
     </SafeAreaProvider>
   )
 }
