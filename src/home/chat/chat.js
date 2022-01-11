@@ -12,6 +12,19 @@ const Chat = (props) => {
   }
   const getData = messages => {
     console.log("USERS")
+    const messageData = messages.map(({__v,room,from,to,timestamp,...message },index) => ({
+      ...message,
+      _id : messages[index].from,
+      text : messages[index].text,
+      createdAt: messages[index].timestamp,
+      user : {
+        _id : messages[index].to,
+      }
+    }));
+    console.log("CUERPO DE EL MENSAJE")
+    setMessages(messageData.reverse())
+  }
+  const getUpdate = messages => {
     console.log(messages)
   }
   const GetMessages = async() => {
@@ -23,21 +36,13 @@ const Chat = (props) => {
     socket.emit("get_messages",data);
     socket.on("messages", getData)
   }
+  const UpdateMessages = () => {
+    socket.on("insert_messages",getUpdate)
+  }
   useEffect(() => {
     JoinChat()
     GetMessages()
-    setMessages([
-      {
-        _id: props.route.params.user.name,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: "Admin",
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ])
+    UpdateMessages()
   }, [])
 
   const onSend = useCallback((messages = []) => {

@@ -17,7 +17,7 @@ import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
 import Chat from "./src/home/chat/chat";
 
-export const socket = socketIO('http://192.168.1.152:3001/', {
+export const socket = socketIO('http://192.168.1.222:3001/', {
   
       transports: ['websocket'],
       jsonp: false,
