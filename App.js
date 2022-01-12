@@ -15,7 +15,7 @@ import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
-import Chat from "./src/home/chat/chat";
+import ChatAdmin  from "./src/home/Components/adminChat";
 
 export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
   
@@ -45,7 +45,7 @@ const App = () => {
         <drawer.Screen name="QrReader" component={QrReader} />
         <drawer.Screen name="Lista Usuarios" component={UsersList} />
         <drawer.Screen name="Garbage" component={GarbageLocation} />
-        <drawer.Screen name="Chat" component={Chat}  options={{
+        <drawer.Screen name="ChatAdmin" component={ChatAdmin}  options={{
             drawerItemStyle: { height: 0 }
           }} />
         <drawer.Screen name="Ubicación de basuras" component={wasteLocation} 

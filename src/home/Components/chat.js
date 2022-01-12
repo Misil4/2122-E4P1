@@ -7,7 +7,7 @@ import { tokenExpired } from "../../../helpers/jwt";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const JoinChat = () => {
-    socket.emit("join",props.route.params.user.email);
+    socket.emit("join", props.userTo.email);
     console.log("ROOM JOINED SUCCESFULLY")
   }
   const getData = messages => {
@@ -23,6 +23,7 @@ const Chat = (props) => {
     }));
     console.log("CUERPO DE EL MENSAJE")
     setMessages(messageData.reverse())
+    console.log(messageData)
   }
   const getUpdate = messages => {
     console.log(messages)
@@ -30,9 +31,11 @@ const Chat = (props) => {
   const GetMessages = async() => {
     await tokenExpired()
     const data = {
-      from : "Admin",
-      room : props.route.params.user.email
+      from : props.userFrom,
+      room : props.userTo.email
     }
+    console.log("MESSAGE INF")
+    console.log(data)
     socket.emit("get_messages",data);
     socket.on("messages", getData)
   }
@@ -43,15 +46,15 @@ const Chat = (props) => {
     JoinChat()
     GetMessages()
     UpdateMessages()
-  }, [])
+  }, [props.userTo.email])
 
   const onSend = useCallback((messages = []) => {
     const data = {
-      from: "Admin",
+      from: props.userFrom,
       to: messages[0].user._id,
       text: messages[0].text,
       timestamp:messages[0].createdAt,
-      room : props.route.params.user.email
+      room : props.userTo.email
     }
     console.log(data)
     socket.emit("insert_message",data)
@@ -64,7 +67,7 @@ const Chat = (props) => {
       messages={messages}
       onSend={messages => onSend(messages)}
       user={{
-        _id: props.route.params.user.name,
+        _id: props.userTo.name,
       }}
     />
         </View>

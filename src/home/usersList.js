@@ -66,7 +66,7 @@ const UsersList = (props) => {
           <Avatar
             size="medium"
             title={element.name}
-            onPress={() => props.navigation.navigate("Admin",{screen : "Chat",params :{user : element}})}
+            onPress={() => props.navigation.navigate("Admin",{screen : "ChatAdmin",params :{user : element}})}
             activeOpacity={0.7}
             titleStyle={{ color: "black" }}
           />
