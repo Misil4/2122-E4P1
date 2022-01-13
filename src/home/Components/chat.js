@@ -24,7 +24,9 @@ const Chat = (props) => {
   }
   const GetMessages = async () => {
     const messages = await getAsyncStorageKey("messages");
+
     let messageArr = JSON.parse(messages)
+    
     console.log("SAVED MESSAGES")
     const messageData = messageArr.map(({__v,room,from,to,timestamp,...message },index) => ({
       ...message,
@@ -36,7 +38,7 @@ const Chat = (props) => {
       }
     }));
     console.log(messageData)
-    setMessages(messageData)
+    setMessages(messageData.reverse())
   }
   const UpdateMessages = () => {
     socket.on("insert_messages", getUpdate)

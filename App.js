@@ -16,6 +16,7 @@ import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
 import ChatAdmin  from "./src/home/adminChat";
+import ChatUser from "./src/home/userChat";
 
 export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
   
@@ -63,6 +64,9 @@ const App = () => {
         <drawer.Screen name="QrGenerator" component={QrGenerator} />
         <drawer.Screen name="Mi Localización" component={WasteReport} />
         <drawer.Screen name="Settings" component={Settings} />
+        <drawer.Screen name="Chat" component={ChatUser}  options={{
+            drawerItemStyle: { height: 0 }
+          }} />
       </drawer.Navigator>
     )
   }

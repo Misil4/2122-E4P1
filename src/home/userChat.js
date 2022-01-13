@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Text } from "react-native";
-import { Chat } from "./Components/chat"
-
+import Chat  from "./Components/chat"
+import { GiftedChat } from 'react-native-gifted-chat'
 
 const ChatUser = (props) => {
-    return(
-        <Text>Hola</Text>
-
+    return (
+        <Chat userFrom={props.route.params.user} userTo="Admin" />
     )
 }
-
 export default ChatUser

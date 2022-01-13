@@ -8,6 +8,7 @@ import Geolocation from 'react-native-geolocation-service';
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from "../../App";
+import { NavigationContainer } from "@react-navigation/native";
 
 
 let list = {}
@@ -32,14 +33,20 @@ export async function requestLocationPermission() {
 const WasteReport = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
-  const [token, setToken] = useState('');
   const [data, setData] = useState({
     latitude: null, longitude: null, timestamp: null
   })
-
+  const [userData, setUserData] = useState('')
+  const getUserInfo = async () => {
+    const token = await getAsyncStorageKey('token');
+    const userEmail = await getAsyncStorageKey("user_email")
+    return await axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
+      .then((response) => setUserData(response.data.users.filter((user) => user.email === userEmail)))
+      .then((error) => console.log(error))
+  }
   useEffect(() => {
-    getAsyncStorageKey('token').then(response => { setToken(response); console.log(response) })
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
+    getUserInfo().then(response => {console.log("SETUSER");console.log(response)});
     requestLocationPermission()
     if (requestLocationPermission()) {
       Geolocation.getCurrentPosition(
@@ -54,7 +61,7 @@ const WasteReport = props => {
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     }
-  }, [])
+  }, [requestLocationPermission])
 
 
 
@@ -73,14 +80,16 @@ const WasteReport = props => {
           text: "OK", onPress: async () => {
             console.log(data)
             const list = { data: data, user: email }
-           socket.emit("insert_garbage",list)
-            
+            socket.emit("insert_garbage", list)
+
           }
         }
       ]
     );
   return (
     <SafeAreaProvider>
+      {console.log("USERDATA")}
+      {console.log(userData)}
       {mapOn !== false ? <MapView
         style={styles.map}
         initialRegion={{
@@ -100,7 +109,8 @@ const WasteReport = props => {
         <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 }} title="Basura" titleStyle={{ fontSize: 18, marginBottom: 8 }}
           onPress={() => createButtonAlert()}>
         </Button>
-        <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 , marginRight: 70}} title="Chat" titleStyle={{ fontSize: 18, marginBottom: 8 }}>
+        <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10, marginRight: 70 }} title="Chat" titleStyle={{ fontSize: 18, marginBottom: 8 }}
+          onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>
         </Button>
       </View>
     </SafeAreaProvider>
