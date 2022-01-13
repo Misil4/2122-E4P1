@@ -15,7 +15,7 @@ import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
 import socketIO from 'socket.io-client';
-import ChatAdmin  from "./src/home/Components/adminChat";
+import ChatAdmin  from "./src/home/adminChat";
 
 export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
   

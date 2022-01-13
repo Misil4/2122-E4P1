@@ -1,5 +1,5 @@
 import React from "react";
-import Chat from "./chat"
+import Chat from "./Components/chat"
 
 
 const ChatAdmin = (props) => {

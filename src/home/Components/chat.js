@@ -10,7 +10,7 @@ const Chat = (props) => {
     socket.emit("join", props.userTo.email);
     console.log("ROOM JOINED SUCCESFULLY")
   }
-  const getUpdate = messages => {
+  const getUpdate = async(messages) => {
     const saved_messages = await getAsyncStorageKey("messages");
     let messageArr = JSON.parse(saved_messages)
     if (!messageArr) {
@@ -24,29 +24,33 @@ const Chat = (props) => {
   }
   const GetMessages = async () => {
     const messages = await getAsyncStorageKey("messages");
-    const messageData = JSON.parse(messages.map(({__v,room,from,to,timestamp,...message },index) => ({
+    let messageArr = JSON.parse(messages)
+    console.log("SAVED MESSAGES")
+    const messageData = messageArr.map(({__v,room,from,to,timestamp,...message },index) => ({
       ...message,
-      _id : messages[index].from,
-      text : messages[index].text,
-      createdAt: messages[index].timestamp,
+      _id : messageArr[index].from,
+      text : messageArr[index].text,
+      createdAt: messageArr[index].timestamp,
       user : {
-        _id : messages[index].to,
+        _id : messageArr[index].to,
       }
-    })));
+    }));
+    console.log(messageData)
     setMessages(messageData)
   }
   const UpdateMessages = () => {
     socket.on("insert_messages", getUpdate)
   }
   useEffect(() => {
-    if (props.userFrom === Admin){
+    if (props.userFrom === "Admin"){
     JoinChat()
     }
     GetMessages()
+    console.log("FUNCIONANDO")
     UpdateMessages()
-  }, [props.userTo.email])
+  }, [])
 
-  const onSend = useCallback((messages = []) => {
+  const onSend = useCallback(async(messages = []) => {
     const data = {
       from: props.userFrom,
       to: messages[0].user._id,
@@ -54,8 +58,9 @@ const Chat = (props) => {
       timestamp: messages[0].createdAt,
       room: props.userTo.email
     }
-    const messages = await getAsyncStorageKey("messages");
-    let messageArr = JSON.parse(messages)
+    const saved_messages = await getAsyncStorageKey("messages");
+    let messageArr = JSON.parse(saved_messages)
+    console.log(messageArr)
     if (!messageArr) {
       messageArr = []
     }
