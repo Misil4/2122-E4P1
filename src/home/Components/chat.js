@@ -11,7 +11,8 @@ const Chat = (props) => {
     console.log("ROOM JOINED SUCCESFULLY")
   }
   const getUpdate = messages => {
-    let messageArr = JSON.parse(messages)
+    const saved_messages = await getAsyncStorageKey("messages");
+    let messageArr = JSON.parse(saved_messages)
     if (!messageArr) {
       messageArr = []
     }
