@@ -28,7 +28,7 @@ const Chat = (props) => {
     console.log("SAVED MESSAGES")
     const messageData = messageArr.map(({__v,room,from,to,timestamp,...message },index) => ({
       ...message,
-      _id : messageArr[index].from,
+      _id : messageArr[index].from, 
       text : messageArr[index].text,
       createdAt: messageArr[index].timestamp,
       user : {
