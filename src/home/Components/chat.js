@@ -3,9 +3,13 @@ import { GiftedChat } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
 import { socket } from "../../../App";
 import { View } from "react-native";
-import { tokenExpired } from "../../../helpers/jwt";
+import EmojiBoard from 'react-native-emoji-board'
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
+  const [show, setShow] = useState(false);
+  const onClick = emoji => {
+    console.log(emoji);
+};
   const JoinChat = () => {
     socket.emit("join", props.userTo.email);
     console.log("ROOM JOINED SUCCESFULLY")
@@ -81,6 +85,11 @@ const Chat = (props) => {
           _id: props.userTo.name,
         }}
       />
+       <StatusBar barStyle="dark-content" />
+            <TouchableOpacity onPress={() => setShow(!show)}>
+                <Text>click here</Text>
+            </TouchableOpacity>
+            <EmojiBoard showBoard={show} onClick={onClick} />
     </View>
   )
 }

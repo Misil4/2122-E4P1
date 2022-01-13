@@ -40,6 +40,7 @@ const WasteReport = props => {
   const getUserInfo = async () => {
     const token = await getAsyncStorageKey('token');
     const userEmail = await getAsyncStorageKey("user_email")
+    await tokenExpired()
     return await axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
       .then((response) => setUserData(response.data.users.filter((user) => user.email === userEmail)))
       .then((error) => console.log(error))
