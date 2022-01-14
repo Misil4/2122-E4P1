@@ -15,8 +15,6 @@ const UsersList = (props) => {
   const [loading, setLoading] = useState(true);
 
   const getData = users => {
-    console.log("USERS")
-    console.log(users)
     setUserListData(users)
   }
 
@@ -25,12 +23,14 @@ const UsersList = (props) => {
     await tokenExpired()
     socket.emit("user_data");
     socket.on("get_users", getData)
+    console.log("EXECUTING GET")
     setLoading(false)
 
   }
 
   const UpdateUsers = async () => {
     await tokenExpired()
+    console.log("EXECUTING UPDATE")
     socket.on("change_data", getData)
   }
   /*
