@@ -24,6 +24,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import { getAsyncStorageKey,setAsyncStorageKey, removeAsyncStorageKey} from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { set } from 'react-native-reanimated';
 
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
@@ -32,6 +33,7 @@ const authentification = (props) => {
   const [rol, setRol] = useState('');
   const [email, setEmail] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
+  const [message,setMessage] = useState('');
 
   useEffect(() => {
     // Initial configuration
@@ -48,6 +50,7 @@ const authentification = (props) => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
+      setMessage("RECOGIENDO CLAVES GUARDADAS")
       const user_rol = await getAsyncStorageKey("user_rol");
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
@@ -57,6 +60,7 @@ const authentification = (props) => {
       setLogin(true);
       console.log("signed in " + rol);
       console.log("signed in " + email)
+      setMessage("USUARIO LOGEADO REDIRIGIENDO")
       if (user_rol === "admin") {
 
         props.navigation.navigate("Admin",{screen : "Lista Usuarios"});
@@ -111,7 +115,8 @@ const authentification = (props) => {
   const userInfoSignIn = async (userInfo) => {
     const data = {
       name: userInfo.user.givenName,
-      email: userInfo.user.email
+      email: userInfo.user.email,
+    //  picture : userInfo.user.picture Cambiar al nombre de el campo de el objeto de firebase
     }
     await axios.post('https://ballin-api-stage.herokuapp.com/users', data)
       .then( async response => {
@@ -134,17 +139,20 @@ const authentification = (props) => {
       const userInfo = await GoogleSignin.signIn();
       console.log("ID TOKEN")
       console.log(userInfo)
+      setMessage("RECOGIENDO SU INFORMACIÓN")
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
       console.log("USER TOKEN SAVED");
       console.log(token)
       if (token === null) {
+        setMessage("VERIFICANDO CREDENCIALES")
         await tokenSignIn(userInfo)
       }
       setLoading(false);
       setLogin(true);
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
+      setMessage("USUARIO LOGEADO CORRECTAMENTE REDIRIGIENDO")
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
@@ -192,6 +200,7 @@ const authentification = (props) => {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#0000ff" />
+        <Text>{message}</Text>
       </View>
     );
   } else {

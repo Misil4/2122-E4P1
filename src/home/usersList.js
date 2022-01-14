@@ -65,7 +65,7 @@ const UsersList = (props) => {
         <ListItem key={i} bottomDivider>
           <Avatar
             size="medium"
-            title={element.name}
+            source={{uri : element.picture}}
             onPress={() => props.navigation.navigate("Admin",{screen : "ChatAdmin",params :{user : element}})}
             activeOpacity={0.7}
             titleStyle={{ color: "black" }}

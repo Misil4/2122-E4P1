@@ -30,9 +30,11 @@ const Chat = (props) => {
     const messages = await getAsyncStorageKey("messages");
 
     let messageArr = JSON.parse(messages)
+
+    const roomMessages = messageArr.filter((message) => props.userTo.email ===message.room )
     
     console.log("SAVED MESSAGES")
-    const messageData = messageArr.map(({__v,room,from,to,timestamp,...message },index) => ({
+    const messageData = roomMessages.map(({__v,room,from,to,timestamp,...message },index) => ({
       ...message,
       _id : messageArr[index].from, 
       text : messageArr[index].text,
@@ -54,7 +56,7 @@ const Chat = (props) => {
     GetMessages()
     console.log("FUNCIONANDO")
     UpdateMessages()
-  }, [])
+  }, [messages])
 
   const onSend = useCallback(async(messages = []) => {
     const data = {
@@ -83,6 +85,7 @@ const Chat = (props) => {
         onSend={messages => onSend(messages)}
         user={{
           _id: props.userTo.name,
+          avatar : props.userTo.name === "Admin" ? "" : props.userTo.picture
         }}
       />
        <StatusBar barStyle="dark-content" />
