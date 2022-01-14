@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
 import { socket } from "../../../App";
-import { View } from "react-native";
+import { View,StatusBar,TouchableOpacity,Text } from "react-native";
 import EmojiBoard from 'react-native-emoji-board'
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
@@ -88,11 +88,6 @@ const Chat = (props) => {
           avatar : props.userTo.name === "Admin" ? "" : props.userTo.picture
         }}
       />
-       <StatusBar barStyle="dark-content" />
-            <TouchableOpacity onPress={() => setShow(!show)}>
-                <Text>click here</Text>
-            </TouchableOpacity>
-            <EmojiBoard showBoard={show} onClick={onClick} />
     </View>
   )
 }

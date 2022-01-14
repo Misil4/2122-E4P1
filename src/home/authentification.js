@@ -116,11 +116,12 @@ const authentification = (props) => {
     const data = {
       name: userInfo.user.givenName,
       email: userInfo.user.email,
-    //  picture : userInfo.user.picture Cambiar al nombre de el campo de el objeto de firebase
+    picture : userInfo.user.photoURL
     }
     await axios.post('https://ballin-api-stage.herokuapp.com/users', data)
       .then( async response => {
         console.log("RESPONSE")
+        console.log(response.data)
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response =>setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response =>setEmail(response))
       })
