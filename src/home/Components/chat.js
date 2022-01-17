@@ -30,8 +30,7 @@ const Chat = (props) => {
     const messages = await getAsyncStorageKey("messages");
 
     let messageArr = JSON.parse(messages)
-
-    const roomMessages = messageArr.filter((message) => props.userTo.email ===message.room )
+    const roomMessages = messageArr.filter((message) => props.userTo.email === "Admin" ? props.userFrom.email : props.userTo.email ===message.room )
     
     console.log("ALL SAVED MESSAGES")
     console.log(messageArr)
@@ -53,7 +52,7 @@ const Chat = (props) => {
     socket.on("insert_messages", getUpdate)
   }
   useEffect(() => {
-    props.navigation.setOptions({ title: props.userTo.name,headerRight: () => (<Avatar source={{uri : props.userTo.picture}} />) })
+    props.navigation.setOptions({ title: props.userTo.name,headerLeft: () => (<Avatar source={{uri : props.userTo.picture}} rounded size={40} containerStyle={{marginLeft: 35 }}/>) })
     if (props.userFrom === "Admin"){
     JoinChat()
     }
