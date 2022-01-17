@@ -69,10 +69,11 @@ const UsersList = (props) => {
             onPress={() => props.navigation.navigate("Admin",{screen : "ChatAdmin",params :{user : element}})}
             activeOpacity={0.7}
             titleStyle={{ color: "black" }}
+            rounded
           />
           <Badge
             status={element.login_status === true ? "success" : "error"}
-            containerStyle={{ position: 'absolute', top: 17, right: 340 }} />
+            containerStyle={{ position: 'absolute', top: 17, right: 340}} />
           <ListItem.Content>
             <ListItem.Title>{element.name}</ListItem.Title>
             <ListItem.Subtitle>{element.email}</ListItem.Subtitle>
