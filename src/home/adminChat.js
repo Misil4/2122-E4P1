@@ -5,8 +5,9 @@ import Chat from "./Components/chat"
 const ChatAdmin = (props) => {
     return(
         <Chat 
-            userFrom = "Admin"
+            userFrom = {{name: "Admin",email : "Admin",room: props.route.params.user.email}}
             userTo = {props.route.params.user}
+            navigation = {props.navigation}
         />
     )
 }
