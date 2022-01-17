@@ -116,7 +116,7 @@ const authentification = (props) => {
     const data = {
       name: userInfo.user.givenName,
       email: userInfo.user.email,
-    picture : userInfo.user.photoURL
+      picture : userInfo.user.photo
     }
     await axios.post('https://ballin-api-stage.herokuapp.com/users', data)
       .then( async response => {
