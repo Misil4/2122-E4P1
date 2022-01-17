@@ -17,12 +17,16 @@ const UsersList = (props) => {
   const getData = users => {
     setUserListData(users)
   }
-
+  const getUpdate  =users => {
+    console.log("DATOS RECOGIDOS");
+    console.log(users)
+    setUserListData(users)
+  }
 
   const getAllUsers = async () => {
     await tokenExpired()
     socket.emit("user_data");
-    socket.on("get_users", getData)
+    socket.once("get_users", getData)
     console.log("EXECUTING GET")
     setLoading(false)
 
@@ -30,8 +34,8 @@ const UsersList = (props) => {
 
   const UpdateUsers = async () => {
     await tokenExpired()
+    socket.on("change_data", getUpdate)
     console.log("EXECUTING UPDATE")
-    socket.on("change_data", getData)
   }
   /*
   const getAllUsers = async () => {
@@ -49,7 +53,7 @@ const UsersList = (props) => {
   }
   */
   useEffect(() => {
-    getAllUsers();
+    getAllUsers()
     UpdateUsers()
   }, [])
   if (loading) {

@@ -58,9 +58,11 @@ const Chat = (props) => {
     }
     GetMessages()
     console.log("FUNCIONANDO")
-    UpdateMessages()
   }, [props.userTo])
 
+  useEffect(() => {
+    UpdateMessages()
+  },[messages])
   const onSend = useCallback(async(messages = []) => {
     console.log(props.userFrom)
     const data = {

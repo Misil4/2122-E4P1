@@ -48,6 +48,8 @@ const WasteReport = props => {
   useEffect(() => {
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
     getUserInfo().then(response => {console.log("SETUSER");console.log(response)});
+  },[])
+  useEffect(() => {
     requestLocationPermission()
     if (requestLocationPermission()) {
       Geolocation.getCurrentPosition(

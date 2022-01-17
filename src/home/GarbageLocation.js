@@ -32,11 +32,15 @@ export default function Basic(props) {
         console.log(trash)
         setListData(trash)
       }
-
+      const getUpdate  =trash => {
+        console.log("DATOS RECOGIDOS");
+        console.log(users)
+        setUserListData(users)
+      }
     const getAllGarbage = async () => {
         await tokenExpired()
         socket.emit("garbage_data");
-        socket.on("get_trash", getData)
+        socket.once("get_trash", getData)
     
       }
       const DeleteGarbages =  (id) => {
@@ -46,13 +50,14 @@ export default function Basic(props) {
           };
           const UpdateGarbages = async () => {
             await tokenExpired()
-            socket.on("change_trash", getData)
+            socket.on("change_trash", getUpdate)
           }
 
     useEffect(() => {
         getAllGarbage();
-        UpdateGarbages();
-    }, [])
+console.log("FUNCIONANDO")
+UpdateGarbages()
+    }, []);
 
     const createButtonAlert = (data) =>
         Alert.alert(
