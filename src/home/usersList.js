@@ -1,14 +1,15 @@
 'use strict';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, Text, ActivityIndicator, ScrollView,StyleSheet } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
 import { NavigationContainer } from '@react-navigation/native';
+import AppContext from '../../context/context';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
@@ -17,7 +18,7 @@ const UsersList = (props) => {
   const getData = users => {
     setUserListData(users)
   }
-  const getUpdate  =users => {
+  const getUpdate = users => {
     console.log("DATOS RECOGIDOS");
     console.log(users)
     setUserListData(users)
@@ -53,6 +54,7 @@ const UsersList = (props) => {
   }
   */
   useEffect(() => {
+    props.navigation.setOptions({ title: "Ballin"})
     getAllUsers()
     UpdateUsers()
   }, [])
@@ -64,27 +66,32 @@ const UsersList = (props) => {
     );
   }
   return (<SafeAreaProvider><View style={styles.container}>
-    <ScrollView>{usersListData.map((element, i) => {
-      return (
-        <ListItem key={i} bottomDivider>
-          <Avatar
-            size="medium"
-            source={{uri : element.picture}}
-            onPress={() => props.navigation.navigate("Admin",{screen : "ChatAdmin",params :{user : element}})}
-            activeOpacity={0.7}
-            titleStyle={{ color: "black" }}
-            rounded
-          />
-          <Badge
-            status={element.login_status === true ? "success" : "error"}
-            containerStyle={{ position: 'absolute', top: 17, right: 340}} />
-          <ListItem.Content>
-            <ListItem.Title>{element.name}</ListItem.Title>
-            <ListItem.Subtitle>{element.email}</ListItem.Subtitle>
-          </ListItem.Content>
-        </ListItem>
-      )
-    })}
+    <ScrollView>
+      {usersListData.map((element, i) => {
+        return (
+          <ListItem key={i}
+            friction={90} //
+            tension={100} // These props are passed to the parent component (here TouchableScale)
+            activeScale={0.95} //
+            >
+            <Avatar
+              size="medium"
+              source={{ uri: element.picture }}
+              onPress={() => props.navigation.navigate("Admin", { screen: "ChatAdmin", params: { user: element } })}
+              activeOpacity={0.7}
+              titleStyle={{ color: "black" }}
+              rounded
+            />
+            <Badge 
+              status={element.login_status === true ? "success" : "error"}
+              containerStyle={{ position: 'absolute', top: 17, right: "93%" }} />
+            <ListItem.Content>
+              <ListItem.Title>{element.name}</ListItem.Title>
+              <ListItem.Subtitle>{element.email}</ListItem.Subtitle>
+            </ListItem.Content>
+          </ListItem>
+        )
+      })}
     </ScrollView>
   </View>
   </SafeAreaProvider>
@@ -93,9 +100,12 @@ const UsersList = (props) => {
 export default UsersList
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     borderWidth: 2,
     borderColor: "green",
     justifyContent: "center",
-    alignItems: "center",
-  }});
+  },
+  listItem: {
+    borderWidth: 0,
+    borderColor: "green"
+  }
+});

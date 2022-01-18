@@ -89,7 +89,7 @@ const Chat = (props) => {
   }, [])
 
   return (
-    <View style={{ flexGrow: 1 }}>
+    <View style={{ flexGrow: 1 ,borderColor: "green",borderWidth: 2}}>
       {console.log("USER INFO")}
       {console.log(props.userTo)}
       <GiftedChat

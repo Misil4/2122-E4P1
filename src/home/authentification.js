@@ -1,9 +1,9 @@
 // Example of Google Sign In in React Native Android and iOS App
 // https://aboutreact.com/example-of-google-sign-in-in-react-native/
 import axios from 'axios';
-import { socket } from '../../App';
+import App, { socket } from '../../App';
 // Import React in our code
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Context, useMemo } from 'react';
 // Import all the components we are going to use
 import {
   SafeAreaView,
@@ -22,9 +22,9 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { getAsyncStorageKey,setAsyncStorageKey, removeAsyncStorageKey} from '../../helpers/asynctorage';
+import { getAsyncStorageKey, setAsyncStorageKey, removeAsyncStorageKey } from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { set } from 'react-native-reanimated';
+import AppContext from '../../context/context';
 
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
@@ -33,7 +33,8 @@ const authentification = (props) => {
   const [rol, setRol] = useState('');
   const [email, setEmail] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
-  const [message,setMessage] = useState('');
+  const [message, setMessage] = useState('');
+  const [userInfo, setUserInfo] = useState('');
 
   useEffect(() => {
     // Initial configuration
@@ -58,16 +59,17 @@ const authentification = (props) => {
       // Set User Info if user is already signed in
       setLoading(false);
       setLogin(true);
+
       console.log("signed in " + rol);
       console.log("signed in " + email)
       setMessage("USUARIO LOGEADO REDIRIGIENDO")
       if (user_rol === "admin") {
 
-        props.navigation.navigate("Admin",{screen : "Lista Usuarios"});
+        props.navigation.navigate("Admin", { screen: "Lista Usuarios" });
       }
       else if (user_rol === "user") {
-        socket.emit("join",user_email);
-        props.navigation.navigate("User",{screen :'QrGenerator',params :{email : user_email}})
+        socket.emit("join", user_email);
+        props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: user_email } })
       }
       else { console.log("error") }
     } else {
@@ -93,10 +95,10 @@ const authentification = (props) => {
     console.log(idTokenResult.token)
 
     //Validate User Token
-    
+
     await axios.post('https://ballin-api-stage.herokuapp.com/token', {
       token: idTokenResult.token,
-      email : userInfo.user.email
+      email: userInfo.user.email
     })
       .then(async response => {
         setAuthenticated(true)
@@ -116,14 +118,14 @@ const authentification = (props) => {
     const data = {
       name: userInfo.user.givenName,
       email: userInfo.user.email,
-      picture : userInfo.user.photo
+      picture: userInfo.user.photo
     }
     await axios.post('https://ballin-api-stage.herokuapp.com/users', data)
-      .then( async response => {
+      .then(async response => {
         console.log("RESPONSE")
         console.log(response.data)
-        AsyncStorage.setItem("user_rol", response.data.data.rol).then(response =>setRol(response))
-        AsyncStorage.setItem("user_email", response.data.data.email).then(response =>setEmail(response))
+        AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
+        AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
       })
       .then((error) => console.log(error))
   }
@@ -151,18 +153,19 @@ const authentification = (props) => {
       }
       setLoading(false);
       setLogin(true);
+      setUserInfo(userInfo)
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
       setMessage("USUARIO LOGEADO CORRECTAMENTE REDIRIGIENDO")
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
-        
-        props.navigation.navigate("Admin",{screen : "Lista Usuarios"});
+
+        props.navigation.navigate("Admin", { screen: "Lista Usuarios" });
       }
       else if (userRol === "user") {
-        socket.emit("join",userEmail);
-        props.navigation.navigate("User",{screen :'QrGenerator',params :{email : userEmail}})
+        socket.emit("join", userEmail);
+        props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: userEmail } })
       }
       else { console.log("error") }
     } catch (error) {
@@ -190,6 +193,7 @@ const authentification = (props) => {
       await GoogleSignin.signOut();
       await removeAsyncStorageKey('token');
       await removeAsyncStorageKey('refresh_token');
+      setUserInfo("")
       // Removing user Info
       setLogin(false);
     } catch (error) {
@@ -197,16 +201,22 @@ const authentification = (props) => {
     }
     setGettingLoginStatus(false);
   };
+  const value = useMemo(() => ({
+    userInfo
+  }), [userInfo])
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>{message}</Text>
-      </View>
+      <AppContext.Provider value={value} >
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text>{message}</Text>
+        </View>
+      </AppContext.Provider>
     );
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        {console.log(userInfo)}
         {console.log("ROL ACTUAL")}
         {console.log(rol)}
         <View style={styles.container}>
@@ -218,7 +228,7 @@ const authentification = (props) => {
                   onPress={_signOut}>
                   <Text>Logout</Text>
                 </TouchableOpacity>
-                <Button color='grey' title='>' onPress={() => rol=== "admin" ? props.navigation.navigate("Admin",{screen :'Lista Usuarios'}) : props.navigation.navigate("User",{screen :'QrGenerator',params :{email : email}})}></Button>
+                <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: 'Lista Usuarios' }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}></Button>
               </>
             ) : (
               <GoogleSigninButton

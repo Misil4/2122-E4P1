@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,8 +17,10 @@ import socketIO from 'socket.io-client';
 import ChatAdmin  from "./src/home/adminChat";
 import ChatUser from "./src/home/userChat";
 import  Icon  from "react-native-vector-icons/MaterialIcons";
-import { SafeAreaProvider,Image } from "react-native";
-export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
+import {Image } from "react-native";
+import CustomSidebarMenu from "./src/home/components/customSidebarMenu";
+import AppContext from "./context/context";
+export const socket = socketIO('http://192.168.1.44:3001/', {
   
       transports: ['websocket'],
       jsonp: false,
@@ -52,15 +54,15 @@ const App = (props) => {
   }
   const Admin = () => {
     return (
+      <>
       <drawer.Navigator
          drawerContentOptions={{
           activeTintColor: '#e91e63',
           itemStyle: { marginVertical: 5 },
         }}
-        drawerContent={(props) => <CustomSidebarMenu {...props} />}>
-          
+        drawerContent={(props) => <CustomSidebarMenu userName="Admin" userPhoto="https://static.scientificamerican.com/espanol/cache/file/050D641B-C40F-460A-B892534B0024CB3C_source.jpg?w=590&h=800&4147C8A7-B3A4-4126-9293322177AC2D1C" {...props} />}>
         <drawer.Screen name="Log Out" component={Authentification} options={{ drawerIcon: (({focused}) => <Icon name="home" size={30} color="green" />),headerShown: false, swipeEnabled: false }} />
-        <drawer.Screen name="QrReader" component={QrReader} options={{drawerIcon: (({focused}) => <Icon name="qr-code" size={30} color="green" />),}} />
+        <drawer.Screen name="QrReader" component={QrReader} options={{drawerIcon: (({focused}) => <Icon name="qr-code-scanner" size={30} color="green" />),}} />
         <drawer.Screen name="Lista Usuarios" component={UsersList}  options={{drawerIcon: (({focused}) => <Icon name="supervised-user-circle" size={30} color="green" />),}} />
         <drawer.Screen name="Garbage" component={GarbageLocation} options={{drawerIcon: (({focused}) => <Icon name="restore-from-trash" size={30} color="green" />),}} />
         <drawer.Screen name="ChatAdmin" component={ChatAdmin}  options={{
@@ -72,15 +74,20 @@ const App = (props) => {
           }} />
         <drawer.Screen name="Settings" component={Settings} options={{drawerIcon: (({focused}) => <Icon name="settings" size={30} color="green" />),}} />
       </drawer.Navigator>
-    )
+    </>)
   }
   const User = () => {
     return (
-      <drawer.Navigator>
-        <drawer.Screen name="Log Out" component={Authentification} options={{ headerShown: false, swipeEnabled: false }} />
-        <drawer.Screen name="QrGenerator" component={QrGenerator} />
-        <drawer.Screen name="Mi Localización" component={WasteReport} />
-        <drawer.Screen name="Settings" component={Settings} />
+      <drawer.Navigator
+      drawerContentOptions={{
+        activeTintColor: '#e91e63',
+        itemStyle: { marginVertical: 5 },
+      }}
+      drawerContent={(props) => <CustomSidebarMenu userName="Admin" userPhoto="https://static.scientificamerican.com/espanol/cache/file/050D641B-C40F-460A-B892534B0024CB3C_source.jpg?w=590&h=800&4147C8A7-B3A4-4126-9293322177AC2D1C" {...props} />}>
+        <drawer.Screen name="Log Out" component={Authentification} options={{ drawerIcon: (({focused}) => <Icon name="home" size={30} color="green" />),headerShown: false, swipeEnabled: false }} />
+        <drawer.Screen name="QrGenerator" component={QrGenerator} options={{drawerIcon: (({focused}) => <Icon name="qr-code" size={30} color="green" />),}} />
+        <drawer.Screen name="Mi Localización" component={WasteReport} options={{drawerIcon: (({focused}) => <Icon name="location-on" size={30} color="green" />),}} />
+        <drawer.Screen name="Settings" component={Settings} options={{drawerIcon: (({focused}) => <Icon name="settings" size={30} color="green" />),}} />
         <drawer.Screen name="Chat" component={ChatUser}  options={{
             drawerItemStyle: { height: 0 }
           }} />
@@ -88,12 +95,9 @@ const App = (props) => {
     )
   }
   return (
-    <SafeAreaProvider>
+    <>
       {console.log(rol)}
       <NavigationContainer>
-      <Image
-        source={{ uri: "https://static.scientificamerican.com/espanol/cache/file/050D641B-C40F-460A-B892534B0024CB3C_source.jpg?w=590&h=800&4147C8A7-B3A4-4126-9293322177AC2D1C" }}
-      />
         <stack.Navigator
          screenOptions={{
            gestureEnabled: true,
@@ -109,7 +113,7 @@ const App = (props) => {
           <stack.Screen name="User" component={User} options={{ headerShown: false }} />
         </stack.Navigator>
       </NavigationContainer>
-      </SafeAreaProvider>
+      </>
   )
 }
 export default App;
