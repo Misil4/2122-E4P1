@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView,StyleSheet } from 'react-native';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
@@ -63,7 +63,7 @@ const UsersList = (props) => {
       </View>
     );
   }
-  return (<SafeAreaProvider><View>
+  return (<SafeAreaProvider><View style={styles.container}>
     <ScrollView>{usersListData.map((element, i) => {
       return (
         <ListItem key={i} bottomDivider>
@@ -91,3 +91,11 @@ const UsersList = (props) => {
   )
 }
 export default UsersList
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: "green",
+    justifyContent: "center",
+    alignItems: "center",
+  }});

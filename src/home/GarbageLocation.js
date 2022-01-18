@@ -135,8 +135,11 @@ UpdateGarbages()
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
         flex: 1,
+        borderWidth: 3,
+        borderColor: "green",
+        justifyContent: "center",
+        alignItems: "center",
     },
     backTextWhite: {
         color: 'white',
