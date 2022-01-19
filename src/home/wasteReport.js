@@ -11,32 +11,33 @@ import { socket } from "../../App";
 import { NavigationContainer } from "@react-navigation/native";
 
 
-let list = {}
-export async function requestLocationPermission() {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        'title': 'Example App',
-        'message': 'Example App access to your location '
-      }
-    )
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      return true
-    } else {
-      return false
-    }
-  } catch (err) {
-    console.warn(err)
-  }
-}
+
 const WasteReport = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
+  const [permission,setPermission] = useState(false);
   const [data, setData] = useState({
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
+  async function requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Example App',
+          'message': 'Example App access to your location '
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        setPermission(true)
+      } else {
+        return false
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
   const getUserInfo = async () => {
     const token = await getAsyncStorageKey('token');
     const userEmail = await getAsyncStorageKey("user_email")
@@ -51,7 +52,7 @@ const WasteReport = props => {
   },[])
   useEffect(() => {
     requestLocationPermission()
-    if (requestLocationPermission()) {
+    if (permission) {
       Geolocation.getCurrentPosition(
         (position) => {
           setData({ latitude: position.coords.latitude, longitude: position.coords.longitude, timestamp: position.timestamp })
@@ -64,7 +65,7 @@ const WasteReport = props => {
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
       );
     }
-  }, [requestLocationPermission])
+  }, [permission])
 
 
 
