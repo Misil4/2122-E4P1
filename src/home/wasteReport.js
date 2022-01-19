@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Alert, PermissionsAndroid } from "react-native";
 import { Button } from "react-native-elements";
+import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Geolocation from 'react-native-geolocation-service';
@@ -110,10 +111,18 @@ const WasteReport = props => {
       }} />
       </MapView> : null}
       <View style={{ flexDirection: "row", marginLeft: 20, justifyContent: 'space-evenly' }}>
-        <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 }} title="Basura" titleStyle={{ fontSize: 18, marginBottom: 8 }}
+        <Button ViewComponent={LinearGradient} linearGradientProps={{
+    colors: ['#285500','#7bf210'],
+    start: { x: 0, y: 0.5 },
+    end: { x: 1, y: 0.5 },
+  }}buttonStyle={{ backgroundColor:"#ffffff",borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 }} title="Basura" titleStyle={{ fontSize: 18, marginBottom: 8 }}
           onPress={() => createButtonAlert()}>
         </Button>
-        <Button buttonStyle={{ backgroundColor: "#779ecb", borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10, marginRight: 70 }} title="Chat" titleStyle={{ fontSize: 18, marginBottom: 8 }}
+        <Button  ViewComponent={LinearGradient} linearGradientProps={{
+    colors: ['#285500','#7bf210'],
+    start: { x: 0, y: 0.5 },
+    end: { x: 1, y: 0.5 },
+  }} buttonStyle={{  backgroundColor:"#ffffff",borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10, marginRight: 70 }} title="Chat" titleStyle={{ fontSize: 18, marginBottom: 8 }}
           onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>
         </Button>
       </View>

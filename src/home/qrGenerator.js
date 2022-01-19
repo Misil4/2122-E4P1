@@ -4,19 +4,22 @@ import QRCode from 'react-native-qrcode-svg';
 import {
   View
 } from 'react-native';
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
-import { tokenExpired } from '../../helpers/jwt';
 const QrGenerator = (props) => {
+  useEffect(() => {
+    props.navigation.setOptions({ title: "QRCode"})
+  },[])
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "white" }}>
-      {console.log("EL VALOR DE EL EMAIL ES")}
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "white",borderWidth:2,borderColor:"green" }}>
+      {console.log("MAIL VALUE")}
       {console.log(props.route.params.email)}
       <QRCode
+      enableLinearGradient={true}
+      linearGradient={['rgb(40,85,0)','rgb(123,242,16)']}
+      gradientDirection
+      backgroundColor="transparent"
+      logo={require('../../assets/logo.jpg')}
         value={props.route.params.email}
         size={250}
-
-
-
       />
     </View>
   );
