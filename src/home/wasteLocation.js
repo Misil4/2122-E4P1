@@ -66,21 +66,23 @@ const wasteLocation = (props) => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1 },
-  buttonContainer : {
-    flexDirection: "row", 
-    marginLeft: 20, 
-    justifyContent: 'space-evenly' 
+  buttonContainer: {
+    flexDirection: "row",
+    marginLeft: 20,
+    justifyContent: 'space-evenly'
   },
-  button : 
-  { backgroundColor: "#779ecb", 
-  borderRadius: 50, 
-  height: 95, 
-  width: 95, 
-  alignSelf: "center", 
-  margin: 30, 
-  borderTopEndRadius: 10 },
+  button:
+  {
+    backgroundColor: "#779ecb",
+    borderRadius: 50,
+    height: 95,
+    width: 95,
+    alignSelf: "center",
+    margin: 30,
+    borderTopEndRadius: 10
+  },
 
-  
+
 });
 
 export default wasteLocation;

@@ -1,15 +1,16 @@
 'use strict';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import { tokenExpired } from '../../helpers/jwt';
-import { socket } from '../../App';
+import AppContext from '../../context/context';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [socket] = useContext(AppContext);
 
   const getData = users => {
     setUserListData(users)
@@ -35,7 +36,7 @@ const UsersList = (props) => {
     console.log("EXECUTING UPDATE")
   }
   useEffect(() => {
-    props.navigation.setOptions({ title: "Ballin"})
+    props.navigation.setOptions({ title: "Ballin" })
     getAllUsers()
     UpdateUsers()
   }, [])
@@ -54,7 +55,7 @@ const UsersList = (props) => {
             friction={90} //
             tension={100} // These props are passed to the parent component (here TouchableScale)
             activeScale={0.95} //
-            >
+          >
             <Avatar
               size="medium"
               source={{ uri: element.picture }}
@@ -63,7 +64,7 @@ const UsersList = (props) => {
               titleStyle={{ color: "black" }}
               rounded
             />
-            <Badge 
+            <Badge
               status={element.login_status === true ? "success" : "error"}
               containerStyle={{ position: 'absolute', top: 17, right: "93%" }} />
             <ListItem.Content>

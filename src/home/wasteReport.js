@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet, Alert, PermissionsAndroid } from "react-native";
 import { Button } from "react-native-elements";
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,8 +8,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Geolocation from 'react-native-geolocation-service';
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
-import { socket } from "../../App";
 import { NavigationContainer } from "@react-navigation/native";
+import AppContext from "../../context/context";
 
 
 
@@ -21,6 +21,7 @@ const WasteReport = props => {
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
+  const [socket] = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(

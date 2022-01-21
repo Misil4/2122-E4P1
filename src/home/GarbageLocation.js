@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
     StyleSheet,
     Text,
@@ -13,8 +13,8 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
-import { socket } from '../../App';
 import { ScrollView } from 'react-native';
+import AppContext from '../../context/context';
 
 
 export default function Basic(props) {
@@ -24,39 +24,39 @@ export default function Basic(props) {
             .map((_, i) => ({}))
     );
     const [userData, setUserData] = useState({
-
     })
+    const [socket] = useContext(AppContext)
 
     const getData = trash => {
         console.log("Trash")
         console.log(trash)
         setListData(trash)
-      }
-      const getUpdate  =trash => {
+    }
+    const getUpdate = trash => {
         console.log("DATOS RECOGIDOS");
         console.log(users)
         setUserListData(users)
-      }
+    }
     const getAllGarbage = async () => {
         await tokenExpired()
         socket.emit("garbage_data");
         socket.once("get_trash", getData)
-    
-      }
-      const DeleteGarbages =  (id) => {
-            console.log("GARBAGE ID")
-            console.log(id)
-            socket.emit("garbage_update", id);
-          };
-          const UpdateGarbages = async () => {
-            await tokenExpired()
-            socket.on("change_trash", getUpdate)
-          }
+
+    }
+    const DeleteGarbages = (id) => {
+        console.log("GARBAGE ID")
+        console.log(id)
+        socket.emit("garbage_update", id);
+    };
+    const UpdateGarbages = async () => {
+        await tokenExpired()
+        socket.on("change_trash", getUpdate)
+    }
 
     useEffect(() => {
         getAllGarbage();
-console.log("FUNCIONANDO")
-UpdateGarbages()
+        console.log("FUNCIONANDO")
+        UpdateGarbages()
     }, []);
 
     const createButtonAlert = (data) =>
@@ -118,17 +118,17 @@ UpdateGarbages()
     return (
 
         <View style={styles.container}>
-                <SwipeListView
-                    data={listData}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    rightOpenValue={-150}
-                    leftOpenValue={75}
-                    previewRowKey={'0'}
-                    previewOpenValue={-40}
-                    previewOpenDelay={3000}
+            <SwipeListView
+                data={listData}
+                renderItem={renderItem}
+                renderHiddenItem={renderHiddenItem}
+                rightOpenValue={-150}
+                leftOpenValue={75}
+                previewRowKey={'0'}
+                previewOpenValue={-40}
+                previewOpenDelay={3000}
 
-                />
+            />
         </View>
     );
 }

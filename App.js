@@ -13,17 +13,13 @@ import GarbageLocation from "./src/home/GarbageLocation";
 import UsersList from "./src/home/usersList";
 import WasteReport from "./src/home/wasteReport";
 import wasteLocation from "./src/home/wasteLocation";
-import socketIO from 'socket.io-client';
 import ChatAdmin  from "./src/home/adminChat";
 import ChatUser from "./src/home/userChat";
 import  Icon  from "react-native-vector-icons/MaterialIcons";
 import CustomSidebarMenu from "./src/home/components/customSidebarMenu";
 import AppContext from "./context/context";
-export const socket = socketIO('http://192.168.1.44:3001/', {
-  
-      transports: ['websocket'],
-      jsonp: false,
-    });
+import { socket } from "./socket/socket";
+
     const config = {
       animation: "spring",
       config: {
@@ -97,7 +93,7 @@ const App = (props) => {
   }
   return (
     <>
-    <AppContext.Provider value={{user: userInfo}}>
+    <AppContext.Provider value={{user: userInfo,socket : socket}}>
       <NavigationContainer>
         <stack.Navigator
          screenOptions={{
