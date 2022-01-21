@@ -16,7 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 const WasteReport = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
-  const [permission,setPermission] = useState(false);
+  const [permission, setPermission] = useState(false);
   const [data, setData] = useState({
     latitude: null, longitude: null, timestamp: null
   })
@@ -49,8 +49,8 @@ const WasteReport = props => {
   }
   useEffect(() => {
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
-    getUserInfo().then(response => {console.log("SETUSER");console.log(response)});
-  },[])
+    getUserInfo().then(response => { console.log("SETUSER"); console.log(response) });
+  }, [])
   useEffect(() => {
     requestLocationPermission()
     if (permission) {
@@ -110,19 +110,19 @@ const WasteReport = props => {
         longitudeDelta: 0.01
       }} />
       </MapView> : null}
-      <View style={{ flexDirection: "row", marginLeft: 20, justifyContent: 'space-evenly' }}>
+      <View style={styles.buttonContainer}>
         <Button ViewComponent={LinearGradient} linearGradientProps={{
-    colors: ['#285500','#7bf210'],
-    start: { x: 0, y: 0.5 },
-    end: { x: 1, y: 0.5 },
-  }}buttonStyle={{ backgroundColor:"#ffffff",borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10 }} title="Basura" titleStyle={{ fontSize: 18, marginBottom: 8 }}
+          colors: ['#285500', '#7bf210'],
+          start: { x: 0, y: 0.5 },
+          end: { x: 1, y: 0.5 },
+        }} buttonStyle={styles.button}
           onPress={() => createButtonAlert()}>
         </Button>
-        <Button  ViewComponent={LinearGradient} linearGradientProps={{
-    colors: ['#285500','#7bf210'],
-    start: { x: 0, y: 0.5 },
-    end: { x: 1, y: 0.5 },
-  }} buttonStyle={{  backgroundColor:"#ffffff",borderRadius: 50, height: 95, width: 95, alignSelf: "center", margin: 30, borderTopEndRadius: 10, marginRight: 70 }} title="Chat" titleStyle={{ fontSize: 18, marginBottom: 8 }}
+        <Button ViewComponent={LinearGradient} linearGradientProps={{
+          colors: ['#285500', '#7bf210'],
+          start: { x: 0, y: 0.5 },
+          end: { x: 1, y: 0.5 },
+        }} buttonStyle={styles.button}
           onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>
         </Button>
       </View>
@@ -136,6 +136,20 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: "auto",
     height: "auto"
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    marginLeft: 20,
+    justifyContent: 'space-evenly'
+  },
+  button: {
+    backgroundColor: "#ffffff",
+    borderRadius: 50,
+    height: 95,
+    width: 95,
+    alignSelf: "center",
+    margin: 30,
+    borderTopEndRadius: 10
   }
 });
 export default WasteReport;

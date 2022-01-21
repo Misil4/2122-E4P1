@@ -126,6 +126,7 @@ const authentification = (props) => {
         console.log(response.data)
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
+        AsyncStorage.setItem("user_info",response.data.data).then(response => console.log(response))
       })
       .then((error) => console.log(error))
   }

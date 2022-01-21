@@ -1,7 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Text } from "react-native";
+import React from "react";
 import Chat  from "./components/chat"
-import { GiftedChat } from 'react-native-gifted-chat'
 
 const ChatUser = (props) => {
     return (

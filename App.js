@@ -1,6 +1,6 @@
 
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -17,7 +17,6 @@ import socketIO from 'socket.io-client';
 import ChatAdmin  from "./src/home/adminChat";
 import ChatUser from "./src/home/userChat";
 import  Icon  from "react-native-vector-icons/MaterialIcons";
-import {Image } from "react-native";
 import CustomSidebarMenu from "./src/home/components/customSidebarMenu";
 import AppContext from "./context/context";
 export const socket = socketIO('http://192.168.1.44:3001/', {
@@ -43,8 +42,10 @@ const stack = createStackNavigator();
 
 const App = (props) => {
   const [rol, setRol] = useState("user")
+  const [userInfo,setUserInfo] = useState(null)
   useEffect(() => {
     SplashScreen.hide()
+    getAsyncStorageKey("user_info").then(response => setUserInfo(response))
     getRol()
   }, [rol])
   const getRol = async () => {
@@ -60,7 +61,7 @@ const App = (props) => {
           activeTintColor: '#e91e63',
           itemStyle: { marginVertical: 5 },
         }}
-        drawerContent={(props) => <CustomSidebarMenu userName="Admin" userPhoto="https://static.scientificamerican.com/espanol/cache/file/050D641B-C40F-460A-B892534B0024CB3C_source.jpg?w=590&h=800&4147C8A7-B3A4-4126-9293322177AC2D1C" {...props} />}>
+        drawerContent={(props) => <CustomSidebarMenu userName={userInfo.name} userPhoto={userInfo.photo} {...props} />}>
         <drawer.Screen name="Log Out" component={Authentification} options={{ drawerIcon: (({focused}) => <Icon name="home" size={30} color="green" />),headerShown: false, swipeEnabled: false }} />
         <drawer.Screen name="QrReader" component={QrReader} options={{drawerIcon: (({focused}) => <Icon name="qr-code-scanner" size={30} color="green" />),}} />
         <drawer.Screen name="Lista Usuarios" component={UsersList}  options={{drawerIcon: (({focused}) => <Icon name="supervised-user-circle" size={30} color="green" />),}} />
@@ -83,7 +84,7 @@ const App = (props) => {
         activeTintColor: '#e91e63',
         itemStyle: { marginVertical: 5 },
       }}
-      drawerContent={(props) => <CustomSidebarMenu userName="Admin" userPhoto="https://static.scientificamerican.com/espanol/cache/file/050D641B-C40F-460A-B892534B0024CB3C_source.jpg?w=590&h=800&4147C8A7-B3A4-4126-9293322177AC2D1C" {...props} />}>
+      drawerContent={(props) => <CustomSidebarMenu userName={userInfo.name} userPhoto={userInfo.photo} {...props} />}>
         <drawer.Screen name="Log Out" component={Authentification} options={{ drawerIcon: (({focused}) => <Icon name="home" size={30} color="green" />),headerShown: false, swipeEnabled: false }} />
         <drawer.Screen name="QrGenerator" component={QrGenerator} options={{drawerIcon: (({focused}) => <Icon name="qr-code" size={30} color="green" />),}} />
         <drawer.Screen name="Mi Localización" component={WasteReport} options={{drawerIcon: (({focused}) => <Icon name="location-on" size={30} color="green" />),}} />
@@ -96,7 +97,7 @@ const App = (props) => {
   }
   return (
     <>
-      {console.log(rol)}
+    <AppContext.Provider value={{user: userInfo}}>
       <NavigationContainer>
         <stack.Navigator
          screenOptions={{
@@ -113,6 +114,7 @@ const App = (props) => {
           <stack.Screen name="User" component={User} options={{ headerShown: false }} />
         </stack.Navigator>
       </NavigationContainer>
+      </AppContext.Provider>
       </>
   )
 }

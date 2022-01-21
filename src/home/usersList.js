@@ -1,15 +1,11 @@
 'use strict';
 
-import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, Text, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { View, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import { tokenExpired } from '../../helpers/jwt';
 import { socket } from '../../App';
-import { NavigationContainer } from '@react-navigation/native';
-import AppContext from '../../context/context';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
@@ -38,21 +34,6 @@ const UsersList = (props) => {
     socket.on("change_data", getUpdate)
     console.log("EXECUTING UPDATE")
   }
-  /*
-  const getAllUsers = async () => {
-    const token = await getAsyncStorageKey('token')
-    console.log(token)
-    tokenExpired(token)
-    await axios.get('https://serverpruebas.herokuapp.com/users', { headers: { 'Authorization': token } })
-      .then(res => {
-        setUserListData(res.data.users);
-        setLoading(false);
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  }
-  */
   useEffect(() => {
     props.navigation.setOptions({ title: "Ballin"})
     getAllUsers()
