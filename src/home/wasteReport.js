@@ -21,7 +21,7 @@ const WasteReport = props => {
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
-  const [socket] = useContext(AppContext)
+  const {socket} = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(

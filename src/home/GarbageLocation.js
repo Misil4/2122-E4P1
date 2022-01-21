@@ -25,7 +25,7 @@ export default function Basic(props) {
     );
     const [userData, setUserData] = useState({
     })
-    const [socket] = useContext(AppContext)
+    const {socket} = useContext(AppContext)
 
     const getData = trash => {
         console.log("Trash")
@@ -56,7 +56,6 @@ export default function Basic(props) {
     useEffect(() => {
         getAllGarbage();
         console.log("FUNCIONANDO")
-        UpdateGarbages()
     }, []);
 
     const createButtonAlert = (data) =>
@@ -135,12 +134,10 @@ export default function Basic(props) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: "green",
         justifyContent: "center",
-        alignItems: "center",
-    },
+      },
     backTextWhite: {
         color: 'white',
     },

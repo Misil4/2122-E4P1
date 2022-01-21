@@ -6,11 +6,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
+import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { Text } from 'react-native';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [socket] = useContext(AppContext);
+  const { socket } = useContext(AppContext);
+
 
   const getData = users => {
     setUserListData(users)
@@ -36,9 +39,8 @@ const UsersList = (props) => {
     console.log("EXECUTING UPDATE")
   }
   useEffect(() => {
-    props.navigation.setOptions({ title: "Ballin" })
     getAllUsers()
-    UpdateUsers()
+    return () => usersListData
   }, [])
   if (loading) {
     return (

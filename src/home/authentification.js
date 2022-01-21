@@ -1,9 +1,9 @@
 // Example of Google Sign In in React Native Android and iOS App
 // https://aboutreact.com/example-of-google-sign-in-in-react-native/
 import axios from 'axios';
-import App, { socket } from '../../App';
+import App from '../../App';
 // Import React in our code
-import React, { useState, useEffect, Context, useMemo } from 'react';
+import React, { useState, useEffect, Context, useMemo, useContext } from 'react';
 // Import all the components we are going to use
 import {
   SafeAreaView,
@@ -35,6 +35,7 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
+  const {socket} = useContext(AppContext);
 
   useEffect(() => {
     // Initial configuration
@@ -126,7 +127,6 @@ const authentification = (props) => {
         console.log(response.data)
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
-        AsyncStorage.setItem("user_info",response.data.data).then(response => console.log(response))
       })
       .then((error) => console.log(error))
   }
@@ -146,6 +146,8 @@ const authentification = (props) => {
       setMessage("RECOGIENDO SU INFORMACIÓN")
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
+       const user = JSON.stringify(userInfo)
+      await AsyncStorage.setItem("user_info",user)
       console.log("USER TOKEN SAVED");
       console.log(token)
       if (token === null) {
@@ -202,17 +204,12 @@ const authentification = (props) => {
     }
     setGettingLoginStatus(false);
   };
-  const value = useMemo(() => ({
-    userInfo
-  }), [userInfo])
   if (loading) {
     return (
-      <AppContext.Provider value={value} >
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#0000ff" />
           <Text>{message}</Text>
         </View>
-      </AppContext.Provider>
     );
   } else {
     return (
