@@ -19,46 +19,28 @@ const Chat = (props) => {
     console.log(messages)
     const saved_messages = await getAsyncStorageKey("messages");
     let messageArr = JSON.parse(saved_messages)
-    const newMessage = {
-      _id: messages.timestamp.substring(15,16),
-      text: messages.text,
-      createdAt: messages.timestamp,
-      user: {
-        _id: messages.to,
-        avatar: messages.picture
-      }
-    }
-  
+
     if (!messageArr) {
-    messageArr = []
+      messageArr = []
     }
-    messageArr.push(newMessage)
+    messageArr.push(messages)
     setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => {
 
-     setMessages(previousMessages => GiftedChat.append(previousMessages, newMessage))
+      setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
     })
   }
   const GetMessages = async () => {
     const messages = await getAsyncStorageKey("messages");
 
     let messageArr = JSON.parse(messages)
+
     const roomMessages = messageArr.filter((message) => props.userTo.email === "Admin" ? props.userFrom.email : props.userTo.email === message.room)
 
     console.log("ALL SAVED MESSAGES")
     console.log(messageArr)
-    const messageData = roomMessages.map(({ __v, room, from, to, timestamp, ...message }, index) => ({
-      ...message,
-      _id: index,
-      text: messageArr[index].text,
-      createdAt: messageArr[index].timestamp,
-      user: {
-        _id: messageArr[index].to,
-        avatar: messageArr[index].picture
-      }
-    }));
     console.log("SAVED MESSAGES FROM THIS ROOM")
-    console.log(messageData)
-    setMessages(messageData.reverse())
+    console.log(roomMessages)
+    setMessages(roomMessages.reverse())
   }
   const UpdateMessages = () => {
     socket.on("updated_messages", getUpdate)
@@ -77,14 +59,15 @@ const Chat = (props) => {
     return () => socket.off("updated_messages", getUpdate);
   }, [messages])
   const onSend = useCallback(async (messages = []) => {
-    console.log(props.userFrom)
     const data = {
-      from: props.userFrom.name,
-      to: messages[0].user._id,
+      _id: messages[0]._id,
       text: messages[0].text,
-      timestamp: messages[0].createdAt,
-      room: props.userTo.email,
-      picture: props.userFrom.picture
+      createdAt: messages[0].createdAt,
+      user: {
+        _id: messages[0].user._id,
+        avatar: messages[0].user.avatar
+      }
+      , room: props.userTo.email,
     }
     if (props.userTo.email === "Admin") { data.room = props.userFrom.email }
     console.log("SAVED MESSAGE");

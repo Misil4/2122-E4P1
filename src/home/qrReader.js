@@ -35,8 +35,7 @@ const [data,setData] = useStateWithPromise({email : ''})
   const updateUserStatus = async (email) => {
     //peticion a axios y hacer put
     console.log(email)
-    const token = await getAsyncStorageKey('token')
-    tokenExpired(token)
+    tokenExpired()
     badge_update(email)
     
     }

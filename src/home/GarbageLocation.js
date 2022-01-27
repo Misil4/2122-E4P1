@@ -40,7 +40,7 @@ export default function Basic(props) {
     const getAllGarbage = async () => {
         await tokenExpired()
         socket.emit("garbage_data");
-        socket.once("get_trash", getData)
+        socket.on("get_trash", getData)
 
     }
     const DeleteGarbages = (id) => {
