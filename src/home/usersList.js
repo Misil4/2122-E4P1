@@ -27,7 +27,7 @@ const UsersList = (props) => {
   const getAllUsers = async () => {
     await tokenExpired()
     socket.emit("user_data");
-    socket.once("get_users", getData)
+    socket.on("get_users", getData)
     console.log("EXECUTING GET")
     setLoading(false)
 
@@ -40,8 +40,12 @@ const UsersList = (props) => {
   }
   useEffect(() => {
     getAllUsers()
-    return () => usersListData
+    return () => socket.off("get_users", getData);
   }, [])
+  useEffect(() => {
+    UpdateUsers()
+    return () => socket.off("change_data", getUpdate);
+  },[usersListData])
   if (loading) {
     return (
       <View style={{ margin: "auto" }}>
