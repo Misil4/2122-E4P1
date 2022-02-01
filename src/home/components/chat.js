@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
 import { socket } from "../../../socket/socket";
-import { View, StatusBar, TouchableOpacity, Text } from "react-native";
+import { View, BackHandler } from "react-native";
 import { Avatar } from "react-native-elements";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
@@ -31,11 +31,14 @@ const Chat = (props) => {
   }
   const GetMessages = async () => {
     const messages = await getAsyncStorageKey("messages");
-
+    let roomMessages;
     let messageArr = JSON.parse(messages)
-
-    const roomMessages = messageArr.filter((message) => props.userTo.email === "Admin" ? props.userFrom.email : props.userTo.email === message.room)
-
+    if (props.userFrom.name === "Admin") {
+      roomMessages = messageArr.filter((message) => props.userTo.email === message.room)
+    }
+    else {
+      roomMessages = messageArr.filter((message) => props.userTo.room === message.room)
+    }
     console.log("ALL SAVED MESSAGES")
     console.log(messageArr)
     console.log("SAVED MESSAGES FROM THIS ROOM")
@@ -45,13 +48,22 @@ const Chat = (props) => {
   const UpdateMessages = () => {
     socket.on("updated_messages", getUpdate)
   }
+  const backButtonClick = () => {
+    if (props.navigation && props.navigation.goBack) {
+      props.userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: "Lista Usuarios" }) : props.navigation.navigate("User", { screen: "QrGenerator" })
+      return true;
+    }
+    return false;
+  }
   useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backButtonClick)
     props.navigation.setOptions({ title: props.userTo.name, headerLeft: () => (<Avatar source={{ uri: props.userTo.picture }} rounded size={40} containerStyle={{ marginLeft: 35 }} />) })
     if (props.userFrom.name === "Admin") {
       JoinChat()
     }
     GetMessages()
     console.log("FUNCIONANDO")
+    if (props.userTo.name === "Admin") return () => socket.emit("leave", props.userTo.room);
   }, [props.userTo])
 
   useEffect(() => {

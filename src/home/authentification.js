@@ -25,7 +25,7 @@ import {
 import { getAsyncStorageKey, setAsyncStorageKey, removeAsyncStorageKey } from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppContext from '../../context/context';
-
+import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const {socket} = useContext(AppContext);
+  const { socket,user } = useContext(AppContext);
 
   useEffect(() => {
     // Initial configuration
@@ -141,13 +141,14 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
+      setUserInfo(userInfo)
       console.log("ID TOKEN")
       console.log(userInfo)
       setMessage("RECOGIENDO SU INFORMACIÓN")
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
-       const user = JSON.stringify(userInfo)
-      await AsyncStorage.setItem("user_info",user)
+      const user = JSON.stringify(userInfo)
+      await AsyncStorage.setItem("user_info", user)
       console.log("USER TOKEN SAVED");
       console.log(token)
       if (token === null) {
@@ -156,14 +157,12 @@ const authentification = (props) => {
       }
       setLoading(false);
       setLogin(true);
-      setUserInfo(userInfo)
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
       setMessage("USUARIO LOGEADO CORRECTAMENTE REDIRIGIENDO")
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
-
         props.navigation.navigate("Admin", { screen: "Lista Usuarios" });
       }
       else if (userRol === "user") {
@@ -192,6 +191,10 @@ const authentification = (props) => {
     setGettingLoginStatus(true);
     // Remove user session from the device.
     try {
+      if (rol === "user") {
+        console.log("ROOM LEAVED SUCCESFULLY")
+        socket.emit("leave", user.user.email);
+      }
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       await removeAsyncStorageKey('token');
@@ -206,21 +209,23 @@ const authentification = (props) => {
   };
   if (loading) {
     return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text>{message}</Text>
-        </View>
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>{message}</Text>
+      </View>
     );
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        {console.log(userInfo)}
         {console.log("ROL ACTUAL")}
         {console.log(rol)}
+        {console.log("INFO")}
+        {console.log(user)}
         <View style={styles.container}>
           <View style={styles.container}>
             {login !== false ? (
               <>
+                {console.log(userInfo)}
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
