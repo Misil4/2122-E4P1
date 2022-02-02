@@ -20,6 +20,11 @@ import CustomSidebarMenu from "./src/home/components/customSidebarMenu";
 import AppContext from "./context/context";
 import { socket } from "./socket/socket";
 import { getAsyncStorageKey } from "./helpers/asynctorage";
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs()
+
+
 const config = {
   animation: "spring",
   config: {
