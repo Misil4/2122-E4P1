@@ -1,17 +1,19 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
 import { socket } from "../../../socket/socket";
 import { View, BackHandler } from "react-native";
 import { Avatar } from "react-native-elements";
+import ChatContext from "../../../context/chatContext";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const [show, setShow] = useState(false);
+  const {userTo,userFrom} = useContext(ChatContext)
   const onClick = emoji => {
     console.log(emoji);
   };
   const JoinChat = () => {
-    socket.emit("join", props.userTo.email);
+    socket.emit("join", userTo.email);
     console.log("ROOM JOINED SUCCESFULLY")
   }
   const getUpdate = async (messages) => {
@@ -33,11 +35,11 @@ const Chat = (props) => {
     const messages = await getAsyncStorageKey("messages");
     let roomMessages;
     let messageArr = JSON.parse(messages)
-    if (props.userFrom.name === "Admin") {
-      roomMessages = messageArr.filter((message) => props.userTo.email === message.room)
+    if (userTo.name === "Admin") {
+      roomMessages = messageArr.filter((message) => userFrom.email === message.room)
     }
     else {
-      roomMessages = messageArr.filter((message) => props.userTo.room === message.room)
+      roomMessages = messageArr.filter((message) => userFrom.room === message.room)
     }
     console.log("ALL SAVED MESSAGES")
     console.log(messageArr)
@@ -50,21 +52,21 @@ const Chat = (props) => {
   }
   const backButtonClick = () => {
     if (props.navigation && props.navigation.goBack) {
-      props.userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: "Lista Usuarios" }) : props.navigation.navigate("User", { screen: "QrGenerator" })
+      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: "Lista Usuarios" }) : props.navigation.navigate("User", { screen: "QrGenerator" ,params : {email : userFrom.email}})
       return true;
     }
     return false;
   }
   useEffect(() => {
+    console.log(props.navigation)
     BackHandler.addEventListener('hardwareBackPress', backButtonClick)
-    props.navigation.setOptions({ title: props.userTo.name, headerLeft: () => (<Avatar source={{ uri: props.userTo.picture }} rounded size={40} containerStyle={{ marginLeft: 35 }} />) })
-    if (props.userFrom.name === "Admin") {
+    props.navigation.setOptions({ title: userTo.name, headerLeft: () => (<Avatar source={{ uri: userTo.picture }} rounded size={40} containerStyle={{ marginLeft: 35 }} />) })
+    if (userFrom.name === "Admin") {
       JoinChat()
     }
     GetMessages()
     console.log("FUNCIONANDO")
-    if (props.userTo.name === "Admin") return () => socket.emit("leave", props.userTo.room);
-  }, [props.userTo])
+  }, [userTo])
 
   useEffect(() => {
     UpdateMessages()
@@ -79,9 +81,9 @@ const Chat = (props) => {
         _id: messages[0].user._id,
         avatar: messages[0].user.avatar
       }
-      , room: props.userTo.email,
+      , room: userTo.email,
     }
-    if (props.userTo.email === "Admin") { data.room = props.userFrom.email }
+    if (userTo.email === "Admin") { data.room = userFrom.email }
     console.log("SAVED MESSAGE");
     console.log(data)
     const saved_messages = await getAsyncStorageKey("messages");
@@ -99,13 +101,13 @@ const Chat = (props) => {
   return (
     <View style={{ flexGrow: 1, borderColor: "green", borderWidth: 2 }}>
       {console.log("USER INFO")}
-      {console.log(props.userTo)}
+      {console.log(userTo)}
       <GiftedChat
         messages={messages}
         onSend={messages => onSend(messages)}
         user={{
-          _id: props.userTo.name,
-          avatar: props.userTo.name === "Admin" ? "" : props.userTo.picture
+          _id: userTo.name,
+          avatar: userTo.name === "Admin" ? "" : userTo.picture
         }}
       />
     </View>

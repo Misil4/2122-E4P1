@@ -11,8 +11,6 @@ const QrGenerator = (props) => {
   }, [])
   return (
     <View style={styles.container}>
-      {console.log("MAIL VALUE")}
-      {console.log(props.route.params.email)}
       <QRCode
         enableLinearGradient={true}
         linearGradient={['rgb(40,85,0)', 'rgb(123,242,16)']}
