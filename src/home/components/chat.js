@@ -5,9 +5,13 @@ import { socket } from "../../../socket/socket";
 import { View, BackHandler } from "react-native";
 import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
+import { selectLanguage } from "../languages/languages";
+import AppContext from "../../../context/context";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const {userTo,userFrom} = useContext(ChatContext)
+  const {language} = useContext(AppContext)
+  const [languageArr] = useState(selectLanguage(language))
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -86,6 +90,7 @@ const Chat = (props) => {
     <View style={{ flexGrow: 1, borderColor: "green", borderWidth: 2 }}>
       <GiftedChat
         messages={messages}
+        placeholder={languageArr.placeholder}
         onSend={messages => onSend(messages)}
         user={{
           _id: userTo.name,

@@ -10,7 +10,9 @@ const QrGenerator = (props) => {
     props.navigation.setOptions({ title: "QRCode" })
   }, [])
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      {console.log("EL VALOR DE EL EMAIL ES")}
+      {console.log(props.route.params.email)}
       <QRCode
         enableLinearGradient={true}
         linearGradient={['rgb(40,85,0)', 'rgb(123,242,16)']}

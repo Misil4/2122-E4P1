@@ -25,7 +25,7 @@ import {
 import { getAsyncStorageKey, setAsyncStorageKey, removeAsyncStorageKey } from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppContext from '../../context/context';
-import { useStateWithPromise } from '../../hooks/useStateWithPromise';
+import { selectLanguage } from './languages/languages';
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,8 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const { socket,user } = useContext(AppContext);
+  const { socket,user,language } = useContext(AppContext);
+  const [languageArr] = useState(selectLanguage(language))
 
   useEffect(() => {
     // Initial configuration
@@ -52,7 +53,7 @@ const authentification = (props) => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-      setMessage("RECOGIENDO CLAVES GUARDADAS")
+      setMessage(languageArr.saved_keys)
       const user_rol = await getAsyncStorageKey("user_rol");
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
@@ -63,7 +64,7 @@ const authentification = (props) => {
 
       console.log("signed in " + rol);
       console.log("signed in " + email)
-      setMessage("USUARIO LOGEADO REDIRIGIENDO")
+      setMessage(languageArr.user_logged)
       if (user_rol === "admin") {
 
         props.navigation.navigate("Admin", { screen: "Lista Usuarios" });
@@ -144,7 +145,7 @@ const authentification = (props) => {
       setUserInfo(userInfo)
       console.log("ID TOKEN")
       console.log(userInfo)
-      setMessage("RECOGIENDO SU INFORMACIÓN")
+      setMessage(languageArr.taking_information)
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
       const user = JSON.stringify(userInfo)
@@ -152,14 +153,14 @@ const authentification = (props) => {
       console.log("USER TOKEN SAVED");
       console.log(token)
       if (token === null) {
-        setMessage("VERIFICANDO CREDENCIALES")
+        setMessage(languageArr.verifing_credentials)
         await tokenSignIn(userInfo)
       }
       setLoading(false);
       setLogin(true);
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
-      setMessage("USUARIO LOGEADO CORRECTAMENTE REDIRIGIENDO")
+      setMessage(languageArr.user_logged)
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
@@ -229,7 +230,7 @@ const authentification = (props) => {
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
-                  <Text>Logout</Text>
+                  <Text>{languageArr.logout}</Text>
                 </TouchableOpacity>
                 <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: 'Lista Usuarios' }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}></Button>
               </>

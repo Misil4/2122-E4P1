@@ -18,11 +18,9 @@ import ChatUser from "./src/home/userChat";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import CustomSidebarMenu from "./src/home/components/customSidebarMenu";
 import AppContext from "./context/context";
-import { socket } from "./socket/socket";
+import{ socket }from "./socket/socket";
 import { getAsyncStorageKey } from "./helpers/asynctorage";
-import { LogBox } from 'react-native';
 
-LogBox.ignoreLogs()
 
 
 const config = {
@@ -42,6 +40,7 @@ const stack = createStackNavigator();
 
 
 const App = (props) => {
+  const [language,setLanguage] = useState("euskera")
   const [userInfo, setUserInfo] = useState(null)
   useEffect(() => {
     SplashScreen.hide()
@@ -92,7 +91,7 @@ const App = (props) => {
   }
   return (
     <>
-      <AppContext.Provider value={{ user: userInfo, socket: socket }}>
+      <AppContext.Provider value={{ user: userInfo, socket: socket ,language,setLanguage}}>
         <NavigationContainer>
           <stack.Navigator
             screenOptions={{

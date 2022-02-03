@@ -10,6 +10,7 @@ import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
 import { NavigationContainer } from "@react-navigation/native";
 import AppContext from "../../context/context";
+import { selectLanguage } from "./languages/languages";
 
 
 
@@ -21,7 +22,8 @@ const WasteReport = props => {
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
-  const {socket} = useContext(AppContext)
+  const {socket,language} = useContext(AppContext)
+  const [languageArr] = useState(selectLanguage(language))
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -74,11 +76,11 @@ const WasteReport = props => {
 
   const createButtonAlert = () =>
     Alert.alert(
-      "Enviar",
-      "¿Estás seguro?",
+      languageArr.send,
+      languageArr.alert,
       [
         {
-          text: "Cancel",
+          text: languageArr.cancel,
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },

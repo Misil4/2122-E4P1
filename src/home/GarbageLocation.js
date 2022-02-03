@@ -15,6 +15,7 @@ import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { ScrollView } from 'react-native';
 import AppContext from '../../context/context';
+import { selectLanguage } from './languages/languages';
 
 
 export default function Basic(props) {
@@ -25,16 +26,13 @@ export default function Basic(props) {
     );
     const [userData, setUserData] = useState({
     })
-    const { socket } = useContext(AppContext)
+    const { socket,language } = useContext(AppContext)
+    const [languageArr] = useState(selectLanguage(language))
 
     const getData = trash => {
-        console.log("Trash")
-        console.log(trash)
         setListData(trash)
     }
     const getUpdate = trash => {
-        console.log("DATOS RECOGIDOS");
-        console.log(users)
         setUserListData(users)
     }
     const getAllGarbage = async () => {
@@ -44,8 +42,6 @@ export default function Basic(props) {
 
     }
     const DeleteGarbages = (id) => {
-        console.log("GARBAGE ID")
-        console.log(id)
         socket.emit("garbage_update", id);
     };
     const UpdateGarbages = async () => {
@@ -64,11 +60,11 @@ export default function Basic(props) {
 
     const createButtonAlert = (data) =>
         Alert.alert(
-            "Eliminar",
-            "¿Estás seguro?",
+            languageArr.delete,
+            languageArr.alert,
             [
                 {
-                    text: "Cancel",
+                    text: languageArr.cancel,
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },

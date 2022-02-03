@@ -1,22 +1,20 @@
-import React, { Component } from "react";
+import React, { useContext,useState } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
 
 import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
+import AppContext from "../../context/context";
 
 
-export default class Settings extends Component {
-  state = {
-    isOnDefaultToggleSwitch: true,
-    isOnLargeToggleSwitch: false,
-    isOnBlueToggleSwitch: false
-  };
+const Settings = () => {
+  const [isOnDefaultToggleSwitch,setisOnDefaultToggleSwitch] = useState(true);
+  const [ isOnLargeToggleSwitch,setisOnLargeToggleSwitch] = useState(false);
+  const [isOnBlueToggleSwitch,setisOnBlueToggleSwitch] = useState(false)
+  const {setLanguage} = useContext(AppContext)
 
-  onToggle(isOn) {
+  const onToggle = (isOn) => {
     console.log("Changed to " + isOn);
   }
-
-  render() {
     const placeholder = {
       label: 'Selecciona tu idioma',
       value: null,
@@ -28,14 +26,13 @@ export default class Settings extends Component {
           label=""
           size="large"
           onColor="black"
-          isOn={this.state.isOnBlueToggleSwitch}
-          onToggle={isOnBlueToggleSwitch => {
-            this.setState({ isOnBlueToggleSwitch });
-            this.onToggle(isOnBlueToggleSwitch);
+          isOn={isOnBlueToggleSwitch}
+          onToggle={value => {
+            setisOnBlueToggleSwitch(value);
           }}
         />
         <RNPickerSelect
-          onValueChange={(value) => console.log(value)}
+          onValueChange={(value) => setLanguage(value)}
           placeholder={placeholder}
           style={defaultStyles}
           items={[
@@ -46,7 +43,6 @@ export default class Settings extends Component {
         />
       </View>
     );
-  }
 }
 
 const styles = StyleSheet.create({
@@ -80,3 +76,4 @@ const defaultStyles = StyleSheet.create({
     zIndex: 2,
   },
 });
+export default Settings
