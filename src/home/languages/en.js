@@ -12,5 +12,12 @@ export const en = {
     //waste report
     send : "send",
     //chat
-    placeholder : "Type a message"
+    placeholder : "Type a message",
+    //app.js
+    welcome : "welcome",
+    auth_screen : "Log Out",
+    userlist_screen : "UserList",
+    garbage_screen : "Garbage",
+    settings_screen : "Settings",
+    location_screen : "My location"
 }

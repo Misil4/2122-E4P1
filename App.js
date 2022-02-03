@@ -46,7 +46,7 @@ const App = (props) => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))
     return () => { getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response))) ? true : false }
-  }, [])
+  }, [language])
   const Admin = () => {
     return (
       <>

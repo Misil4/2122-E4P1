@@ -12,5 +12,12 @@ export const eus = {
     //waste report
     send : "bidali",
     //chat
-    placeholder : "Mezu bat idatzi"
+    placeholder : "Mezu bat idatzi",
+      //app.js
+      welcome: "Ongi Etorri",
+      auth_screen: "Itxi saioa",
+      userlist_screen: "Erabiltzaile zerrenda",
+      garbage_screen: "Zaborrak",
+      settings_screen: "Konfigurazioa",
+      location_screen: "Nire kokapena"
 }
