@@ -7,18 +7,11 @@ import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);
-  const [show, setShow] = useState(false);
   const {userTo,userFrom} = useContext(ChatContext)
-  const onClick = emoji => {
-    console.log(emoji);
-  };
   const JoinChat = () => {
     socket.emit("join", userTo.email);
-    console.log("ROOM JOINED SUCCESFULLY")
   }
   const getUpdate = async (messages) => {
-    console.log("RECEIVED MESSAGE");
-    console.log(messages)
     const saved_messages = await getAsyncStorageKey("messages");
     let messageArr = JSON.parse(saved_messages)
 
@@ -35,16 +28,12 @@ const Chat = (props) => {
     const messages = await getAsyncStorageKey("messages");
     let roomMessages;
     let messageArr = JSON.parse(messages)
-    if (userTo.name === "Admin") {
-      roomMessages = messageArr.filter((message) => userFrom.email === message.room)
+    if (userFrom.name === "Admin") {
+      roomMessages = messageArr.filter((message) => userTo.email === message.room)
     }
     else {
-      roomMessages = messageArr.filter((message) => userFrom.room === message.room)
+      roomMessages = messageArr.filter((message) => userTo.room === message.room)
     }
-    console.log("ALL SAVED MESSAGES")
-    console.log(messageArr)
-    console.log("SAVED MESSAGES FROM THIS ROOM")
-    console.log(roomMessages)
     setMessages(roomMessages.reverse())
   }
   const UpdateMessages = () => {
@@ -58,14 +47,12 @@ const Chat = (props) => {
     return false;
   }
   useEffect(() => {
-    console.log(props.navigation)
     BackHandler.addEventListener('hardwareBackPress', backButtonClick)
     props.navigation.setOptions({ title: userTo.name, headerLeft: () => (<Avatar source={{ uri: userTo.picture }} rounded size={40} containerStyle={{ marginLeft: 35 }} />) })
     if (userFrom.name === "Admin") {
       JoinChat()
     }
     GetMessages()
-    console.log("FUNCIONANDO")
   }, [userTo])
 
   useEffect(() => {
@@ -84,11 +71,8 @@ const Chat = (props) => {
       , room: userTo.email,
     }
     if (userTo.email === "Admin") { data.room = userFrom.email }
-    console.log("SAVED MESSAGE");
-    console.log(data)
     const saved_messages = await getAsyncStorageKey("messages");
     let messageArr = JSON.parse(saved_messages)
-    console.log(messageArr)
     if (!messageArr) {
       messageArr = []
     }
@@ -100,8 +84,6 @@ const Chat = (props) => {
 
   return (
     <View style={{ flexGrow: 1, borderColor: "green", borderWidth: 2 }}>
-      {console.log("USER INFO")}
-      {console.log(userTo)}
       <GiftedChat
         messages={messages}
         onSend={messages => onSend(messages)}
