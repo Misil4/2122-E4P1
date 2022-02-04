@@ -25,7 +25,6 @@ const UsersList = (props) => {
   }
 
   const getAllUsers = async () => {
-    await tokenExpired()
     socket.emit("user_data");
     socket.on("get_users", getData)
     console.log("EXECUTING GET")
@@ -34,7 +33,6 @@ const UsersList = (props) => {
   }
 
   const UpdateUsers = async () => {
-    await tokenExpired()
     socket.on("change_data", getUpdate)
     console.log("EXECUTING UPDATE")
   }

@@ -78,7 +78,7 @@ const App = (props) => {
           activeTintColor: '#e91e63',
           itemStyle: { marginVertical: 5 },
         }}
-        drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? userInfo.user.givenName : "Bienvenido User"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
+        drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? "Bienvenido "+userInfo.user.givenName : "Bienvenido User"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
         <drawer.Screen name="Log Out" component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="green" />), headerShown: false, swipeEnabled: false }} />
         <drawer.Screen name="QrGenerator" component={QrGenerator} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color="green" />), }} />
         <drawer.Screen name="Mi Localización" component={WasteReport} options={{ drawerIcon: (({ focused }) => <Icon name="location-on" size={30} color="green" />), }} />
@@ -91,7 +91,7 @@ const App = (props) => {
   }
   return (
     <>
-      <AppContext.Provider value={{ user: userInfo, socket: socket ,language,setLanguage}}>
+      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language,setLanguage}}>
         <NavigationContainer>
           <stack.Navigator
             screenOptions={{

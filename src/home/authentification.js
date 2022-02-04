@@ -35,7 +35,7 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const { socket,user,language } = useContext(AppContext);
+  const { socket,user,setUser,language } = useContext(AppContext);
   const [languageArr] = useState(selectLanguage(language))
 
   useEffect(() => {
@@ -142,6 +142,7 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
+      setUser(userInfo)
       setUserInfo(userInfo)
       console.log("ID TOKEN")
       console.log(userInfo)
@@ -153,6 +154,7 @@ const authentification = (props) => {
       console.log("USER TOKEN SAVED");
       console.log(token)
       if (token === null) {
+        console.log("GENERATING NEW TOKEN")
         setMessage(languageArr.verifing_credentials)
         await tokenSignIn(userInfo)
       }
