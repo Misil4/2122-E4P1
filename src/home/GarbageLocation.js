@@ -27,7 +27,7 @@ export default function Basic(props) {
     const [userData, setUserData] = useState({
     })
     const { socket,language } = useContext(AppContext)
-    const [languageArr] = useState(selectLanguage(language))
+    const [languageArr,setLanguageArr] = useState(null)
 
     const getData = trash => {
         setListData(trash)
@@ -50,6 +50,7 @@ export default function Basic(props) {
     }
 
     useEffect(() => {
+        setLanguageArr(selectLanguage(language))
         getAllGarbage();
         return () => socket.off("get_trash", getData);
     }, []);

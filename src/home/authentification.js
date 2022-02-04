@@ -36,7 +36,7 @@ const authentification = (props) => {
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
   const { socket,user,setUser,language } = useContext(AppContext);
-  const [languageArr] = useState(selectLanguage(language))
+  const [languageArr,setLanguageArr] = useState(null)
 
   useEffect(() => {
     // Initial configuration
@@ -48,6 +48,7 @@ const authentification = (props) => {
       webClientId: '822986748161-tjihgo6gikf5mboac2l2pfo8rs7g9irc.apps.googleusercontent.com',
     });
     // Check if user is already signed in
+    setLanguageArr(selectLanguage(language))
     _isSignedIn();
   }, []);
   const _isSignedIn = async () => {
@@ -67,7 +68,7 @@ const authentification = (props) => {
       setMessage(languageArr.user_logged)
       if (user_rol === "admin") {
 
-        props.navigation.navigate("Admin", { screen: "Lista Usuarios" });
+        props.navigation.navigate("Admin", { screen: languageArr.userlist_screen });
       }
       else if (user_rol === "user") {
         socket.emit("join", user_email);
@@ -166,7 +167,7 @@ const authentification = (props) => {
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
-        props.navigation.navigate("Admin", { screen: "Lista Usuarios" });
+        props.navigation.navigate("Admin", { screen: languageArr.userlist_screen });
       }
       else if (userRol === "user") {
         socket.emit("join", userEmail);
@@ -234,7 +235,7 @@ const authentification = (props) => {
                   onPress={_signOut}>
                   <Text>{languageArr.logout}</Text>
                 </TouchableOpacity>
-                <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: 'Lista Usuarios' }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}></Button>
+                <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}></Button>
               </>
             ) : (
               <GoogleSigninButton

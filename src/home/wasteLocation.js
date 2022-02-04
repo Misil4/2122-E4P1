@@ -2,17 +2,21 @@
 
 //import Geolocation from 'react-native-geolocation-service';
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, View, PermissionsAndroid, Alert, } from "react-native";
 import { Button, } from "react-native-elements";
 import MapView, { Circle, Marker, Polyline } from "react-native-maps";
 import axios from "axios";
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
+import AppContext from "../../context/context";
+import { selectLanguage } from "./languages/languages";
 
 
 
 const wasteLocation = (props) => {
+  const {language} = useContext(AppContext)
+  const [languageArr,setLanguageArr] = useState(null)
   const updateStatusComplete = async (id) => {
     //console.log(data.item._id)
     const token = await getAsyncStorageKey('token')
@@ -24,14 +28,16 @@ const wasteLocation = (props) => {
       .then((response) => console.log(response.data))
       .then((error) => console.log(error))
   }
-
+  useEffect(() => {
+    setLanguageArr(selectLanguage(language))
+  },[])
   const createButtonAlert = (id) =>
     Alert.alert(
-      "Eliminar",
-      "¿Estás seguro?",
+      languageArr.delete,
+      languageArr.alert,
       [
         {
-          text: "Cancel",
+          text: languageArr.cancel,
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },

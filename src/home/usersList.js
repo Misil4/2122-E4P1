@@ -12,7 +12,7 @@ import { Text } from 'react-native';
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { socket } = useContext(AppContext);
+  const { socket,language } = useContext(AppContext);
 
 
   const getData = users => {

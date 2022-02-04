@@ -23,7 +23,7 @@ const WasteReport = props => {
   })
   const [userData, setUserData] = useState('')
   const {socket,language} = useContext(AppContext)
-  const [languageArr] = useState(selectLanguage(language))
+  const [languageArr,setLanguageArr] = useState(null)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -51,6 +51,7 @@ const WasteReport = props => {
       .then((error) => console.log(error))
   }
   useEffect(() => {
+    setLanguageArr(selectLanguage(language))
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
     getUserInfo().then(response => { console.log("SETUSER"); console.log(response) });
   }, [])

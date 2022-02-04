@@ -11,7 +11,7 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   const {userTo,userFrom} = useContext(ChatContext)
   const {language} = useContext(AppContext)
-  const [languageArr] = useState(selectLanguage(language))
+  const [languageArr,setLanguageArr] = useState(null)
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -51,6 +51,7 @@ const Chat = (props) => {
     return false;
   }
   useEffect(() => {
+    setLanguageArr(selectLanguage(language))
     BackHandler.addEventListener('hardwareBackPress', backButtonClick)
     props.navigation.setOptions({ title: userTo.name, headerLeft: () => (<Avatar source={{ uri: userTo.picture }} rounded size={40} containerStyle={{ marginLeft: 35 }} />) })
     if (userFrom.name === "Admin") {
