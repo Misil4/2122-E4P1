@@ -29,14 +29,14 @@ import { selectLanguage } from './languages/languages';
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(null);
   const [rol, setRol] = useState('');
   const [email, setEmail] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const { socket,user,setUser,language } = useContext(AppContext);
-  const [languageArr,setLanguageArr] = useState(null)
+  const { socket, user, setUser, language } = useContext(AppContext);
+  const [languageArr, setLanguageArr] = useState(selectLanguage("euskera"))
 
   useEffect(() => {
     // Initial configuration
@@ -154,11 +154,7 @@ const authentification = (props) => {
       await AsyncStorage.setItem("user_info", user)
       console.log("USER TOKEN SAVED");
       console.log(token)
-      if (token === null) {
-        console.log("GENERATING NEW TOKEN")
-        setMessage(languageArr.verifing_credentials)
-        await tokenSignIn(userInfo)
-      }
+      await tokenSignIn(userInfo)
       setLoading(false);
       setLogin(true);
       const userRol = await getAsyncStorageKey("user_rol")
@@ -191,7 +187,7 @@ const authentification = (props) => {
       }
     }
   };
-  const _signOut = async () => {
+ const _signOut = async () => {
     setGettingLoginStatus(true);
     // Remove user session from the device.
     try {
