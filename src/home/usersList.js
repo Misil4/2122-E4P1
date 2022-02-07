@@ -12,10 +12,11 @@ import { Text } from 'react-native';
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { socket,language } = useContext(AppContext);
+  const { socket,language,user } = useContext(AppContext);
 
 
   const getData = users => {
+    console.log(users)
     setUserListData(users)
   }
   const getUpdate = users => {
@@ -25,8 +26,8 @@ const UsersList = (props) => {
   }
 
   const getAllUsers = async () => {
-    socket.emit("user_data");
-    socket.on("get_users", getData)
+    socket.emit("user_data",user.user.email);
+    socket.once("get_users", getData)
     console.log("EXECUTING GET")
     setLoading(false)
 

@@ -5,7 +5,7 @@ import { socket } from "../../../socket/socket";
 import { View, BackHandler } from "react-native";
 import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
-import { selectLanguage } from "../languages/languages";
+import { selectLanguage } from "../../../languages/languages";
 import AppContext from "../../../context/context";
 const Chat = (props) => {
   const [messages, setMessages] = useState([]);

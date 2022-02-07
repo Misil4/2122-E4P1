@@ -10,7 +10,7 @@ import axios from "axios";
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from "../../context/context";
-import { selectLanguage } from "./languages/languages";
+import { selectLanguage } from "../../languages/languages";
 
 
 

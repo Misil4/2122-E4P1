@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Alert, PermissionsAndroid } from "react-native";
+import { View, StyleSheet, Alert, PermissionsAndroid,Text } from "react-native";
 import { Button } from "react-native-elements";
 import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker } from 'react-native-maps';
@@ -10,7 +10,7 @@ import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
 import { NavigationContainer } from "@react-navigation/native";
 import AppContext from "../../context/context";
-import { selectLanguage } from "./languages/languages";
+import { selectLanguage } from "../../languages/languages";
 
 
 
@@ -115,19 +115,10 @@ const WasteReport = props => {
       }} />
       </MapView> : null}
       <View style={styles.buttonContainer}>
-        <Button ViewComponent={LinearGradient} linearGradientProps={{
-          colors: ['#285500', '#7bf210'],
-          start: { x: 0, y: 0.5 },
-          end: { x: 1, y: 0.5 },
-        }} buttonStyle={styles.button}
-          onPress={() => createButtonAlert()}>
-        </Button>
-        <Button ViewComponent={LinearGradient} linearGradientProps={{
-          colors: ['#285500', '#7bf210'],
-          start: { x: 0, y: 0.5 },
-          end: { x: 1, y: 0.5 },
-        }} buttonStyle={styles.button}
-          onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>
+      <Button buttonStyle={styles.button} title="	&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8,marginRight: 5  }}
+        onPress={() => createButtonAlert()} />
+        <Button buttonStyle={styles.button} title="&#128172;" titleStyle={{ fontSize: 40, marginBottom: 5,marginLeft: 5  }}
+          onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>Hola
         </Button>
       </View>
     </SafeAreaProvider>
@@ -147,13 +138,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   button: {
-    backgroundColor: "#ffffff",
-    borderRadius: 50,
-    height: 95,
-    width: 95,
-    alignSelf: "center",
-    margin: 30,
-    borderTopEndRadius: 10
+    backgroundColor: "green", 
+    borderRadius: 50, 
+    height: 95, 
+    width: 95, 
+    alignSelf: "center", 
+    margin: 30, 
+    borderTopEndRadius: 10 
   }
 });
 export default WasteReport;
