@@ -5,6 +5,7 @@ export const en = {
     taking_information: "COLLECTING YOUR INFORMATION",
     verifing_credentials: "VERIFYING CREDENTIALS",
     logout: "Logout",
+    return : "Back",
     //garbage location
     delete: "Delete",
     alert: "¿Are you sure?",

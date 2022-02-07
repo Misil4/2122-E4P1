@@ -5,6 +5,7 @@ export const eus = {
   taking_information: "ZURE INFORMAZIOA JASOTZEN",
   verifing_credentials: "KREDENTZIALAK EGIAZTATZEA",
   logout: "Itxi saioa",
+  return : "Bueltatu",
   //garbage location
   delete: "Ezabatu",
   alert: "¿Ziur zaude?",

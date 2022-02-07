@@ -15,7 +15,7 @@ import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { ScrollView } from 'react-native';
 import AppContext from '../../context/context';
-import { selectLanguage } from './languages/languages';
+import { selectLanguage } from '../../languages/languages';
 
 
 export default function Basic(props) {

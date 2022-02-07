@@ -25,7 +25,7 @@ import {
 import { getAsyncStorageKey, setAsyncStorageKey, removeAsyncStorageKey } from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppContext from '../../context/context';
-import { selectLanguage } from './languages/languages';
+import { selectLanguage } from '../../languages/languages';
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -59,6 +59,7 @@ const authentification = (props) => {
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
       setEmail(user_email)
+      socket.emit("id_save",user_email)
       // Set User Info if user is already signed in
       setLoading(false);
       setLogin(true);
@@ -159,6 +160,7 @@ const authentification = (props) => {
       setLogin(true);
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
+      socket.emit("id_save",userEmail)
       setMessage(languageArr.user_logged)
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
@@ -187,7 +189,7 @@ const authentification = (props) => {
       }
     }
   };
- const _signOut = async () => {
+  const _signOut = async () => {
     setGettingLoginStatus(true);
     // Remove user session from the device.
     try {
@@ -225,13 +227,15 @@ const authentification = (props) => {
           <View style={styles.container}>
             {login !== false ? (
               <>
-                {console.log(userInfo)}
+                <Image style={styles.imageStyle} source={{ uri: user?.user.photo }} />
+                <Text>{user?.user.givenName}</Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
-                  <Text>{languageArr.logout}</Text>
+                  <Text style={{ color: "white" }}>{languageArr.logout}</Text>
                 </TouchableOpacity>
-                <Button color='grey' title='>' onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}></Button>
+                <TouchableOpacity style={styles.buttonStyle}
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}><Text style={{ color: "white" }}>{languageArr.return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton
@@ -271,7 +275,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: 'green',
     padding: 10,
     width: 300,
     marginTop: 30,

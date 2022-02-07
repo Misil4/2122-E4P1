@@ -5,6 +5,7 @@ export const es = {
     taking_information: "RECOGIENDO SU INFORMACION",
     verifing_credentials: "VERIFICANDO CREDENCIALES",
     logout: "Cerrar sesion",
+    return : "Volver",
     //garbage location
     delete: "Borrar",
     alert: "¿Estas seguro?",
