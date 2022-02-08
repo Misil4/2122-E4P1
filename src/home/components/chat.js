@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
-import { socket } from "../../../socket/socket";
 import { View, BackHandler } from "react-native";
 import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
 import { selectLanguage } from "../../../languages/languages";
 import AppContext from "../../../context/context";
+import { useIsFocused } from "@react-navigation/native";
 const Chat = (props) => {
+  const isFocused = useIsFocused()
   const [messages, setMessages] = useState([]);
-  const {userTo,userFrom} = useContext(ChatContext)
-  const {language} = useContext(AppContext)
-  const [languageArr,setLanguageArr] = useState(selectLanguage("euskera"))
+  let { userTo, userFrom } = useContext(ChatContext)
+  const { language, socket } = useContext(AppContext)
+  const [languageArr, setLanguageArr] = useState(selectLanguage("euskera"))
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -23,12 +24,17 @@ const Chat = (props) => {
       messageArr = []
     }
     messageArr.push(messages)
-    setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => {
-
-      setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+    setAsyncStorageKey("messages", JSON.stringify(messageArr)).then((response) => {
+      const to = !userTo.room ? userTo.email : userTo.room
+      console.log("ROOM")
+      if (messages.room === to) {
+        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
+      }
     })
   }
   const GetMessages = async () => {
+    console.log("GET PROPS NORMALES")
+    console.log(userTo)
     const messages = await getAsyncStorageKey("messages");
     let roomMessages;
     let messageArr = JSON.parse(messages)
@@ -45,7 +51,7 @@ const Chat = (props) => {
   }
   const backButtonClick = () => {
     if (props.navigation && props.navigation.goBack) {
-      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: "QrGenerator" ,params : {email : userFrom.email}})
+      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: "QrGenerator", params: { email: userFrom.email } })
       return true;
     }
     return false;
@@ -58,13 +64,15 @@ const Chat = (props) => {
       JoinChat()
     }
     GetMessages()
-  }, [userTo])
+  }, [isFocused])
 
   useEffect(() => {
     UpdateMessages()
     return () => socket.off("updated_messages", getUpdate);
   }, [messages])
-  const onSend = useCallback(async (messages = []) => {
+  const onSend = useCallback(async (messages = [],userTo) => {
+    console.log("ONSEND PROPS")
+    console.log(userTo)
     const data = {
       _id: messages[0]._id,
       text: messages[0].text,
@@ -75,6 +83,8 @@ const Chat = (props) => {
       }
       , room: userTo.email,
     }
+    console.log("SENDED MESSAGE FORMATED")
+    console.log(data)
     if (userTo.email === "Admin") { data.room = userFrom.email }
     const saved_messages = await getAsyncStorageKey("messages");
     let messageArr = JSON.parse(saved_messages)
@@ -89,13 +99,15 @@ const Chat = (props) => {
 
   return (
     <View style={{ flexGrow: 1, borderColor: "green", borderWidth: 2 }}>
+      {console.log("PROPS INICIALES")}
+      {console.log(userTo)}
       <GiftedChat
         messages={messages}
         placeholder={languageArr.placeholder}
-        onSend={messages => onSend(messages)}
+        onSend={messages => onSend(messages,userTo)}
         user={{
           _id: userTo.name,
-          avatar: userTo.name === "Admin" ? "" : userTo.picture
+          avatar: userFrom.name === "Admin" ? "" : userFrom.picture
         }}
       />
     </View>

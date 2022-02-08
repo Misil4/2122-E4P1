@@ -8,6 +8,8 @@ const ChatAdmin = (props) => {
         <Chat 
             navigation = {props.navigation}
         />
+        {console.log("CREDENTIALS")}
+        {console.log(props.route.params.user)}
         </ChatContext.Provider >
     )
 }
