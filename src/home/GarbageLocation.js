@@ -26,19 +26,19 @@ export default function Basic(props) {
     );
     const [userData, setUserData] = useState({
     })
-    const { socket,language } = useContext(AppContext)
+    const { socket,language,user } = useContext(AppContext)
     const [languageArr,setLanguageArr] = useState(null)
 
     const getData = trash => {
         setListData(trash)
     }
     const getUpdate = trash => {
-        setUserListData(users)
+        setListData(trash)
     }
     const getAllGarbage = async () => {
         await tokenExpired()
-        socket.emit("garbage_data");
-        socket.on("get_trash", getData)
+        socket.emit("garbage_data",user.user.email);
+        socket.once("get_trash", getData)
 
     }
     const DeleteGarbages = (id) => {

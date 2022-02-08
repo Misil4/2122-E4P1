@@ -29,7 +29,7 @@ import { selectLanguage } from '../../languages/languages';
 const authentification = (props) => {
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [login, setLogin] = useState(null);
+  const [login, setLogin] = useState(false);
   const [rol, setRol] = useState('');
   const [email, setEmail] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
@@ -223,6 +223,7 @@ const authentification = (props) => {
         {console.log(rol)}
         {console.log("INFO")}
         {console.log(user)}
+        {console.log(login)}
         <View style={styles.container}>
           <View style={styles.container}>
             {login !== false ? (

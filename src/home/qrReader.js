@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component, } from 'react';
+import React, { Component, useContext, } from 'react';
 import axios from 'axios';
 
 import {
@@ -15,10 +15,11 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
-import { socket } from '../../App';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
+import AppContext from '../../context/context';
 
 const QrReader = () => {
+const {socket} = useContext(AppContext)
 const [data,setData] = useStateWithPromise({email : ''})
   const onSuccess = async (e) => {
     await setData({ email: e.data })

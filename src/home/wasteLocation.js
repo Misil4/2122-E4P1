@@ -15,18 +15,10 @@ import { selectLanguage } from "../../languages/languages";
 
 
 const wasteLocation = (props) => {
-  const {language} = useContext(AppContext)
+  const {language,socket} = useContext(AppContext)
   const [languageArr,setLanguageArr] = useState(null)
   const updateStatusComplete = async (id) => {
-    //console.log(data.item._id)
-    const token = await getAsyncStorageKey('token')
-    const list = {
-      id_basura: id
-    }
-    tokenExpired(token)
-    await axios.put("https://ballin-api-stage.herokuapp.com/garbages", list, { headers: { 'Authorization': token } })
-      .then((response) => console.log(response.data))
-      .then((error) => console.log(error))
+    socket.emit("garbage_update", id);
   }
   useEffect(() => {
     setLanguageArr(selectLanguage(language))
@@ -41,7 +33,7 @@ const wasteLocation = (props) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "OK", onPress: () => { updateStatusComplete(id); props.navigation.navigate('Garbage') } }
+        { text: "OK", onPress: () => { updateStatusComplete(id); props.navigation.navigate(languageArr.garbage_screen) } }
       ]
     );
   return (
@@ -60,7 +52,7 @@ const wasteLocation = (props) => {
       ><Marker coordinate={{ latitude: props.route.params.latitude, longitude: props.route.params.longitude }} /></MapView>
       <View style={styles.buttonContainer}>
         <Button buttonStyle={styles.button} title="&#8656;" titleStyle={{ fontSize: 60, bottom: 15 }}
-          onPress={() => props.navigation.navigate('Garbage')} />
+          onPress={() => props.navigation.navigate(languageArr.garbage_screen)} />
         <Button buttonStyle={styles.button} title="&#9842;" titleStyle={{ fontSize: 40, marginBottom: 10 }}
           onPress={() => createButtonAlert(props.route.params.id)}
         />
