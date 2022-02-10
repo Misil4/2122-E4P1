@@ -20,5 +20,8 @@ export const eus = {
   userlist_screen: "Erabiltzaile Zerrenda",
   garbage_screen: "Zaborrak",
   settings_screen: "Konfigurazioa",
-  location_screen: "Nire Kokapena"
+  location_screen: "Nire Kokapena",
+  qr_gen_screen : "QrGenerator",
+   //settings
+   select_language : "Aukeratu zure hizkuntza"
 }

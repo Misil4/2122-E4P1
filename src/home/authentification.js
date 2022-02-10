@@ -36,7 +36,6 @@ const authentification = (props) => {
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
   const { socket, user, setUser, language } = useContext(AppContext);
-  const [languageArr, setLanguageArr] = useState(selectLanguage("euskera"))
 
   useEffect(() => {
     // Initial configuration
@@ -48,13 +47,12 @@ const authentification = (props) => {
       webClientId: '822986748161-tjihgo6gikf5mboac2l2pfo8rs7g9irc.apps.googleusercontent.com',
     });
     // Check if user is already signed in
-    setLanguageArr(selectLanguage(language))
     _isSignedIn();
   }, []);
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-      setMessage(languageArr.saved_keys)
+      setMessage(selectLanguage(language).saved_keys)
       const user_rol = await getAsyncStorageKey("user_rol");
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
@@ -66,14 +64,15 @@ const authentification = (props) => {
 
       console.log("signed in " + rol);
       console.log("signed in " + email)
-      setMessage(languageArr.user_logged)
+      setMessage(selectLanguage(language).user_logged)
       if (user_rol === "admin") {
 
-        props.navigation.navigate("Admin", { screen: languageArr.userlist_screen });
+        props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
       }
       else if (user_rol === "user") {
         socket.emit("join", user_email);
-        props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: user_email } })
+        console.log("LOGIN STATUS")
+        props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
       }
       else { console.log("error") }
     } else {
@@ -148,7 +147,7 @@ const authentification = (props) => {
       setUserInfo(userInfo)
       console.log("ID TOKEN")
       console.log(userInfo)
-      setMessage(languageArr.taking_information)
+      setMessage(selectLanguage(language).taking_information)
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
       const user = JSON.stringify(userInfo)
@@ -161,15 +160,15 @@ const authentification = (props) => {
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
       socket.emit("id_save",userEmail)
-      setMessage(languageArr.user_logged)
+      setMessage(selectLanguage(language).user_logged)
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       if (userRol === "admin") {
-        props.navigation.navigate("Admin", { screen: languageArr.userlist_screen });
+        props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
       }
       else if (userRol === "user") {
         socket.emit("join", userEmail);
-        props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: userEmail } })
+        props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userEmail } })
       }
       else { console.log("error") }
     } catch (error) {
@@ -233,10 +232,10 @@ const authentification = (props) => {
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
-                  <Text style={{ color: "white" }}>{languageArr.logout}</Text>
+                  <Text style={{ color: "white" }}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: 'QrGenerator', params: { email: email } })}><Text style={{ color: "white" }}>{languageArr.return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={{ color: "white" }}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton

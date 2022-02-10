@@ -20,5 +20,8 @@ export const en = {
     userlist_screen: "UserList",
     garbage_screen: "Garbage",
     settings_screen: "Settings",
-    location_screen: "My Location"
+    location_screen: "My Location",
+    qr_gen_screen : "QrGenerator",
+    //settings
+    select_language : "Select your language"
 }

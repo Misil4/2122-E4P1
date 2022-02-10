@@ -16,24 +16,20 @@ import { selectLanguage } from "../../languages/languages";
 
 const wasteLocation = (props) => {
   const {language,socket} = useContext(AppContext)
-  const [languageArr,setLanguageArr] = useState(null)
   const updateStatusComplete = async (id) => {
     socket.emit("garbage_update", id);
   }
-  useEffect(() => {
-    setLanguageArr(selectLanguage(language))
-  },[])
   const createButtonAlert = (id) =>
     Alert.alert(
-      languageArr.delete,
-      languageArr.alert,
+      selectLanguage(language).delete,
+      selectLanguage(language).alert,
       [
         {
-          text: languageArr.cancel,
+          text: selectLanguage(language).cancel,
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "OK", onPress: () => { updateStatusComplete(id); props.navigation.navigate(languageArr.garbage_screen) } }
+        { text: "OK", onPress: () => { updateStatusComplete(id); props.navigation.navigate(selectLanguage(language).garbage_screen) } }
       ]
     );
   return (
@@ -52,7 +48,7 @@ const wasteLocation = (props) => {
       ><Marker coordinate={{ latitude: props.route.params.latitude, longitude: props.route.params.longitude }} /></MapView>
       <View style={styles.buttonContainer}>
         <Button buttonStyle={styles.button} title="&#8656;" titleStyle={{ fontSize: 60, bottom: 15 }}
-          onPress={() => props.navigation.navigate(languageArr.garbage_screen)} />
+          onPress={() => props.navigation.navigate(selectLanguage(language).garbage_screen)} />
         <Button buttonStyle={styles.button} title="&#9842;" titleStyle={{ fontSize: 40, marginBottom: 10 }}
           onPress={() => createButtonAlert(props.route.params.id)}
         />

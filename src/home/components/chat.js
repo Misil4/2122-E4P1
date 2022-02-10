@@ -12,7 +12,6 @@ const Chat = (props) => {
   const [messages, setMessages] = useState([]);
   let { userTo, userFrom } = useContext(ChatContext)
   const { language, socket } = useContext(AppContext)
-  const [languageArr, setLanguageArr] = useState(selectLanguage("euskera"))
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -51,7 +50,7 @@ const Chat = (props) => {
   }
   const backButtonClick = () => {
     if (props.navigation && props.navigation.goBack) {
-      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: languageArr.userlist_screen }) : props.navigation.navigate("User", { screen: "QrGenerator", params: { email: userFrom.email } })
+      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: "QrGenerator", params: { email: userFrom.email } })
       return true;
     }
     return false;
@@ -103,7 +102,7 @@ const Chat = (props) => {
       {console.log(userTo)}
       <GiftedChat
         messages={messages}
-        placeholder={languageArr.placeholder}
+        placeholder={selectLanguage(language).placeholder}
         onSend={messages => onSend(messages,userTo)}
         user={{
           _id: userTo.name,

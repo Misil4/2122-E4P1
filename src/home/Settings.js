@@ -1,22 +1,23 @@
-import React, { useContext,useState } from "react";
+import React, { useContext,useState,useEffect } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
 
 import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import AppContext from "../../context/context";
+import { selectLanguage } from "../../languages/languages";
 
 
-const Settings = () => {
+const Settings = (props) => {
   const [isOnDefaultToggleSwitch,setisOnDefaultToggleSwitch] = useState(true);
   const [ isOnLargeToggleSwitch,setisOnLargeToggleSwitch] = useState(false);
   const [isOnBlueToggleSwitch,setisOnBlueToggleSwitch] = useState(false)
-  const {setLanguage} = useContext(AppContext)
+  const {setLanguage,language} = useContext(AppContext)
 
   const onToggle = (isOn) => {
     console.log("Changed to " + isOn);
   }
     const placeholder = {
-      label: 'Selecciona tu idioma',
+      label: "Hola",
       value: null,
     };
     return (
