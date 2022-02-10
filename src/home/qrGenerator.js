@@ -6,9 +6,6 @@ import {
   View
 } from 'react-native';
 const QrGenerator = (props) => {
-  useEffect(() => {
-    props.navigation.setOptions({ title: "QRCode" })
-  }, [])
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       {console.log("EL VALOR DE EL EMAIL ES")}

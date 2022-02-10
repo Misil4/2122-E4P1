@@ -24,48 +24,40 @@ export default function Basic(props) {
             .fill('')
             .map((_, i) => ({}))
     );
-    const [userData, setUserData] = useState({
-    })
-    const { socket,language,user } = useContext(AppContext)
-    const [languageArr,setLanguageArr] = useState(null)
+    const { socket,language } = useContext(AppContext)
 
-    const getData = trash => {
-        setListData(trash)
-    }
     const getUpdate = trash => {
         setListData(trash)
     }
     const getAllGarbage = async () => {
         await tokenExpired()
-        socket.emit("garbage_data",user.user.email);
-        socket.once("get_trash", getData)
-
+        const token = await getAsyncStorageKey('token')
+        return axios.get("https://ballin-api-stage.herokuapp.com/garbages",{ headers: { 'Authorization': token }})
+        .then(response => setListData(response.data.garbages))
+        .catch(error => console.error(error)) 
     }
     const DeleteGarbages = (id) => {
         socket.emit("garbage_update", id);
     };
     const UpdateGarbages = async () => {
-        await tokenExpired()
         socket.on("change_trash", getUpdate)
     }
 
     useEffect(() => {
-        setLanguageArr(selectLanguage(language))
         getAllGarbage();
-        return () => socket.off("get_trash", getData);
     }, []);
     useEffect(() => {
         UpdateGarbages();
         return () => socket.off("change_trash", getUpdate);
-    })
+    },[socket])
 
     const createButtonAlert = (data) =>
         Alert.alert(
-            languageArr.delete,
-            languageArr.alert,
+            selectLanguage(language).delete,
+            selectLanguage(language).alert,
             [
                 {
-                    text: languageArr.cancel,
+                    text: selectLanguage(language).cancel,
                     onPress: () => console.log("Cancel Pressed"),
                     style: "cancel"
                 },

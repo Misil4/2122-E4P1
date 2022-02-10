@@ -8,6 +8,7 @@ import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { Text } from 'react-native';
+import axios from 'axios';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
@@ -15,10 +16,7 @@ const UsersList = (props) => {
   const { socket, language, user } = useContext(AppContext);
 
 
-  const getData = users => {
-    console.log(users)
-    setUserListData(users)
-  }
+
   const getUpdate = users => {
     console.log("DATOS RECOGIDOS");
     console.log(users)
@@ -26,11 +24,11 @@ const UsersList = (props) => {
   }
 
   const getAllUsers = async () => {
-    socket.emit("user_data", user.user.email);
-    socket.once("get_users", getData)
-    console.log("EXECUTING GET")
-    setLoading(false)
-
+    await tokenExpired()
+    const token = await getAsyncStorageKey('token');
+    return axios.get("https://ballin-api-stage.herokuapp.com/users",  { headers: { 'Authorization': token }})
+    .then(response => {setUserListData(response.data.users);setLoading(false)})
+    .catch(error => console.error(error))
   }
 
   const UpdateUsers = async () => {
@@ -39,12 +37,11 @@ const UsersList = (props) => {
   }
   useEffect(() => {
     getAllUsers()
-    return () => socket.off("get_users", getData);
   }, [])
   useEffect(() => {
     UpdateUsers()
     return () => socket.off("change_data", getUpdate);
-  }, [usersListData])
+  }, [socket])
   if (loading) {
     return (
       <View style={{ margin: "auto" }}>
