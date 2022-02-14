@@ -21,6 +21,7 @@ import AppContext from "./context/context";
 import{ socket }from "./socket/socket";
 import { getAsyncStorageKey } from "./helpers/asynctorage";
 import { selectLanguage } from "./languages/languages.js";
+import { useStateWithPromise } from "./hooks/useStateWithPromise";
 
 
 
@@ -41,12 +42,19 @@ const stack = createStackNavigator();
 
 
 const App = () => {
-  const [language,setLanguage] = useState("euskera")
+  const getLanguage = async () => {
+    return await getAsyncStorageKey('language')
+    
+  }
+    const [language,setLanguage] = useState("euskera")
   const [userInfo, setUserInfo] = useState(null)
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))
   }, [])
+  useEffect(() => {
+    getLanguage().then(response => response === null ? false : setLanguage(response))
+  },[language])
   const Admin = () => {
     return (
       <>
@@ -91,7 +99,8 @@ const App = () => {
   }
   return (
     <>
-      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language,setLanguage}}>
+      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage}}>
+        {console.log("LANG",language)}
         <NavigationContainer>
           <stack.Navigator
             screenOptions={{
@@ -111,5 +120,5 @@ const App = () => {
       </AppContext.Provider>
     </>
   )
-}
+          }
 export default App;

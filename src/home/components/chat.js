@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
-import { View, BackHandler } from "react-native";
+import { View, BackHandler ,ImageBackground} from "react-native";
 import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
 import { selectLanguage } from "../../../languages/languages";
@@ -56,7 +56,6 @@ const Chat = (props) => {
     return false;
   }
   useEffect(() => {
-    setLanguageArr(selectLanguage(language))
     BackHandler.addEventListener('hardwareBackPress', backButtonClick)
     props.navigation.setOptions({ title: userTo.name, headerLeft: () => (<Avatar source={{ uri: userTo.picture }} rounded size={40} containerStyle={{ marginLeft: 35 }} />) })
     if (userFrom.name === "Admin") {
@@ -97,10 +96,9 @@ const Chat = (props) => {
   }, [])
 
   return (
-    <View style={{ flexGrow: 1, borderColor: "green", borderWidth: 2 }}>
-      {console.log("PROPS INICIALES")}
-      {console.log(userTo)}
+    <ImageBackground source={{uri : "https://i.pinimg.com/564x/80/a7/f6/80a7f65d0337d44257018c821918b077.jpg"}} resizeMode="cover" style={{ flexGrow: 1, borderColor: "green", borderWidth: 2, }}>
       <GiftedChat
+      backgroundImage='../../assets/logo_app.jpg'
         messages={messages}
         placeholder={selectLanguage(language).placeholder}
         onSend={messages => onSend(messages,userTo)}
@@ -109,7 +107,7 @@ const Chat = (props) => {
           avatar: userFrom.name === "Admin" ? "" : userFrom.picture
         }}
       />
-    </View>
+    </ImageBackground>
   )
 }
 export default Chat

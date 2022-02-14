@@ -5,13 +5,14 @@ import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
+import { setAsyncStorageKey } from "../../helpers/asynctorage";
 
 
 const Settings = (props) => {
   const [isOnDefaultToggleSwitch,setisOnDefaultToggleSwitch] = useState(true);
   const [ isOnLargeToggleSwitch,setisOnLargeToggleSwitch] = useState(false);
   const [isOnBlueToggleSwitch,setisOnBlueToggleSwitch] = useState(false)
-  const {setLanguage,language} = useContext(AppContext)
+  const {setLanguage} = useContext(AppContext)
 
   const onToggle = (isOn) => {
     console.log("Changed to " + isOn);
@@ -33,7 +34,7 @@ const Settings = (props) => {
           }}
         />
         <RNPickerSelect
-          onValueChange={(value) => setLanguage(value)}
+          onValueChange={ (value) => {setLanguage(value);setAsyncStorageKey("language",value)}}
           placeholder={placeholder}
           style={defaultStyles}
           items={[
