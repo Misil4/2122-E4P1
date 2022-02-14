@@ -13,7 +13,7 @@ import axios from 'axios';
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { socket, language, user } = useContext(AppContext);
+  const { socket, theme } = useContext(AppContext);
 
 
 
@@ -26,9 +26,9 @@ const UsersList = (props) => {
   const getAllUsers = async () => {
     await tokenExpired()
     const token = await getAsyncStorageKey('token');
-    return axios.get("https://ballin-api-stage.herokuapp.com/users",  { headers: { 'Authorization': token }})
-    .then(response => {setUserListData(response.data.users);setLoading(false)})
-    .catch(error => console.error(error))
+    return axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
+      .then(response => { setUserListData(response.data.users); setLoading(false) })
+      .catch(error => console.error(error))
   }
 
   const UpdateUsers = async () => {
@@ -50,7 +50,7 @@ const UsersList = (props) => {
     );
   }
   return (
-    <SafeAreaProvider><View style={styles.container}>
+    <SafeAreaProvider style={theme ? styles.darkTextContainer : styles.textContainer}><View >
       <ScrollView>
         {usersListData.map((element, i) => {
           return (
@@ -58,39 +58,52 @@ const UsersList = (props) => {
               friction={90} //
               tension={100} // These props are passed to the parent component (here TouchableScale)
               activeScale={0.95} //
+              containerStyle= {theme ? styles.darkContainer : styles.container }
             >
-              <Avatar
-                size="medium"
-                source={{ uri: element.picture }}
-                onPress={() => {console.log(element);props.navigation.navigate("Admin", { screen: "ChatAdmin", params: { user: element } })}}
-                activeOpacity={0.7}
-                titleStyle={{ color: "black" }}
-                rounded
-              />
-              <Badge
-                status={element.login_status === true ? "success" : "error"}
-                containerStyle={{ position: 'absolute', top: 17, right: "93%" }} />
-              <ListItem.Content>
-                <ListItem.Title>{element.name}</ListItem.Title>
-                <ListItem.Subtitle>{element.email}</ListItem.Subtitle>
-              </ListItem.Content>
-            </ListItem>
-          )
+        <Avatar
+          size="medium"
+          source={{ uri: element.picture }}
+          onPress={() => { console.log(element); props.navigation.navigate("Admin", { screen: "ChatAdmin", params: { user: element } }) }}
+          activeOpacity={0.7}
+          titleStyle={{ color: "black" }}
+          rounded
+        />
+        <Badge
+          status={element.login_status === true ? "success" : "error"}
+          containerStyle={{ position: 'absolute', top: 17, right: "93%" }} />
+        <ListItem.Content>
+          <ListItem.Title style={theme ? styles.darkTextContainer : styles.textContainer}>{element.name}</ListItem.Title>
+          <ListItem.Subtitle style={theme ? styles.darkTextContainer: styles.textContainer}>{element.email}</ListItem.Subtitle>
+        </ListItem.Content>
+      </ListItem>
+      )
         })}
-      </ScrollView>
+    </ScrollView>
     </View>
-    </SafeAreaProvider>
+    </SafeAreaProvider >
   )
 }
 export default UsersList
 const styles = StyleSheet.create({
   container: {
     borderWidth: 0,
-    borderColor: "white",
     justifyContent: "center",
+  },
+  darkContainer: {
+    borderWidth: 0,
+    justifyContent: "center",
+    color : "white",
+    backgroundColor : "black"
   },
   listItem: {
     borderWidth: 0,
-    borderColor:  "#61b97c"
+    borderColor: "#61b97c"
+  },
+  textContainer : {
+    color : "black"
+  },
+  darkTextContainer : {
+    color : "white",
+    backgroundColor : "black"
   }
 });

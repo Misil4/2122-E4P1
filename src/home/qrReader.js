@@ -8,7 +8,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Linking
+  Linking,
+  View
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -19,7 +20,7 @@ import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
 
 const QrReader = () => {
-const {socket} = useContext(AppContext)
+const {socket,theme} = useContext(AppContext)
 const [data,setData] = useStateWithPromise({email : ''})
   const onSuccess = async (e) => {
     await setData({ email: e.data })
@@ -42,6 +43,7 @@ const [data,setData] = useStateWithPromise({email : ''})
     }
 
   return (
+    <View style={theme ? styles.darkContainer : styles.container}>
     <QRCodeScanner
       reactivate={true}
       reactivateTimeout={7000}
@@ -59,10 +61,17 @@ const [data,setData] = useStateWithPromise({email : ''})
         </TouchableOpacity>
       }
     />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container : {
+    backgroundColor : "white"
+  },
+  darkContainer : {
+    backgroundColor : "black"
+  },
   centerText: {
     flex: 1,
     fontSize: 18,

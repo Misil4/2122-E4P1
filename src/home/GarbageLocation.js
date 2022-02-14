@@ -16,6 +16,7 @@ import { tokenExpired } from '../../helpers/jwt';
 import { ScrollView } from 'react-native';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 export default function Basic(props) {
@@ -24,7 +25,7 @@ export default function Basic(props) {
             .fill('')
             .map((_, i) => ({}))
     );
-    const { socket,language } = useContext(AppContext)
+    const { socket,language,theme } = useContext(AppContext)
 
     const getUpdate = trash => {
         setListData(trash)
@@ -71,18 +72,18 @@ export default function Basic(props) {
             style={styles.rowFront}
             underlayColor={'white'}
         >
-            <View style={styles.listItemContainer}>
+            <View style={theme ? styles.darkListItemContainer : styles.listItemContainer}>
                 <View style={styles.avatarContainer}>
 
                 </View>
                 <View style={styles.chatDetailsContainer}>
                     <View style={styles.chatDetailsContainerWrap}>
                         <View style={styles.nameContainer}>
-                            <Text style={styles.nameText}>{data.item.user}</Text>
+                            <Text style={theme ? styles.darkNameText: styles.nameText}>{data.item.user}</Text>
                             <Text style={styles.msgText}>{data.item.message}</Text>
                         </View>
                         <View style={styles.dateContainer}>
-                            <Text style={styles.dateText}>{/*data.item.location.timestamp.substring(0, 21)*/}
+                            <Text style={theme ? styles.darkDateText : styles.dateText}>{data.item.location.timestamp.substring(0, 21)}
                             </Text>
                         </View>
                     </View>
@@ -109,7 +110,7 @@ export default function Basic(props) {
 
     return (
 
-        <View style={styles.container}>
+        <SafeAreaProvider style={theme ? styles.darkContainer : styles.container}>
             <SwipeListView
                 data={listData}
                 renderItem={renderItem}
@@ -119,17 +120,20 @@ export default function Basic(props) {
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
-
             />
-        </View>
+        </SafeAreaProvider>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 2,
-        borderColor: "green",
+        borderWidth: 0,
         justifyContent: "center",
+    },
+    darkContainer : {
+        borderWidth : 0,
+        justifyContent : "center",
+        backgroundColor : "black",
     },
     backTextWhite: {
         color: 'white',
@@ -170,7 +174,13 @@ const styles = StyleSheet.create({
     listItemContainer: { /*Hemendik hasita*/
         flex: 1,
         flexDirection: "row",
-        padding: 1
+        padding: 1,
+    },
+    darkListItemContainer: { /*Hemendik hasita*/
+        flex: 1,
+        flexDirection: "row",
+        padding: 1,
+        backgroundColor : "black"
     },
     avatarContainer: {
         flex: 1,
@@ -195,7 +205,19 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#000"
     },
+    darkNameText: {
+        fontWeight: "bold",
+        color: "white"
+    },
     dateText: {
+        fontSize: 12,
+    },
+    darkDateText: {
+        fontSize: 12,
+        color : "white"
+    },
+    darkDateText: {
+        color : "white",
         fontSize: 12
     },
     avatar: {

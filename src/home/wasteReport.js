@@ -22,7 +22,7 @@ const WasteReport = props => {
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
-  const {socket,language} = useContext(AppContext)
+  const {socket,language,theme} = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -94,7 +94,7 @@ const WasteReport = props => {
       ]
     );
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={theme ? styles.darkContainer : styles.container}>
       {console.log("USERDATA")}
       {console.log(userData)}
       {mapOn !== false ? <MapView
@@ -125,6 +125,12 @@ const WasteReport = props => {
 
 
 const styles = StyleSheet.create({
+  container : {
+    backgroundColor : "white"
+  },
+  darkContainer : {
+    backgroundColor : "black"
+  },
   map: {
     flex: 1,
     margin: "auto",

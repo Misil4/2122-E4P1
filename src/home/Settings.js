@@ -5,37 +5,44 @@ import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
-import { setAsyncStorageKey, getAsyncStorageKey } from "../../helpers/asynctorage";
+import { setAsyncStorageKey } from "../../helpers/asynctorage";
 import { Switch } from 'react-native-paper';
 
 const Settings = (props) => {
 
-  const [isOnBlueToggleSwitch, setisOnBlueToggleSwitch] = useState(false)
   const { setLanguage, language, setTheme, theme } = useContext(AppContext)
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-
-  const getTheme = async () => {
-    return await getAsyncStorageKey("theme")
-
-  }
 
   const placeholder = {
     label: selectLanguage(language).select_language,
     value: null,
   };
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      borderWidth: 2,
+      borderColor: "green",
+      backgroundColor : theme ? "black" : "white",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    instructions: {
+      textAlign: "center",
+      color: theme ? "white" : "#333333",
+      marginBottom: 5
+    }
+  });
   return (
     <View style={styles.container}>
       <Text style={styles.instructions}>Dark Mode</Text>
       
 
       <Switch 
-      value={getTheme().then(response => response === null ? isSwitchOn : response)} 
+      value={theme} 
       onValueChange={value => {
-        setisOnBlueToggleSwitch(value);
-        setAsyncStorageKey("theme", value)
-        setTheme(value)}}/>
+        setAsyncStorageKey("theme", JSON.stringify(value))
+        setTheme(value)
+        console.log(value)}
+        }/>
 
       <RNPickerSelect
         onValueChange={(value) => { setLanguage(value); setAsyncStorageKey("language", value) }}
@@ -50,21 +57,6 @@ const Settings = (props) => {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderWidth: 2,
-    borderColor: "green",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
-  }
-});
 
 const defaultStyles = StyleSheet.create({
   viewContainer: {

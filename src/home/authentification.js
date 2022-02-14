@@ -35,7 +35,7 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const { socket, user, setUser, language } = useContext(AppContext);
+  const { socket, user, setUser, language,theme } = useContext(AppContext);
 
   useEffect(() => {
     // Initial configuration
@@ -218,13 +218,13 @@ const authentification = (props) => {
     );
   } else {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={theme ? styles.darkContainer : styles.container}>
         {console.log("ROL ACTUAL")}
         {console.log(rol)}
         {console.log("INFO")}
         {console.log(user)}
         {console.log(login)}
-        <View style={styles.container}>
+        <View >
           <View style={styles.container}>
             {login !== false ? (
               <>
@@ -233,7 +233,7 @@ const authentification = (props) => {
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
-                  <Text style={{ color: "white" }}>{selectLanguage(language).logout}</Text>
+                  <Text style={theme ? styles.darkText : styles.text}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
                   onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={{ color: "white" }}>{selectLanguage(language).return}</Text></TouchableOpacity>
@@ -258,7 +258,13 @@ export default authentification;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
@@ -281,14 +287,10 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 30,
   },
-  footerHeading: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: 'grey',
+  text : {
+    color : "black"
   },
-  footerText: {
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'grey',
-  },
+  darkText : {
+    color : "white"
+  }
 });

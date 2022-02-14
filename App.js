@@ -44,10 +44,14 @@ const stack = createStackNavigator();
 const App = () => {
   const getLanguage = async () => {
     return await getAsyncStorageKey('language')
-    
+  }
+  const getTheme = async () => {
+    const theme = await getAsyncStorageKey('theme')
+    return JSON.parse(theme)
+
   }
   const [language,setLanguage] = useState("euskera")
-  const [theme, setTheme] = useState(false)
+  const [theme, setTheme] = useState("false")
   const [userInfo, setUserInfo] = useState(null)
   useEffect(() => {
     SplashScreen.hide()
@@ -56,6 +60,9 @@ const App = () => {
   useEffect(() => {
     getLanguage().then(response => response === null ? false : setLanguage(response))
   },[language])
+  useEffect(() => {
+    getTheme().then(response => response === null ? false : setTheme(response) )
+  },[theme])
   const Admin = () => {
     return (
       <>
@@ -63,6 +70,9 @@ const App = () => {
          screenOptions={{
           activeTintColor: '#e91e63',
           itemStyle: { marginVertical: 5 },
+          drawerLabelStyle : {
+            color : theme ? "white" : "black"
+          }
         }}
           drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName.toLowerCase()}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
           <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color= "#61b97c" />), headerShown: false, swipeEnabled: false }} />
@@ -86,6 +96,9 @@ const App = () => {
       screenOptions={{
         activeTintColor: '#e91e63',
         itemStyle: { marginVertical: 5 },
+        drawerLabelStyle : {
+          color : theme ? "white" : "black"
+        }
       }}
         drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName}` : "Bienvenido User"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
         <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color= "#61b97c" />), headerShown: false, swipeEnabled: false }} />

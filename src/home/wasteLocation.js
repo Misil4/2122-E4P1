@@ -11,11 +11,12 @@ import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 
 
 const wasteLocation = (props) => {
-  const {language,socket} = useContext(AppContext)
+  const {language,socket,theme} = useContext(AppContext)
   const updateStatusComplete = async (id) => {
     socket.emit("garbage_update", id);
   }
@@ -33,7 +34,7 @@ const wasteLocation = (props) => {
       ]
     );
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider style={theme ? styles.darkContainer :styles.container}>
       <MapView
         onPress={() => { }}
         style={styles.map}
@@ -53,17 +54,27 @@ const wasteLocation = (props) => {
           onPress={() => createButtonAlert(props.route.params.id)}
         />
       </View>
-    </View>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: 
+  { flex: 1 },
   map: { flex: 1 },
   buttonContainer: {
     flexDirection: "row",
     marginLeft: 20,
     justifyContent: 'space-evenly'
+  },
+  darkContainer: 
+  { flex: 1 },
+  map: { flex: 1 },
+  buttonContainer: {
+    flexDirection: "row",
+    marginLeft: 20,
+    justifyContent: 'space-evenly',
+    backgroundColor : "black"
   },
   button:
   {
