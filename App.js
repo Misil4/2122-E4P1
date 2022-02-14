@@ -46,7 +46,8 @@ const App = () => {
     return await getAsyncStorageKey('language')
     
   }
-    const [language,setLanguage] = useState("euskera")
+  const [language,setLanguage] = useState("euskera")
+  const [theme, setTheme] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
   useEffect(() => {
     SplashScreen.hide()
@@ -99,7 +100,7 @@ const App = () => {
   }
   return (
     <>
-      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage}}>
+      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme}}>
         {console.log("LANG",language)}
         <NavigationContainer>
           <stack.Navigator
