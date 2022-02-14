@@ -64,10 +64,10 @@ const App = () => {
           itemStyle: { marginVertical: 5 },
         }}
           drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName.toLowerCase()}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
-          <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="green" />), headerShown: false, swipeEnabled: false }} />
-          <drawer.Screen name="QrReader" component={QrReader} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code-scanner" size={30} color="green" />), }} />
-          <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color="green" />), }} />
-          <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color="green" />), }} />
+          <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color= "#61b97c" />), headerShown: false, swipeEnabled: false }} />
+          <drawer.Screen name="QrReader" component={QrReader} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code-scanner" size={30} color= "#61b97c" />), }} />
+          <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color= "#61b97c" />), }} />
+          <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color= "#61b97c" />), }} />
           <drawer.Screen name="ChatAdmin" component={ChatAdmin} options={{
             drawerItemStyle: { height: 0 }
           }} />
@@ -75,7 +75,7 @@ const App = () => {
             options={{
               drawerItemStyle: { height: 0 }
             }} />
-          <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="green" />), }} />
+          <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
         </drawer.Navigator>
       </>)
   }
@@ -87,9 +87,9 @@ const App = () => {
         itemStyle: { marginVertical: 5 },
       }}
         drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName}` : "Bienvenido User"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
-        <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="green" />), headerShown: false, swipeEnabled: false }} />
-        <drawer.Screen name={selectLanguage(language).qr_gen_screen} component={QrGenerator} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color="green" />), }} />
-        <drawer.Screen name={selectLanguage(language).location_screen} component={WasteReport} options={{ drawerIcon: (({ focused }) => <Icon name="location-on" size={30} color="green" />), }} />
+        <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color= "#61b97c" />), headerShown: false, swipeEnabled: false }} />
+        <drawer.Screen name={selectLanguage(language).qr_gen_screen} component={QrGenerator} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color= "#61b97c" />), }} />
+        <drawer.Screen name={selectLanguage(language).location_screen} component={WasteReport} options={{ drawerIcon: (({ focused }) => <Icon name="location-on" size={30} color= "#61b97c" />), }} />
         <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="green" />), }} />
         <drawer.Screen name="Chat" component={ChatUser} options={{
           drawerItemStyle: { height: 0 }

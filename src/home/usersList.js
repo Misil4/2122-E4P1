@@ -85,12 +85,12 @@ const UsersList = (props) => {
 export default UsersList
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 2,
-    borderColor: "green",
+    borderWidth: 0,
+    borderColor: "white",
     justifyContent: "center",
   },
   listItem: {
     borderWidth: 0,
-    borderColor: "green"
+    borderColor:  "#61b97c"
   }
 });

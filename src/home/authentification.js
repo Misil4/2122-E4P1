@@ -48,6 +48,7 @@ const authentification = (props) => {
     });
     // Check if user is already signed in
     _isSignedIn();
+    console.log("EXECUTING AUTH")
   }, []);
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
@@ -57,7 +58,7 @@ const authentification = (props) => {
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
       setEmail(user_email)
-      socket.emit("id_save",user_email)
+      socket.emit("id_save", user_email)
       // Set User Info if user is already signed in
       setLoading(false);
       setLogin(true);
@@ -159,7 +160,7 @@ const authentification = (props) => {
       setLogin(true);
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
-      socket.emit("id_save",userEmail)
+      socket.emit("id_save", userEmail)
       setMessage(selectLanguage(language).user_logged)
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
@@ -275,7 +276,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     alignItems: 'center',
-    backgroundColor: 'green',
+    backgroundColor: "#61b97c",
     padding: 10,
     width: 300,
     marginTop: 30,

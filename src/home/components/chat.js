@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat ,Bubble} from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
 import { View, BackHandler ,ImageBackground} from "react-native";
 import { Avatar } from "react-native-elements";
@@ -95,11 +95,25 @@ const Chat = (props) => {
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
   }, [])
 
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: "#61b97c"
+          }
+        }}
+      />
+    )
+  }
   return (
-    <ImageBackground source={{uri : "https://i.pinimg.com/564x/80/a7/f6/80a7f65d0337d44257018c821918b077.jpg"}} resizeMode="cover" style={{ flexGrow: 1, borderColor: "green", borderWidth: 2, }}>
+    <ImageBackground source={{uri : "https://i.imgur.com/4jPTrzf.jpg"}} resizeMode="cover" style={{ flexGrow: 1 }}>
       <GiftedChat
+      
       backgroundImage='../../assets/logo_app.jpg'
         messages={messages}
+        renderBubble={renderBubble}
         placeholder={selectLanguage(language).placeholder}
         onSend={messages => onSend(messages,userTo)}
         user={{
