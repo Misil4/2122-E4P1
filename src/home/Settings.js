@@ -9,14 +9,10 @@ import { setAsyncStorageKey } from "../../helpers/asynctorage";
 
 
 const Settings = (props) => {
-  const [isOnDefaultToggleSwitch,setisOnDefaultToggleSwitch] = useState(true);
-  const [ isOnLargeToggleSwitch,setisOnLargeToggleSwitch] = useState(false);
-  const [isOnBlueToggleSwitch,setisOnBlueToggleSwitch] = useState(false)
-  const {setLanguage} = useContext(AppContext)
 
-  const onToggle = (isOn) => {
-    console.log("Changed to " + isOn);
-  }
+  const [isOnBlueToggleSwitch,setisOnBlueToggleSwitch] = useState(false)
+  const {setLanguage, language} = useContext(AppContext)
+
     const placeholder = {
       label: "Hola",
       value: null,
