@@ -112,8 +112,14 @@ const WasteReport = props => {
         longitudeDelta: 0.01
       }} />
       </MapView> : null}
-      <View style={styles.buttonContainer}>
-      <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8,marginRight: 5  }}
+      <View style={{
+          flex: 1,
+          flexDirection: 'row',
+          position: 'absolute',
+          alignSelf: 'center',
+          bottom: 15
+       }}>
+      <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8}}
         onPress={() => createButtonAlert()} />
         <Button buttonStyle={styles.button} title="&#128172;" titleStyle={{ fontSize: 40, marginBottom: 5,marginLeft: 5  }}
           onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>Hola
