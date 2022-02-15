@@ -37,7 +37,8 @@ const [data,setData] = useStateWithPromise({email : ''})
   const updateUserStatus = async (email) => {
     //peticion a axios y hacer put
     console.log(email)
-    tokenExpired()
+    const token = await getAsyncStorageKey('token')
+    tokenExpired(token)
     badge_update(email)
     
     }
@@ -67,7 +68,6 @@ const [data,setData] = useStateWithPromise({email : ''})
 
 const styles = StyleSheet.create({
   container : {
-    flex: 1,
     backgroundColor : "#F5F5F5",
   },
   darkContainer : {
