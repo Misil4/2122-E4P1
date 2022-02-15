@@ -1,15 +1,12 @@
 'use strict';
 
-import React, { Component, useContext, } from 'react';
+import React, {useContext, } from 'react';
 import axios from 'axios';
 
 import {
-  AppRegistry,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  Linking,
-  View
+  View,
+  Dimensions
 } from 'react-native';
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -20,7 +17,6 @@ import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
 
 const QrReader = () => {
-const {socket,theme} = useContext(AppContext)
 const [data,setData] = useStateWithPromise({email : ''})
   const onSuccess = async (e) => {
     await setData({ email: e.data })
@@ -37,46 +33,33 @@ const [data,setData] = useStateWithPromise({email : ''})
   const updateUserStatus = async (email) => {
     //peticion a axios y hacer put
     console.log(email)
-    tokenExpired()
+    const token = await getAsyncStorageKey('token')
+    tokenExpired(token)
     badge_update(email)
     
     }
 
   return (
-    <View style={theme ? styles.darkContainer : styles.container}>
     <QRCodeScanner
       reactivate={true}
       reactivateTimeout={7000}
       showMarker
       onRead={onSuccess}
+      cameraStyle={styles.cameraContainer}
       topContent={
-        <Text style={styles.centerText}>
-          {data.email}
-        </Text>
-      }
-      bottomContent={
-
-        <TouchableOpacity style={styles.buttonTouchable}>
-          <Text style={styles.buttonText}></Text>
-        </TouchableOpacity>
+        <View style={styles.centerText}>
+          
+        </View>
       }
     />
-    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container : {
-    flex: 1,
-    backgroundColor : "#F5F5F5",
-  },
-  darkContainer : {
-    backgroundColor : "#232322"
-  },
   centerText: {
     flex: 1,
     fontSize: 18,
-    padding: 15,
+    padding: 32,
     color: '#777',
     fontFamily : "Gotham"
   },
@@ -90,6 +73,11 @@ const styles = StyleSheet.create({
   },
   buttonTouchable: {
     padding: 16
-  }
+  },
+  cameraContainer: {
+    height: Dimensions.get('window').height,
+  },
+
+
 });
 export default QrReader
