@@ -1,14 +1,10 @@
 'use strict';
 
-import React, { Component, useContext, } from 'react';
+import React, {useContext, } from 'react';
 import axios from 'axios';
 
 import {
-  AppRegistry,
   StyleSheet,
-  Text,
-  TouchableOpacity,
-  Linking,
   View,
   Dimensions
 } from 'react-native';
@@ -21,7 +17,6 @@ import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
 
 const QrReader = () => {
-const {socket,theme} = useContext(AppContext)
 const [data,setData] = useStateWithPromise({email : ''})
   const onSuccess = async (e) => {
     await setData({ email: e.data })
