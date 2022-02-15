@@ -229,14 +229,14 @@ const authentification = (props) => {
             {login !== false ? (
               <>
                 <Image style={styles.imageStyle} source={{ uri: user?.user.photo }} />
-                <Text>{user?.user.givenName}</Text>
+                <Text style={theme ? styles.darkText : styles.text}>{user?.user.givenName}</Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
-                  <Text style={theme ? styles.darkText : styles.text}>{selectLanguage(language).logout}</Text>
+                  <Text style={styles.text}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={{ color: "white" }}>{selectLanguage(language).return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={styles.text}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton
@@ -258,13 +258,14 @@ export default authentification;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor : "#F5F5F5",
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
   },
   darkContainer: {
     flex: 1,
-    backgroundColor: 'black',
+    backgroundColor: "#232322",
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
@@ -274,6 +275,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 20,
+    fontFamily : "Gotham"
   },
   imageStyle: {
     width: 200,
@@ -288,9 +290,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   text : {
-    color : "black"
+    color : "#232322",
+    fontFamily : "Gotham"
   },
   darkText : {
-    color : "white"
+    color : "#F5F5F5",
+    fontFamily : "Gotham"
   }
 });

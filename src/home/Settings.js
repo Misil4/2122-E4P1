@@ -16,19 +16,23 @@ const Settings = (props) => {
     label: selectLanguage(language).select_language,
     value: null,
   };
+  useEffect (() => {
+    props.navigation.setOptions({title : selectLanguage(language).settings_screen})
+  },[])
   const styles = StyleSheet.create({
     container: {
       flex: 1,
       borderWidth: 2,
       borderColor: "green",
-      backgroundColor : theme ? "black" : "white",
+      backgroundColor : theme ? "#232322" : "#F5F5F5",
       justifyContent: "center",
       alignItems: "center",
     },
     instructions: {
       textAlign: "center",
-      color: theme ? "white" : "#333333",
-      marginBottom: 5
+      color: theme ? "#F5F5F5": "#232322",
+      marginBottom: 5,
+      fontFamily : "Gotham"
     }
   });
   return (
@@ -60,7 +64,8 @@ const Settings = (props) => {
 
 const defaultStyles = StyleSheet.create({
   viewContainer: {
-    padding: 70
+    padding: 70,
+    fontFamily : "Gotham"
   },
   modalViewMiddle: {
     height: 45,

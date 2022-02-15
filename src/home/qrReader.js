@@ -67,16 +67,17 @@ const [data,setData] = useStateWithPromise({email : ''})
 
 const styles = StyleSheet.create({
   container : {
-    backgroundColor : "white"
+    backgroundColor : "#F5F5F5"
   },
   darkContainer : {
-    backgroundColor : "black"
+    backgroundColor : "#232322"
   },
   centerText: {
     flex: 1,
     fontSize: 18,
     padding: 15,
-    color: '#777'
+    color: '#777',
+    fontFamily : "Gotham"
   },
   textBold: {
     fontWeight: '500',

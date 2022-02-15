@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     marginLeft: 20,
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    backgroundColor : "#F5F5F5"
   },
   darkContainer: 
   { flex: 1 },
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 20,
     justifyContent: 'space-evenly',
-    backgroundColor : "black"
+    backgroundColor : "#232322"
   },
   button:
   {

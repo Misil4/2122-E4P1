@@ -70,7 +70,7 @@ export default function Basic(props) {
         <TouchableHighlight
             onPress={() => console.log('You touched me')}
             style={styles.rowFront}
-            underlayColor={'white'}
+            underlayColor={"#F5F5F5"}
         >
             <View style={theme ? styles.darkListItemContainer : styles.listItemContainer}>
                 <View style={styles.avatarContainer}>
@@ -129,19 +129,21 @@ const styles = StyleSheet.create({
     container: {
         borderWidth: 0,
         justifyContent: "center",
+        backgroundColor : "#F5F5F5"
     },
     darkContainer : {
         borderWidth : 0,
         justifyContent : "center",
-        backgroundColor : "black",
+        backgroundColor : "#232322",
     },
     backTextWhite: {
-        color: 'white',
+        color: "#F5F5F5",
+        fontFamily : "Gotham"
     },
     rowFront: {
         alignItems: 'center',
-        backgroundColor: 'white', //Color de fondo 
-        borderBottomColor: 'black',
+        backgroundColor: "#F5F5F5", //Color de fondo 
+        borderBottomColor: "#232322",
         borderBottomWidth: 0.5,
         justifyContent: 'center',
         height: 70,
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         padding: 1,
-        backgroundColor : "black"
+        backgroundColor : "#232322"
     },
     avatarContainer: {
         flex: 1,
@@ -202,23 +204,21 @@ const styles = StyleSheet.create({
         flex: 1
     },
     nameText: {
-        fontWeight: "bold",
-        color: "#000"
+        color: "#000",
+        fontFamily : "Gotham"
     },
     darkNameText: {
-        fontWeight: "bold",
-        color: "white"
+        color: "#F5F5F5",
+        fontFamily : "Gotham"
     },
     dateText: {
         fontSize: 12,
+        fontFamily : "Gotham"
     },
     darkDateText: {
         fontSize: 12,
-        color : "white"
-    },
-    darkDateText: {
-        color : "white",
-        fontSize: 12
+        color : "#F5F5F5"
+        ,fontFamily : "Gotham"
     },
     avatar: {
         borderRadius: 30,

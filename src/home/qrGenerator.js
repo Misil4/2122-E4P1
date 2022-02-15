@@ -29,12 +29,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     justifyContent: 'center', 
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor : "#F5F5F5"
   },
   darkContainer : {
     flex: 1, 
     justifyContent: 'center', 
     alignItems: 'center',
-    backgroundColor: "black"
+    backgroundColor: "#232322"
   }
 })

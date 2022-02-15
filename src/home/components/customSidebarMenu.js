@@ -22,11 +22,12 @@ const CustomSidebarMenu = (props) => {
 const {theme} = useContext(AppContext)
 const styles = StyleSheet.create({
   constainer : {
-    flex : 1
+    flex : 1,
+    backgroundColor : "#F5F5F5"
   },
   darkContainer : {
     flex : 1,
-    backgroundColor : "black",
+    backgroundColor : "#232322",
   },
   sideMenuProfileIcon: {
     resizeMode: 'center',
@@ -47,12 +48,12 @@ const styles = StyleSheet.create({
   },
   userText : {
       textAlign: "center",
-      fontWeight: "bold"
+      fontFamily : "Gotham-Bold"
   },
   darkUserText : {
     textAlign: "center",
-    fontWeight: "bold",
-    color : theme ? "white" : "black"
+    fontFamily : "Gotham-Bold",
+    color : theme ? "#F5F5F5" : "#232322"
 }
 });
   return (

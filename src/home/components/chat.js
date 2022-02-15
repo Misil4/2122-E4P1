@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { GiftedChat ,Bubble} from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
-import { View, BackHandler ,ImageBackground} from "react-native";
+import { View, BackHandler ,ImageBackground,StyleSheet} from "react-native";
 import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
 import { selectLanguage } from "../../../languages/languages";
 import AppContext from "../../../context/context";
 import { useIsFocused } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 const Chat = (props) => {
   const isFocused = useIsFocused()
   const [messages, setMessages] = useState([]);
   let { userTo, userFrom } = useContext(ChatContext)
-  const { language, socket } = useContext(AppContext)
+  const { language, socket,theme } = useContext(AppContext)
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -99,21 +100,27 @@ const Chat = (props) => {
     return (
       <Bubble
         {...props}
+        textStyle={{
+          right: styles.bubbleTextRight,
+          left: styles.bubbleTextLeft,
+        }}
         wrapperStyle={{
           right: {
-            backgroundColor: "#61b97c"
+            backgroundColor: "#61b97c",
           }
         }}
       />
     )
   }
   return (
+    <SafeAreaProvider style={theme ? styles.darkContainer : styles.container}>
     <ImageBackground source={{uri : "https://i.imgur.com/4jPTrzf.jpg"}} resizeMode="cover" style={{ flexGrow: 1 }}>
       <GiftedChat
       
       backgroundImage='../../assets/logo_app.jpg'
         messages={messages}
         renderBubble={renderBubble}
+        sty
         placeholder={selectLanguage(language).placeholder}
         onSend={messages => onSend(messages,userTo)}
         user={{
@@ -122,6 +129,24 @@ const Chat = (props) => {
         }}
       />
     </ImageBackground>
+    </SafeAreaProvider>
   )
 }
+
+const styles = StyleSheet.create({
+container : {
+  backgroundColor : "#FDF4E3"
+},
+darkContainer : {
+  backgroundColor : "#232322"
+},
+bubbleTextRight : {
+  fontFamily : 'Gotham',
+  fontWeight: null
+},
+bubbleTextLeft : {
+  fontFamily : 'Gotham',
+  fontWeight: null
+}
+})
 export default Chat

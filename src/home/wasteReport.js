@@ -126,10 +126,10 @@ const WasteReport = props => {
 
 const styles = StyleSheet.create({
   container : {
-    backgroundColor : "white"
+    backgroundColor : "#F5F5F5"
   },
   darkContainer : {
-    backgroundColor : "black"
+    backgroundColor : "#232322"
   },
   map: {
     flex: 1,

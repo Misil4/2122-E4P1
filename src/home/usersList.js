@@ -88,22 +88,25 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 0,
     justifyContent: "center",
+    backgroundColor : "#F5F5F5"
   },
   darkContainer: {
     borderWidth: 0,
     justifyContent: "center",
-    color : "white",
-    backgroundColor : "black"
+    color : "#F5F5F5",
+    backgroundColor : "#232322"
   },
   listItem: {
     borderWidth: 0,
     borderColor: "#61b97c"
   },
   textContainer : {
-    color : "black"
+    color : "#232322",
+    fontFamily : 'Gotham Light',
+    backgroundColor : "#F5F5F5"
   },
   darkTextContainer : {
-    color : "white",
-    backgroundColor : "black"
+    color : "#F5F5F5",
+    backgroundColor : "#232322"
   }
 });
