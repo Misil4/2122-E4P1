@@ -102,11 +102,12 @@ const styles = StyleSheet.create({
   },
   textContainer : {
     color : "#232322",
-    fontFamily : 'Gotham Light',
+    fontFamily : 'Gotham-BookItalic',
     backgroundColor : "#F5F5F5"
   },
   darkTextContainer : {
     color : "#F5F5F5",
+    fontFamily : 'Gotham-BookItalic',
     backgroundColor : "#232322"
   }
 });

@@ -72,7 +72,7 @@ const App = () => {
           itemStyle: { marginVertical: 5 },
           drawerLabelStyle : {
             color : theme ? "white" : "black",
-            fontFamily : "Gotham"
+            fontFamily : "Gotham-BookItalic"
           }
         }}
           drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName.toLowerCase()}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
@@ -98,7 +98,8 @@ const App = () => {
         activeTintColor: '#e91e63',
         itemStyle: { marginVertical: 5 },
         drawerLabelStyle : {
-          color : theme ? "white" : "black"
+          color : theme ? "white" : "black",
+          fontFamily : "Gotham-BookItalic"
         }
       }}
         drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName}` : "Bienvenido User"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>

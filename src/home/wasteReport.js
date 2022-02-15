@@ -88,6 +88,7 @@ const WasteReport = props => {
             console.log(data)
             const list = { data: data, user: email }
             socket.emit("insert_garbage", list)
+            props.navigation.navigate("User", { screen : selectLanguage(language).qr_gen_screen,params : {email : email}},)
 
           }
         }
@@ -116,7 +117,7 @@ const WasteReport = props => {
       <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8,marginRight: 5  }}
         onPress={() => createButtonAlert()} />
         <Button buttonStyle={styles.button} title="&#128172;" titleStyle={{ fontSize: 40, marginBottom: 5,marginLeft: 5  }}
-          onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>Hola
+          onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>
         </Button>
       </View>
     </SafeAreaProvider>

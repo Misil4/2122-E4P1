@@ -48,23 +48,25 @@ const styles = StyleSheet.create({
   },
   userText : {
       textAlign: "center",
-      fontFamily : "Gotham-Bold"
+      fontFamily : "Gotham-Black"
   },
   darkUserText : {
     textAlign: "center",
-    fontFamily : "Gotham-Bold",
+    fontFamily : "Gotham-Black",
     color : theme ? "#F5F5F5" : "#232322"
 }
 });
   return (
     <SafeAreaView style={theme ? styles.darkContainer : styles.constainer}>
+      <View style ={{bottom : 10}}>
       {/*Top Large Image */}
       <Image
         source={{uri: props.userPhoto}}
         style={styles.sideMenuProfileIcon}
       />
       <Text style={theme ? styles.darkUserText : styles.userText}>{props.userName}</Text>
-      <DrawerContentScrollView {...props}>
+      </View>
+      <DrawerContentScrollView style={{top : 25}} {...props}>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
       <Text

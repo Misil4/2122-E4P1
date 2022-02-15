@@ -25,12 +25,13 @@ const Settings = (props) => {
       backgroundColor : theme ? "#232322" : "#F5F5F5",
       justifyContent: "center",
       alignItems: "center",
+      fontFamily : "Gotham-BookItalic"
     },
     instructions: {
       textAlign: "center",
       color: theme ? "#F5F5F5": "#232322",
       marginBottom: 5,
-      fontFamily : "Gotham"
+      fontFamily : "Gotham-BookItalic"
     }
   });
   return (
@@ -63,7 +64,7 @@ const Settings = (props) => {
 const defaultStyles = StyleSheet.create({
   viewContainer: {
     padding: 70,
-    fontFamily : "Gotham"
+    fontFamily : "Gotham-BookItalic"
   },
   modalViewMiddle: {
     height: 45,

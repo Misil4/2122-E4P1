@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     container: {
         borderWidth: 0,
         justifyContent: "center",
-        backgroundColor : "#F5F5F5"
+        backgroundColor : "#F5F5F5",
     },
     darkContainer : {
         borderWidth : 0,
@@ -204,20 +204,20 @@ const styles = StyleSheet.create({
     },
     nameText: {
         color: "#000",
-        fontFamily : "Gotham"
+        fontFamily : 'Gotham-BookItalic',
     },
     darkNameText: {
         color: "#F5F5F5",
-        fontFamily : "Gotham"
+        fontFamily : 'Gotham-BookItalic',
     },
     dateText: {
         fontSize: 12,
-        fontFamily : "Gotham"
+        fontFamily : 'Gotham-BookItalic',
     },
     darkDateText: {
         fontSize: 12,
-        color : "#F5F5F5"
-        ,fontFamily : "Gotham"
+        color : "#F5F5F5",
+        fontFamily : 'Gotham-BookItalic',
     },
     avatar: {
         borderRadius: 30,

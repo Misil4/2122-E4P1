@@ -156,8 +156,6 @@ const authentification = (props) => {
       console.log("USER TOKEN SAVED");
       console.log(token)
       await tokenSignIn(userInfo)
-      setLoading(false);
-      setLogin(true);
       const userRol = await getAsyncStorageKey("user_rol")
       const userEmail = await getAsyncStorageKey("user_email")
       socket.emit("id_save", userEmail)
@@ -172,6 +170,8 @@ const authentification = (props) => {
         props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userEmail } })
       }
       else { console.log("error") }
+      setLoading(false);
+      setLogin(true);
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
