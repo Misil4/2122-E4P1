@@ -36,11 +36,21 @@ const QrReader = () => {
     //peticion a axios y hacer put
     console.log(email)
     const token = await getAsyncStorageKey('token')
-    tokenExpired(token)
+    tokenExpired()
     badge_update(email)
   }
 
-
+  const makeSlideOutTranslation = (translationType, fromValue) => {
+     return{
+      from: {
+        [translationType]: SCREEN_WIDTH * -0.18
+      },
+      to: {
+        [translationType]: fromValue
+      }
+    };
+  }
+ 
   return (
     <QRCodeScanner
       reactivate={true}
@@ -68,10 +78,10 @@ const QrReader = () => {
                 iterationCount="infinite"
                 duration={1700}
                 easing="linear"
-                /*animation={this.makeSlideOutTranslation(
+                animation={makeSlideOutTranslation(
                   "translateY",
                   SCREEN_WIDTH * -0.54
-                )}*/
+                )}
               />
             </View>
 
