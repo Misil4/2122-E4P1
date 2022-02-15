@@ -225,7 +225,7 @@ const authentification = (props) => {
         {console.log(user)}
         {console.log(login)}
         <View >
-          <View style={styles.container}>
+          <View style={theme ? styles.darkContainer : styles.container}>
             {login !== false ? (
               <>
                 <Image style={styles.imageStyle} source={{ uri: user?.user.photo }} />
@@ -233,10 +233,10 @@ const authentification = (props) => {
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
-                  <Text style={styles.text}>{selectLanguage(language).logout}</Text>
+                  <Text style={styles.darkText}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={styles.text}>{selectLanguage(language).return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 20,
-    fontFamily : "Gotham"
+    fontFamily : "Gotham-Bold"
   },
   imageStyle: {
     width: 200,
@@ -291,10 +291,10 @@ const styles = StyleSheet.create({
   },
   text : {
     color : "#232322",
-    fontFamily : "Gotham"
+    fontFamily : "Gotham-Bold"
   },
   darkText : {
     color : "#F5F5F5",
-    fontFamily : "Gotham"
+    fontFamily : "Gotham-Bold"
   }
 });

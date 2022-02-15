@@ -97,13 +97,13 @@ export default function Basic(props) {
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
                 onPress={() => props.navigation.navigate('Ubicación de basuras', { latitude: data.item.location.latitude, longitude: data.item.location.longitude, id: data.item._id })}
             >
-                <Icon name="location-pin" size={42} />
+                <Icon name="location-pin" size={42} style={{color: '#F5F5F5'}}/>
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 onPress={() => createButtonAlert(data)}
             >
-                <Icon name="trash" size={32} />
+                <Icon name="trash" size={32} style={{color: '#F5F5F5'}}/>
             </TouchableOpacity>
         </View>
     );
@@ -116,7 +116,6 @@ export default function Basic(props) {
                 renderItem={renderItem}
                 renderHiddenItem={renderHiddenItem}
                 rightOpenValue={-150}
-                leftOpenValue={75}
                 previewRowKey={'0'}
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     },
     rowBack: {
         alignItems: 'center',
-        backgroundColor: 'lightblue',
+        backgroundColor: '#61b97c',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',

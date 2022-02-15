@@ -22,8 +22,6 @@ const Settings = (props) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      borderWidth: 2,
-      borderColor: "green",
       backgroundColor : theme ? "#232322" : "#F5F5F5",
       justifyContent: "center",
       alignItems: "center",

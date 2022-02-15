@@ -113,7 +113,7 @@ const WasteReport = props => {
       }} />
       </MapView> : null}
       <View style={styles.buttonContainer}>
-      <Button buttonStyle={styles.button} title="	&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8,marginRight: 5  }}
+      <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8,marginRight: 5  }}
         onPress={() => createButtonAlert()} />
         <Button buttonStyle={styles.button} title="&#128172;" titleStyle={{ fontSize: 40, marginBottom: 5,marginLeft: 5  }}
           onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>Hola
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   button: {
-    backgroundColor: "green", 
+    backgroundColor: "#61b97c", 
     borderRadius: 50, 
     height: 95, 
     width: 95, 

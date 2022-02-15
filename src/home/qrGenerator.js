@@ -13,9 +13,7 @@ const QrGenerator = (props) => {
       {console.log("EL VALOR DE EL EMAIL ES")}
       {console.log(props.route.params.email)}
       <QRCode
-        enableLinearGradient={true}
-        linearGradient={['rgb(40,85,0)', 'rgb(123,242,16)']}
-        gradientDirection
+        color='#61b97c'
         backgroundColor="transparent"
         logo={require('../../assets/logo.jpg')}
         value={props.route.params.email}

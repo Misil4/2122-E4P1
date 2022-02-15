@@ -67,7 +67,8 @@ const [data,setData] = useStateWithPromise({email : ''})
 
 const styles = StyleSheet.create({
   container : {
-    backgroundColor : "#F5F5F5"
+    flex: 1,
+    backgroundColor : "#F5F5F5",
   },
   darkContainer : {
     backgroundColor : "#232322"
