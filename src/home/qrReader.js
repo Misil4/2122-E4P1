@@ -2,13 +2,11 @@
 
 import React, {useContext,useState } from 'react';
 import axios from 'axios';
-
 import {
   StyleSheet,
   View,
   Dimensions
 } from 'react-native';
-
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
@@ -16,6 +14,8 @@ import { tokenExpired } from '../../helpers/jwt';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
 import { UpdateMessages } from '../../helpers/socket';
+import Icon from "react-native-vector-icons/Ionicons";
+import * as Animatable from "react-native-animatable";
 const QrReader = () => {
 const [data,setData] = useStateWithPromise({email : ''})
 const [notification,setNotification] = useState(false)
@@ -23,10 +23,18 @@ const {socket} = useContext(AppContext)
 useEffect(() => {
   UpdateMessages(socket,setNotification)
 },[socket])
+
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+const SCREEN_WIDTH = Dimensions.get("window").width;
+
+const QrReader = () => {
+  const {socket} = useContext(AppContext)
+  const [data, setData] = useStateWithPromise({ email: '' })
   const onSuccess = async (e) => {
     await setData({ email: e.data })
-    
-   updateUserStatus(e.data)
+    updateUserStatus(e.data)
+    alert(e.data + " ha sido escaneado")
   }
   const badge_update = (email) => {
     console.log("BADGE UPDATE DATA")
@@ -41,9 +49,19 @@ useEffect(() => {
     const token = await getAsyncStorageKey('token')
     tokenExpired(token)
     badge_update(email)
-    
-    }
+  }
 
+  const makeSlideOutTranslation = (translationType, fromValue) => {
+     return{
+      from: {
+        [translationType]: SCREEN_WIDTH * -0.18
+      },
+      to: {
+        [translationType]: fromValue
+      }
+    };
+  }
+ 
   return (
     <>
     <QRCodeScanner
@@ -51,10 +69,38 @@ useEffect(() => {
       reactivateTimeout={7000}
       showMarker
       onRead={onSuccess}
-      cameraStyle={styles.cameraContainer}
-      topContent={
-        <View style={styles.centerText}>
-          
+      cameraStyle={{ height: SCREEN_HEIGHT }}
+      customMarker={
+        <View style={styles.rectangleContainer}>
+          <View style={styles.topOverlay}>
+          </View>
+
+          <View style={{ flexDirection: "row" }}>
+            <View style={styles.leftAndRightOverlay} />
+
+            <View style={styles.rectangle}>
+              <Icon
+                size={SCREEN_WIDTH * 0.73}
+                color={iconScanColor}
+
+              />
+              <Animatable.View
+                style={styles.scanBar}
+                direction="alternate-reverse"
+                iterationCount="infinite"
+                duration={1700}
+                easing="linear"
+                animation={makeSlideOutTranslation(
+                  "translateY",
+                  SCREEN_WIDTH * -0.54
+                )}
+              />
+            </View>
+
+            <View style={styles.leftAndRightOverlay} />
+          </View>
+
+          <View style={styles.bottomOverlay} />
         </View>
       }
     />
@@ -63,29 +109,65 @@ useEffect(() => {
   );
 }
 
-const styles = StyleSheet.create({
-  centerText: {
+const overlayColor = "rgba(0,0,0,0.5)"; // this gives us a black color with a 50% transparency
+ 
+const rectDimensions = SCREEN_WIDTH * 0.65; // this is equivalent to 255 from a 393 device width
+const rectBorderWidth = SCREEN_WIDTH * 0.005; // this is equivalent to 2 from a 393 device width
+const rectBorderColor = "lightblue";
+ 
+const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
+const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
+const scanBarColor = "#22ff00";
+
+const iconScanColor = "blue";
+
+
+const styles = {
+  rectangleContainer: {
     flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777',
-    fontFamily : "Gotham"
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent"
   },
-  textBold: {
-    fontWeight: '500',
-    color: '#000'
+  
+  rectangle: {
+    height: rectDimensions,
+    width: rectDimensions,
+    borderWidth: rectBorderWidth,
+    borderColor: rectBorderColor,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "transparent"
   },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)'
+  
+  topOverlay: {
+    flex: 1,
+    height: SCREEN_WIDTH,
+    width: SCREEN_WIDTH,
+    backgroundColor: overlayColor,
+    justifyContent: "center",
+    alignItems: "center"
   },
-  buttonTouchable: {
-    padding: 16
+  
+  bottomOverlay: {
+    flex: 1,
+    height: SCREEN_WIDTH,
+    width: SCREEN_WIDTH,
+    backgroundColor: overlayColor,
+    paddingBottom: SCREEN_WIDTH * 0.25
   },
-  cameraContainer: {
-    height: Dimensions.get('window').height,
+  
+  leftAndRightOverlay: {
+    height: SCREEN_WIDTH * 0.65,
+    width: SCREEN_WIDTH,
+    backgroundColor: overlayColor
   },
-
-
-});
+  
+  scanBar: {
+    width: scanBarWidth,
+    height: scanBarHeight,
+    backgroundColor: scanBarColor
+  }
+ };
+ 
 export default QrReader
