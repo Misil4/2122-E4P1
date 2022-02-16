@@ -15,10 +15,12 @@ import AppContext from '../../context/context';
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
 
+
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const QrReader = () => {
+  const {socket} = useContext(AppContext)
   const [data, setData] = useStateWithPromise({ email: '' })
   const onSuccess = async (e) => {
     await setData({ email: e.data })
@@ -36,7 +38,7 @@ const QrReader = () => {
     //peticion a axios y hacer put
     console.log(email)
     const token = await getAsyncStorageKey('token')
-    tokenExpired()
+    tokenExpired(token)
     badge_update(email)
   }
 
