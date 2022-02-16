@@ -53,16 +53,6 @@ const App = () => {
   const [language,setLanguage] = useState("euskera")
   const [theme, setTheme] = useState("false")
   const [userInfo, setUserInfo] = useState(null)
-  const [notification, setNotification] = useState(false)
-  const [message, setMessage] = useState(null)
-  useEffect(() => {
-    socket.on("notification", (message) => {
-        console.log("MENSAJE")
-        console.log(message[0].user)
-        setNotification(true)
-        setMessage(message)
-    })
-}, [socket])
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))

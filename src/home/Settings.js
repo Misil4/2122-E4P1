@@ -11,7 +11,6 @@ import { UpdateMessages } from "../../helpers/socket";
 const Settings = (props) => {
 
   const { setLanguage, language, setTheme, theme,socket } = useContext(AppContext)
-  const [notification,setNotification] = useState(false)
 
   const placeholder = {
     label: selectLanguage(language).select_language,
@@ -21,7 +20,7 @@ const Settings = (props) => {
     props.navigation.setOptions({title : selectLanguage(language).settings_screen})
   },[])
   useEffect(() => {
-    UpdateMessages(socket,setNotification)
+    UpdateMessages(socket).then(response => console.log("HOLA",response))
 },[socket])
   const styles = StyleSheet.create({
     container: {
@@ -61,7 +60,6 @@ const Settings = (props) => {
           { label: 'Inglés', value: 'ingles' },
         ]}
       />
-      {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </View>
   );
 }

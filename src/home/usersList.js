@@ -14,7 +14,6 @@ const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { socket, theme } = useContext(AppContext);
-  const [notification,setNotification] = useState(false)
 
 
 
@@ -44,7 +43,7 @@ const UsersList = (props) => {
     return () => socket.off("change_data", getUpdate)
 },[socket])
 useEffect(() => {
-  UpdateMessages(socket,setNotification)
+  UpdateMessages(socket).then(response => console.log("HOLA",response))
 },[socket])
   if (loading) {
     return (
@@ -84,7 +83,6 @@ useEffect(() => {
         })}
     </ScrollView>
     </View>
-    {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </SafeAreaProvider >
   )
 }

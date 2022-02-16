@@ -20,6 +20,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ListItem } from 'react-native-elements/dist/ListItem';
 import { Avatar } from 'react-native-paper';
 import { UpdateMessages } from "../../helpers/socket"
+import { setAsyncStorageKey } from '../../helpers/asynctorage';
 
 
 export default function Basic(props) {
@@ -29,7 +30,7 @@ export default function Basic(props) {
             .map((_, i) => ({}))
     );
     const { socket, language, theme } = useContext(AppContext)
-    const [notification,setNotification] = useState(false)
+    const [notification, setNotification] = useState(false)
 
     const getUpdate = trash => {
         setListData(trash)
@@ -47,17 +48,25 @@ export default function Basic(props) {
     const UpdateGarbages = async () => {
         socket.on("change_trash", getUpdate)
     }
-
+    const UpdateMessage = async (message) => {
+        const saved_messages = await getAsyncStorageKey("messages");
+        let messageArr = JSON.parse(saved_messages)
+        if (!messageArr) {
+            messageArr = []
+        }
+        messageArr.push(message)
+        setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true); setTimeout(() => setNotification(false), 5000) })
+    }
     useEffect(() => {
         getAllGarbage();
     }, []);
     useEffect(() => {
         UpdateGarbages()
         return () => socket.off("change_data", getUpdate)
-    },[socket])
+    }, [socket])
     useEffect(() => {
-        UpdateMessages(socket,setNotification)
-      },[socket])
+        socket.on("notification", UpdateMessage)
+    }, [])
     const createButtonAlert = (data) =>
         Alert.alert(
             selectLanguage(language).delete,
@@ -126,7 +135,7 @@ export default function Basic(props) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
             />
-            {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
+            {notification ? <Text>i</Text> : <Text>o</Text>}
         </SafeAreaProvider>
     );
 }

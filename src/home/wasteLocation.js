@@ -17,9 +17,8 @@ import { UpdateMessages } from "../../helpers/socket";
 
 const wasteLocation = (props) => {
   const { language, socket, theme } = useContext(AppContext)
-  const [notification,setNotification] = useState(false)
   useEffect(() => {
-    UpdateMessages(socket,setNotification)
+    UpdateMessages(socket).then(response => console.log("HOLA",response))
 },[socket])
   const updateStatusComplete = async (id) => {
     socket.emit("garbage_update", id);
@@ -65,7 +64,6 @@ const wasteLocation = (props) => {
           onPress={() => createButtonAlert(props.route.params.id)}
         />
       </View>
-      {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </SafeAreaProvider>
   );
 }
