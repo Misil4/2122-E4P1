@@ -3,7 +3,7 @@
 //import Geolocation from 'react-native-geolocation-service';
 
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, PermissionsAndroid, Alert, } from "react-native";
+import { StyleSheet, View, PermissionsAndroid, Alert,Text } from "react-native";
 import { Button, } from "react-native-elements";
 import MapView, { Circle, Marker, Polyline } from "react-native-maps";
 import axios from "axios";
@@ -12,11 +12,15 @@ import { tokenExpired } from '../../helpers/jwt';
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
+import { UpdateMessages } from "../../helpers/socket";
 
 
 const wasteLocation = (props) => {
   const { language, socket, theme } = useContext(AppContext)
+  const [notification,setNotification] = useState(false)
+  useEffect(() => {
+    UpdateMessages(socket,setNotification)
+},[socket])
   const updateStatusComplete = async (id) => {
     socket.emit("garbage_update", id);
   }
@@ -61,6 +65,7 @@ const wasteLocation = (props) => {
           onPress={() => createButtonAlert(props.route.params.id)}
         />
       </View>
+      {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </SafeAreaProvider>
   );
 }

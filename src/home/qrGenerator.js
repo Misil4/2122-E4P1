@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import AppContext from '../../context/context';
 const QrGenerator = (props) => {
-  const {theme} = useContext(AppContext)
+  const {theme,socket} = useContext(AppContext)
   return (
     <View style={theme ? styles.darkContainer : styles.container}>
       {console.log("EL VALOR DE EL EMAIL ES")}

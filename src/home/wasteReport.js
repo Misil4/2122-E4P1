@@ -13,7 +13,6 @@ import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
 
 
-
 const WasteReport = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)

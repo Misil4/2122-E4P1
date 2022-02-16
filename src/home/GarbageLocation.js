@@ -17,6 +17,9 @@ import { ScrollView } from 'react-native';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ListItem } from 'react-native-elements/dist/ListItem';
+import { Avatar } from 'react-native-paper';
+import { UpdateMessages } from "../../helpers/socket"
 
 
 export default function Basic(props) {
@@ -25,7 +28,8 @@ export default function Basic(props) {
             .fill('')
             .map((_, i) => ({}))
     );
-    const { socket,language,theme } = useContext(AppContext)
+    const { socket, language, theme } = useContext(AppContext)
+    const [notification,setNotification] = useState(false)
 
     const getUpdate = trash => {
         setListData(trash)
@@ -33,9 +37,9 @@ export default function Basic(props) {
     const getAllGarbage = async () => {
         await tokenExpired()
         const token = await getAsyncStorageKey('token')
-        return axios.get("https://ballin-api-stage.herokuapp.com/garbages",{ headers: { 'Authorization': token }})
-        .then(response => setListData(response.data.garbages))
-        .catch(error => console.error(error)) 
+        return axios.get("https://ballin-api-stage.herokuapp.com/garbages", { headers: { 'Authorization': token } })
+            .then(response => setListData(response.data.garbages))
+            .catch(error => console.error(error))
     }
     const DeleteGarbages = (id) => {
         socket.emit("garbage_update", id);
@@ -48,10 +52,12 @@ export default function Basic(props) {
         getAllGarbage();
     }, []);
     useEffect(() => {
-        UpdateGarbages();
-        return () => socket.off("change_trash", getUpdate);
+        UpdateGarbages()
+        return () => socket.off("change_data", getUpdate)
     },[socket])
-
+    useEffect(() => {
+        UpdateMessages(socket,setNotification)
+      },[socket])
     const createButtonAlert = (data) =>
         Alert.alert(
             selectLanguage(language).delete,
@@ -79,7 +85,7 @@ export default function Basic(props) {
                 <View style={styles.chatDetailsContainer}>
                     <View style={styles.chatDetailsContainerWrap}>
                         <View style={styles.nameContainer}>
-                            <Text style={theme ? styles.darkNameText: styles.nameText}>{data.item.user}</Text>
+                            <Text style={theme ? styles.darkNameText : styles.nameText}>{data.item.user}</Text>
                             <Text style={styles.msgText}>{data.item.message}</Text>
                         </View>
                         <View style={styles.dateContainer}>
@@ -97,13 +103,13 @@ export default function Basic(props) {
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
                 onPress={() => props.navigation.navigate('Ubicación de basuras', { latitude: data.item.location.latitude, longitude: data.item.location.longitude, id: data.item._id })}
             >
-                <Icon name="location-pin" size={42} style={{color: '#F5F5F5'}}/>
+                <Icon name="location-pin" size={42} style={{ color: '#F5F5F5' }} />
             </TouchableOpacity>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnRight]}
                 onPress={() => createButtonAlert(data)}
             >
-                <Icon name="trash" size={32} style={{color: '#F5F5F5'}}/>
+                <Icon name="trash" size={32} style={{ color: '#F5F5F5' }} />
             </TouchableOpacity>
         </View>
     );
@@ -120,6 +126,7 @@ export default function Basic(props) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
             />
+            {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
         </SafeAreaProvider>
     );
 }
@@ -128,16 +135,16 @@ const styles = StyleSheet.create({
     container: {
         borderWidth: 0,
         justifyContent: "center",
-        backgroundColor : "#F5F5F5",
+        backgroundColor: "#F5F5F5",
     },
-    darkContainer : {
-        borderWidth : 0,
-        justifyContent : "center",
-        backgroundColor : "#232322",
+    darkContainer: {
+        borderWidth: 0,
+        justifyContent: "center",
+        backgroundColor: "#232322",
     },
     backTextWhite: {
         color: "#F5F5F5",
-        fontFamily : "Gotham"
+        fontFamily: "Gotham"
     },
     rowFront: {
         alignItems: 'center',
@@ -181,7 +188,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         padding: 1,
-        backgroundColor : "#232322"
+        backgroundColor: "#232322"
     },
     avatarContainer: {
         flex: 1,
@@ -204,20 +211,20 @@ const styles = StyleSheet.create({
     },
     nameText: {
         color: "#000",
-        fontFamily : 'Gotham-BookItalic',
+        fontFamily: 'Gotham-BookItalic',
     },
     darkNameText: {
         color: "#F5F5F5",
-        fontFamily : 'Gotham-BookItalic',
+        fontFamily: 'Gotham-BookItalic',
     },
     dateText: {
         fontSize: 12,
-        fontFamily : 'Gotham-BookItalic',
+        fontFamily: 'Gotham-BookItalic',
     },
     darkDateText: {
         fontSize: 12,
-        color : "#F5F5F5",
-        fontFamily : 'Gotham-BookItalic',
+        color: "#F5F5F5",
+        fontFamily: 'Gotham-BookItalic',
     },
     avatar: {
         borderRadius: 30,

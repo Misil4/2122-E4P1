@@ -22,6 +22,7 @@ import{ socket }from "./socket/socket";
 import { getAsyncStorageKey } from "./helpers/asynctorage";
 import { selectLanguage } from "./languages/languages.js";
 import { useStateWithPromise } from "./hooks/useStateWithPromise";
+import ChatContext from "./context/chatContext";
 
 
 
@@ -48,11 +49,20 @@ const App = () => {
   const getTheme = async () => {
     const theme = await getAsyncStorageKey('theme')
     return JSON.parse(theme)
-
   }
   const [language,setLanguage] = useState("euskera")
   const [theme, setTheme] = useState("false")
   const [userInfo, setUserInfo] = useState(null)
+  const [notification, setNotification] = useState(false)
+  const [message, setMessage] = useState(null)
+  useEffect(() => {
+    socket.on("notification", (message) => {
+        console.log("MENSAJE")
+        console.log(message[0].user)
+        setNotification(true)
+        setMessage(message)
+    })
+}, [socket])
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))
@@ -114,12 +124,11 @@ const App = () => {
     )
   }
   return (
-    <>
       <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme}}>
         {console.log("LANG",language)}
         <NavigationContainer>
           <stack.Navigator
-            screenOptions={{
+            screenOptions={{ 
               gestureEnabled: true,
               gestureDirection: "horizontal",
               transitionSpec: {
@@ -134,7 +143,6 @@ const App = () => {
           </stack.Navigator>
         </NavigationContainer>
       </AppContext.Provider>
-    </>
   )
           }
 export default App;

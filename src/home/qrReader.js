@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {useContext, } from 'react';
+import React, {useContext,useState } from 'react';
 import axios from 'axios';
 
 import {
@@ -15,9 +15,14 @@ import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
-
+import { UpdateMessages } from '../../helpers/socket';
 const QrReader = () => {
 const [data,setData] = useStateWithPromise({email : ''})
+const [notification,setNotification] = useState(false)
+const {socket} = useContext(AppContext)
+useEffect(() => {
+  UpdateMessages(socket,setNotification)
+},[socket])
   const onSuccess = async (e) => {
     await setData({ email: e.data })
     
@@ -40,6 +45,7 @@ const [data,setData] = useStateWithPromise({email : ''})
     }
 
   return (
+    <>
     <QRCodeScanner
       reactivate={true}
       reactivateTimeout={7000}
@@ -52,6 +58,8 @@ const [data,setData] = useStateWithPromise({email : ''})
         </View>
       }
     />
+    {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
+    </>
   );
 }
 

@@ -12,11 +12,12 @@ const Chat = (props) => {
   const isFocused = useIsFocused()
   const [messages, setMessages] = useState([]);
   let { userTo, userFrom } = useContext(ChatContext)
-  const { language, socket,theme } = useContext(AppContext)
+  const { language, socket,theme,setMessage } = useContext(AppContext)
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
   const getUpdate = async (messages) => {
+    setMessages(messages)
     const saved_messages = await getAsyncStorageKey("messages");
     let messageArr = JSON.parse(saved_messages)
 
@@ -67,8 +68,17 @@ const Chat = (props) => {
 
   useEffect(() => {
     UpdateMessages()
-    return () => socket.off("updated_messages", getUpdate);
-  }, [messages])
+    return () => socket.off("notifications", async (message) => {
+      const saved_messages = await getAsyncStorageKey("messages");
+      let messageArr = JSON.parse(saved_messages)
+      if (!messageArr) {
+          messageArr = []
+      }
+      messageArr.push(message)
+      console.log("HOLA")
+      setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => console.log("MESSAGE SAVED"))
+  })
+  }, [socket,messages])
   const onSend = useCallback(async (messages = [],userTo) => {
     console.log("ONSEND PROPS")
     console.log(userTo)
@@ -93,6 +103,7 @@ const Chat = (props) => {
     messageArr.push(data)
     setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => console.log("MESSAGE SAVED"));
     socket.emit("insert_message", data)
+    socket.emit("send notification",{messages,email : userTo.email})
     setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
   }, [])
 

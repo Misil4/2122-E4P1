@@ -3,17 +3,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, ScrollView, StyleSheet,Text } from 'react-native';
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
-import { Text } from 'react-native';
+import { UpdateMessages } from '../../helpers/socket';
 import axios from 'axios';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { socket, theme } = useContext(AppContext);
+  const [notification,setNotification] = useState(false)
 
 
 
@@ -40,8 +41,11 @@ const UsersList = (props) => {
   }, [])
   useEffect(() => {
     UpdateUsers()
-    return () => socket.off("change_data", getUpdate);
-  }, [socket])
+    return () => socket.off("change_data", getUpdate)
+},[socket])
+useEffect(() => {
+  UpdateMessages(socket,setNotification)
+},[socket])
   if (loading) {
     return (
       <View style={{ margin: "auto" }}>
@@ -80,6 +84,7 @@ const UsersList = (props) => {
         })}
     </ScrollView>
     </View>
+    {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </SafeAreaProvider >
   )
 }
