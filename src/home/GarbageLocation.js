@@ -5,22 +5,17 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     View,
-    Image,
     Alert,
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
-import { ScrollView } from 'react-native';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ListItem } from 'react-native-elements/dist/ListItem';
-import { Avatar } from 'react-native-paper';
-import { UpdateMessages } from "../../helpers/socket"
-import { setAsyncStorageKey } from '../../helpers/asynctorage';
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function Basic(props) {
@@ -31,6 +26,8 @@ export default function Basic(props) {
     );
     const { socket, language, theme } = useContext(AppContext)
     const [notification, setNotification] = useState(false)
+    const [message,setMessage] = useState('i')
+    const focused = useIsFocused()
 
     const getUpdate = trash => {
         setListData(trash)
@@ -49,13 +46,14 @@ export default function Basic(props) {
         socket.on("change_trash", getUpdate)
     }
     const UpdateMessage = async (message) => {
+        console.log(message)
         const saved_messages = await getAsyncStorageKey("messages");
         let messageArr = JSON.parse(saved_messages)
         if (!messageArr) {
             messageArr = []
         }
-        messageArr.push(message)
-        setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true); setTimeout(() => setNotification(false), 5000) })
+        messageArr.push(message.message)
+        setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true);setMessage(message);setTimeout(() => setNotification(false), 5000) })
     }
     useEffect(() => {
         getAllGarbage();
@@ -65,8 +63,8 @@ export default function Basic(props) {
         return () => socket.off("change_data", getUpdate)
     }, [socket])
     useEffect(() => {
-        socket.on("notification", UpdateMessage)
-    }, [])
+        socket.on("notifications", UpdateMessage)
+    }, [socket])
     const createButtonAlert = (data) =>
         Alert.alert(
             selectLanguage(language).delete,
@@ -135,7 +133,10 @@ export default function Basic(props) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
             />
-            {notification ? <Text>i</Text> : <Text>o</Text>}
+           {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
         </SafeAreaProvider>
     );
 }

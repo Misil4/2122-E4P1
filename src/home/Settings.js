@@ -1,16 +1,20 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Platform, StyleSheet, Text, View, Button } from "react-native";
+import { Platform, StyleSheet, Text, View,Alert} from "react-native";
 
 import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
-import { setAsyncStorageKey } from "../../helpers/asynctorage";
+import { setAsyncStorageKey,getAsyncStorageKey } from "../../helpers/asynctorage";
 import { Switch } from 'react-native-paper';
-import { UpdateMessages } from "../../helpers/socket";
+import { Avatar } from "react-native-elements";
+import { useIsFocused } from "@react-navigation/native";
 const Settings = (props) => {
 
   const { setLanguage, language, setTheme, theme,socket } = useContext(AppContext)
+  const [message,setMessage] = useState("i")
+  const [notification,setNotification] = useState(false)
+  const focused = useIsFocused()
 
   const placeholder = {
     label: selectLanguage(language).select_language,
@@ -20,8 +24,17 @@ const Settings = (props) => {
     props.navigation.setOptions({title : selectLanguage(language).settings_screen})
   },[])
   useEffect(() => {
-    UpdateMessages(socket).then(response => console.log("HOLA",response))
-},[socket])
+    socket.on("notifications", UpdateMessage)
+}, [socket])
+const UpdateMessage = async (message) => {
+  const saved_messages = await getAsyncStorageKey("messages");
+  let messageArr = JSON.parse(saved_messages)
+  if (!messageArr) {
+      messageArr = []
+  }
+  messageArr.push(message.message)
+  setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true);setMessage(message); setTimeout(() => setNotification(false), 5000) })
+}
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -60,6 +73,10 @@ const Settings = (props) => {
           { label: 'Inglés', value: 'ingles' },
         ]}
       />
+      {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
     </View>
   );
 }

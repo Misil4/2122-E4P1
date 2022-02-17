@@ -1,30 +1,46 @@
 'use strict';
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   StyleSheet,
   View,
-  Dimensions
+  Dimensions,
+  Text,
+  Alert
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
-import { UpdateMessages } from '../../helpers/socket';
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
+import { selectLanguage } from '../../languages/languages';
+import { Avatar } from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const QrReader = () => {
   const [data, setData] = useStateWithPromise({ email: '' })
-  const { socket } = useContext(AppContext)
+  const { socket,language } = useContext(AppContext)
+  const [notification,setNotification] = useState(false)
+  const [message,setMessage] = useState("i")
+  const focused = useIsFocused()
   useEffect(() => {
-    UpdateMessages(socket).then(response => console.log("HOLA",response))
-  }, [socket])
+    socket.on("notifications", UpdateMessage)
+}, [socket])
+  const UpdateMessage = async (message) => {
+    const saved_messages = await getAsyncStorageKey("messages");
+    let messageArr = JSON.parse(saved_messages)
+    if (!messageArr) {
+        messageArr = []
+    }
+    messageArr.push(message.message)
+    setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true); setMessage(message);setTimeout(() => setNotification(false), 5000) })
+}
   const onSuccess = async (e) => {
     await setData({ email: e.data })
     updateUserStatus(e.data)
@@ -95,6 +111,10 @@ const QrReader = () => {
             </View>
 
             <View style={styles.bottomOverlay} />
+            {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
           </View>
         }
       />

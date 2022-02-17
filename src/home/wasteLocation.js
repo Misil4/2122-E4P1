@@ -3,23 +3,33 @@
 //import Geolocation from 'react-native-geolocation-service';
 
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, PermissionsAndroid, Alert,Text } from "react-native";
+import { StyleSheet, View, Alert,Text} from "react-native";
 import { Button, } from "react-native-elements";
-import MapView, { Circle, Marker, Polyline } from "react-native-maps";
-import axios from "axios";
-import { getAsyncStorageKey } from "../../helpers/asynctorage";
-import { tokenExpired } from '../../helpers/jwt';
+import MapView, {  Marker } from "react-native-maps";
+import { getAsyncStorageKey,setAsyncStorageKey } from "../../helpers/asynctorage";
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { UpdateMessages } from "../../helpers/socket";
+import { useIsFocused } from "@react-navigation/native";
 
 
 const wasteLocation = (props) => {
   const { language, socket, theme } = useContext(AppContext)
+  const [notification,setNotification] = useState(false)
+  const [message,setMessage] = useState("i")
+  const focused = useIsFocused()
   useEffect(() => {
-    UpdateMessages(socket).then(response => console.log("HOLA",response))
-},[socket])
+    socket.on("notification", UpdateMessage)
+}, [socket])
+const UpdateMessage = async (message) => {
+  const saved_messages = await getAsyncStorageKey("messages");
+  let messageArr = JSON.parse(saved_messages)
+  if (!messageArr) {
+      messageArr = []
+  }
+  messageArr.push(message.message)
+  setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true);setMessage(message); setTimeout(() => setNotification(false), 5000) })
+}
   const updateStatusComplete = async (id) => {
     socket.emit("garbage_update", id);
   }
@@ -64,6 +74,10 @@ const wasteLocation = (props) => {
           onPress={() => createButtonAlert(props.route.params.id)}
         />
       </View>
+      {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
     </SafeAreaProvider>
   );
 }
