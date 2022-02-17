@@ -1,26 +1,46 @@
 'use strict';
 
-import React, {useContext,useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   StyleSheet,
   View,
-  Dimensions
+  Dimensions,
+  Text,
+  Alert
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
-import { UpdateMessages } from '../../helpers/socket';
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
+import { selectLanguage } from '../../languages/languages';
+import { Avatar } from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
+
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const QrReader = () => {
-const [data,setData] = useStateWithPromise({email : ''})
-const {socket} = useContext(AppContext)
+  const [data, setData] = useStateWithPromise({ email: '' })
+  const { socket,language } = useContext(AppContext)
+  const [notification,setNotification] = useState(false)
+  const [message,setMessage] = useState("i")
+  const focused = useIsFocused()
+  useEffect(() => {
+    socket.on("notifications", UpdateMessage)
+}, [socket])
+  const UpdateMessage = async (message) => {
+    const saved_messages = await getAsyncStorageKey("messages");
+    let messageArr = JSON.parse(saved_messages)
+    if (!messageArr) {
+        messageArr = []
+    }
+    messageArr.push(message.message)
+    setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true); setMessage(message);setTimeout(() => setNotification(false), 5000) })
+}
   const onSuccess = async (e) => {
     await setData({ email: e.data })
     updateUserStatus(e.data)
@@ -42,7 +62,7 @@ const {socket} = useContext(AppContext)
   }
 
   const makeSlideOutTranslation = (translationType, fromValue) => {
-     return{
+    return {
       from: {
         [translationType]: SCREEN_WIDTH * -0.18
       },
@@ -51,59 +71,63 @@ const {socket} = useContext(AppContext)
       }
     };
   }
- 
+
   return (
     <>
-    <QRCodeScanner
-      reactivate={true}
-      reactivateTimeout={7000}
-      showMarker
-      onRead={onSuccess}
-      cameraStyle={{ height: SCREEN_HEIGHT }}
-      customMarker={
-        <View style={styles.rectangleContainer}>
-          <View style={styles.topOverlay}>
-          </View>
-
-          <View style={{ flexDirection: "row" }}>
-            <View style={styles.leftAndRightOverlay} />
-
-            <View style={styles.rectangle}>
-              <Icon
-                size={SCREEN_WIDTH * 0.73}
-                color={iconScanColor}
-
-              />
-              <Animatable.View
-                style={styles.scanBar}
-                direction="alternate-reverse"
-                iterationCount="infinite"
-                duration={1700}
-                easing="linear"
-                animation={makeSlideOutTranslation(
-                  "translateY",
-                  SCREEN_WIDTH * -0.54
-                )}
-              />
+      <QRCodeScanner
+        reactivate={true}
+        reactivateTimeout={7000}
+        showMarker
+        onRead={onSuccess}
+        cameraStyle={{ height: SCREEN_HEIGHT }}
+        customMarker={
+          <View style={styles.rectangleContainer}>
+            <View style={styles.topOverlay}>
             </View>
 
-            <View style={styles.leftAndRightOverlay} />
-          </View>
+            <View style={{ flexDirection: "row" }}>
+              <View style={styles.leftAndRightOverlay} />
 
-          <View style={styles.bottomOverlay} />
-        </View>
-      }
-    />
+              <View style={styles.rectangle}>
+                <Icon
+                  size={SCREEN_WIDTH * 0.73}
+                  color={iconScanColor}
+
+                />
+                <Animatable.View
+                  style={styles.scanBar}
+                  direction="alternate-reverse"
+                  iterationCount="infinite"
+                  duration={1700}
+                  easing="linear"
+                  animation={makeSlideOutTranslation(
+                    "translateY",
+                    SCREEN_WIDTH * -0.54
+                  )}
+                />
+              </View>
+
+              <View style={styles.leftAndRightOverlay} />
+            </View>
+
+            <View style={styles.bottomOverlay} />
+            {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
+          </View>
+        }
+      />
     </>
   );
 }
 
 const overlayColor = "rgba(0,0,0,0.5)"; // this gives us a black color with a 50% transparency
- 
+
 const rectDimensions = SCREEN_WIDTH * 0.65; // this is equivalent to 255 from a 393 device width
 const rectBorderWidth = SCREEN_WIDTH * 0.005; // this is equivalent to 2 from a 393 device width
 const rectBorderColor = "lightblue";
- 
+
 const scanBarWidth = SCREEN_WIDTH * 0.46; // this is equivalent to 180 from a 393 device width
 const scanBarHeight = SCREEN_WIDTH * 0.0025; //this is equivalent to 1 from a 393 device width
 const scanBarColor = "#22ff00";
@@ -118,7 +142,7 @@ const styles = {
     justifyContent: "center",
     backgroundColor: "transparent"
   },
-  
+
   rectangle: {
     height: rectDimensions,
     width: rectDimensions,
@@ -128,7 +152,7 @@ const styles = {
     justifyContent: "center",
     backgroundColor: "transparent"
   },
-  
+
   topOverlay: {
     flex: 1,
     height: SCREEN_WIDTH,
@@ -137,7 +161,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center"
   },
-  
+
   bottomOverlay: {
     flex: 1,
     height: SCREEN_WIDTH,
@@ -145,18 +169,18 @@ const styles = {
     backgroundColor: overlayColor,
     paddingBottom: SCREEN_WIDTH * 0.25
   },
-  
+
   leftAndRightOverlay: {
     height: SCREEN_WIDTH * 0.65,
     width: SCREEN_WIDTH,
     backgroundColor: overlayColor
   },
-  
+
   scanBar: {
     width: scanBarWidth,
     height: scanBarHeight,
     backgroundColor: scanBarColor
   }
- };
- 
+};
+
 export default QrReader

@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Platform, StyleSheet, Text, View, Button } from "react-native";
+import { Platform, StyleSheet, Text, View,Alert} from "react-native";
 
 import ToggleSwitch from "toggle-switch-react-native";
 import RNPickerSelect from 'react-native-picker-select';
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
-import { setAsyncStorageKey } from "../../helpers/asynctorage";
+import { setAsyncStorageKey,getAsyncStorageKey } from "../../helpers/asynctorage";
 import { Switch } from 'react-native-paper';
-import { UpdateMessages } from "../../helpers/socket";
+import { Avatar } from "react-native-elements";
+import { useIsFocused } from "@react-navigation/native";
 const Settings = (props) => {
 
   const { setLanguage, language, setTheme, theme} = useContext(AppContext)

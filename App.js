@@ -53,7 +53,6 @@ const App = () => {
   const [language,setLanguage] = useState("euskera")
   const [theme, setTheme] = useState("false")
   const [userInfo, setUserInfo] = useState(null)
-  const [token,setToken] = useState('')
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))

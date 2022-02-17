@@ -38,6 +38,8 @@ const Chat = (props) => {
     const messages = await getAsyncStorageKey("messages");
     let roomMessages;
     let messageArr = JSON.parse(messages)
+    console.log("GET MESSAGES")
+    console.log(messageArr.map((message) => message.room))
     if (userFrom.name === "Admin") {
       roomMessages = messageArr.filter((message) => userTo.email === message.room)
     }

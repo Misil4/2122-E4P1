@@ -5,21 +5,17 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     View,
-    Image,
     Alert,
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
-import { ScrollView } from 'react-native';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ListItem } from 'react-native-elements/dist/ListItem';
-import { Avatar } from 'react-native-paper';
-import { UpdateMessages } from "../../helpers/socket"
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function Basic(props) {
@@ -46,14 +42,30 @@ export default function Basic(props) {
     const UpdateGarbages = async () => {
         socket.on("change_trash", getUpdate)
     }
-
+    const UpdateMessage = async (message) => {
+        console.log(message)
+        const saved_messages = await getAsyncStorageKey("messages");
+        let messageArr = JSON.parse(saved_messages)
+        if (!messageArr) {
+            messageArr = []
+        }
+        messageArr.push(message.message)
+        setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true);setMessage(message);setTimeout(() => setNotification(false), 5000) })
+    }
     useEffect(() => {
         getAllGarbage();
     }, []);
     useEffect(() => {
         UpdateGarbages()
         return () => socket.off("change_data", getUpdate)
+<<<<<<< HEAD
     },[socket])
+=======
+    }, [socket])
+    useEffect(() => {
+        socket.on("notifications", UpdateMessage)
+    }, [socket])
+>>>>>>> a8261532822140aba1818ce279a5db7f58e4b7ad
     const createButtonAlert = (data) =>
         Alert.alert(
             selectLanguage(language).delete,
@@ -122,7 +134,10 @@ export default function Basic(props) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
             />
-            {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
+           {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
         </SafeAreaProvider>
     );
 }

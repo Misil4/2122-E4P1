@@ -3,18 +3,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ListItem, Badge, Avatar } from 'react-native-elements'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { View, ActivityIndicator, ScrollView, StyleSheet,Text } from 'react-native';
+import { View, ActivityIndicator, ScrollView, StyleSheet,Text,Alert } from 'react-native';
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import axios from 'axios';
+import { selectLanguage } from '../../languages/languages';
+import { useIsFocused } from '@react-navigation/native';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { socket, theme } = useContext(AppContext);
 
-
+  const focused = useIsFocused()
 
   const getUpdate = users => {
     console.log("DATOS RECOGIDOS");
@@ -43,6 +45,21 @@ const UsersList = (props) => {
     UpdateUsers()
     return () => socket.off("change_data", getUpdate)
 },[socket])
+<<<<<<< HEAD
+=======
+useEffect(() => {
+  socket.on("notifications", UpdateMessage)
+}, [socket])
+const UpdateMessage = async (message) => {
+  const saved_messages = await getAsyncStorageKey("messages");
+  let messageArr = JSON.parse(saved_messages)
+  if (!messageArr) {
+      messageArr = []
+  }
+  messageArr.push(message.message)
+  setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true);setMessage(message); setTimeout(() => setNotification(false), 5000) })
+}
+>>>>>>> a8261532822140aba1818ce279a5db7f58e4b7ad
   if (loading) {
     return (
       <View style={{ margin: "auto" }}>
@@ -81,6 +98,13 @@ const UsersList = (props) => {
         })}
     </ScrollView>
     </View>
+<<<<<<< HEAD
+=======
+    {notification && focused ?  Alert.alert(message.name, message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
+>>>>>>> a8261532822140aba1818ce279a5db7f58e4b7ad
     </SafeAreaProvider >
   )
 }

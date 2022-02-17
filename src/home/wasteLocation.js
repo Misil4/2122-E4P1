@@ -57,7 +57,10 @@ const wasteLocation = (props) => {
           onPress={() => createButtonAlert(props.route.params.id)}
         />
       </View>
-      {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
+      {notification && focused ?  Alert.alert(message.name,message.text,[
+                { text: "OK" }
+            ])
+            : <Text>o</Text>}
     </SafeAreaProvider>
   );
 }
