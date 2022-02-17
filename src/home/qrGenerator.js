@@ -1,17 +1,17 @@
 'use strict';
 import React, { Component, useContext, useEffect, useState } from 'react'
 import QRCode from 'react-native-qrcode-svg';
-import { StyleSheet } from 'react-native';
+import { StyleSheet,Text } from 'react-native';
 import {
   View
 } from 'react-native';
 import AppContext from '../../context/context';
+import { selectLanguage } from '../../languages/languages';
 const QrGenerator = (props) => {
-  const {theme,socket} = useContext(AppContext)
+  const {theme,language} = useContext(AppContext)
   return (
     <View style={theme ? styles.darkContainer : styles.container}>
-      {console.log("EL VALOR DE EL EMAIL ES")}
-      {console.log(props.route.params.email)}
+      <Text style={theme ? styles.darkText : styles.text}>{selectLanguage(language).qr_scan}</Text>
       <QRCode
         color='#61b97c'
         backgroundColor="transparent"
@@ -35,5 +35,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center',
     backgroundColor: "#232322"
+  },
+  text : {
+    color : "#232322",
+    fontFamily : "Gotham-Bold",
+    fontSize : 25
+  },
+  darkText : {
+    color : "#F5F5F5",
+    fontFamily : "Gotham-Bold",
+    fontSize : 25
   }
 })

@@ -29,14 +29,13 @@ export default function Basic(props) {
             .map((_, i) => ({}))
     );
     const { socket, language, theme } = useContext(AppContext)
-    const [notification,setNotification] = useState(false)
 
     const getUpdate = trash => {
         setListData(trash)
     }
     const getAllGarbage = async () => {
-        await tokenExpired()
         const token = await getAsyncStorageKey('token')
+        await tokenExpired(token)
         return axios.get("https://ballin-api-stage.herokuapp.com/garbages", { headers: { 'Authorization': token } })
             .then(response => setListData(response.data.garbages))
             .catch(error => console.error(error))
@@ -55,9 +54,6 @@ export default function Basic(props) {
         UpdateGarbages()
         return () => socket.off("change_data", getUpdate)
     },[socket])
-    useEffect(() => {
-        UpdateMessages(socket,setNotification)
-      },[socket])
     const createButtonAlert = (data) =>
         Alert.alert(
             selectLanguage(language).delete,

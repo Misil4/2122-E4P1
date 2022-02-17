@@ -7,14 +7,12 @@ import { View, ActivityIndicator, ScrollView, StyleSheet,Text } from 'react-nati
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
-import { UpdateMessages } from '../../helpers/socket';
 import axios from 'axios';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { socket, theme } = useContext(AppContext);
-  const [notification,setNotification] = useState(false)
 
 
 
@@ -25,9 +23,11 @@ const UsersList = (props) => {
   }
 
   const getAllUsers = async () => {
-    await tokenExpired()
     const token = await getAsyncStorageKey('token');
-    return axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
+    console.log("TOKEN")
+    console.log(token)
+    await tokenExpired(token)
+    return  axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
       .then(response => { setUserListData(response.data.users); setLoading(false) })
       .catch(error => console.error(error))
   }
@@ -42,9 +42,6 @@ const UsersList = (props) => {
   useEffect(() => {
     UpdateUsers()
     return () => socket.off("change_data", getUpdate)
-},[socket])
-useEffect(() => {
-  UpdateMessages(socket,setNotification)
 },[socket])
   if (loading) {
     return (
@@ -84,7 +81,6 @@ useEffect(() => {
         })}
     </ScrollView>
     </View>
-    {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </SafeAreaProvider >
   )
 }

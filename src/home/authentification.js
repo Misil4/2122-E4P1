@@ -105,7 +105,6 @@ const authentification = (props) => {
       email: userInfo.user.email
     })
       .then(async response => {
-        setAuthenticated(true)
         console.log("JWT TOKEN FROM EXPRESS");
         console.log(response.data);
         await AsyncStorage.setItem('token', response.data.data.access_token)
@@ -170,8 +169,6 @@ const authentification = (props) => {
         props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userEmail } })
       }
       else { console.log("error") }
-      setLoading(false);
-      setLogin(true);
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -243,7 +240,7 @@ const authentification = (props) => {
                 style={{ width: 312, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
-                onPress={_signIn}
+                onPress={_signIn()}
               />
             )}
           </View>

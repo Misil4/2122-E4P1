@@ -2,8 +2,7 @@ import axios from "axios";
 import { isJwtExpired } from "jwt-check-expiration";
 import { getAsyncStorageKey, setAsyncStorageKey } from "./asynctorage";
 
-export const tokenExpired = async () => {
-    const token = await getAsyncStorageKey('token');
+export const tokenExpired = async (token) => {
     if (isJwtExpired(token)) {
     const refreshToken = await getAsyncStorageKey('refresh_token')
     const userEmail = await getAsyncStorageKey('user_email')
@@ -11,7 +10,7 @@ export const tokenExpired = async () => {
         token: refreshToken,
         email: userEmail
     }
-    await axios.post('https://ballin-api-production.herokuapp.com/refresh', data)
+    return axios.post('https://ballin-api-production.herokuapp.com/refresh', data)
         .then(async response => {
             console.log("TOKENS REFRESHED");
             console.log(response.data);

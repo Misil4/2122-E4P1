@@ -23,5 +23,7 @@ export const eus = {
   location_screen: "Nire Kokapena",
   qr_gen_screen : "QrGenerator",
    //settings
-   select_language : "Aukeratu zure hizkuntza"
+   select_language : "Aukeratu zure hizkuntza",
+       //qr code
+       qr_scan : "Eskaneatu QR Kodea"
 }

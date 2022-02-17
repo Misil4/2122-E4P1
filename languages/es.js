@@ -23,5 +23,7 @@ export const es = {
     location_screen: "Mi Ubicación",
     qr_gen_screen : "QrGenerator",
      //settings
-     select_language : "Selecciona tu idioma"
+     select_language : "Selecciona tu idioma",
+         //qr code
+    qr_scan : "Escanee el codigo QR"
 }

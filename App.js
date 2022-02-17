@@ -53,19 +53,11 @@ const App = () => {
   const [language,setLanguage] = useState("euskera")
   const [theme, setTheme] = useState("false")
   const [userInfo, setUserInfo] = useState(null)
-  const [notification, setNotification] = useState(false)
-  const [message, setMessage] = useState(null)
-  useEffect(() => {
-    socket.on("notification", (message) => {
-        console.log("MENSAJE")
-        console.log(message[0].user)
-        setNotification(true)
-        setMessage(message)
-    })
-}, [socket])
+  const [token,setToken] = useState('')
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))
+    getAsyncStorageKey('token').then(response => setToken(JSON.parse(response)))
   }, [])
   useEffect(() => {
     getLanguage().then(response => response === null ? false : setLanguage(response))
@@ -124,7 +116,7 @@ const App = () => {
     )
   }
   return (
-      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme}}>
+      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme,token,setToken}}>
         {console.log("LANG",language)}
         <NavigationContainer>
           <stack.Navigator

@@ -16,21 +16,11 @@ import AppContext from '../../context/context';
 import { UpdateMessages } from '../../helpers/socket';
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
-const QrReader = () => {
-const [data,setData] = useStateWithPromise({email : ''})
-const [notification,setNotification] = useState(false)
-const {socket} = useContext(AppContext)
-useEffect(() => {
-  UpdateMessages(socket,setNotification)
-},[socket])
-
-
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
-
 const QrReader = () => {
-  const {socket} = useContext(AppContext)
-  const [data, setData] = useStateWithPromise({ email: '' })
+const [data,setData] = useStateWithPromise({email : ''})
+const {socket} = useContext(AppContext)
   const onSuccess = async (e) => {
     await setData({ email: e.data })
     updateUserStatus(e.data)
@@ -104,7 +94,6 @@ const QrReader = () => {
         </View>
       }
     />
-    {notification ? <Text>NUEVO MENSAJE</Text>: <Text>i</Text>}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import socketIO from 'socket.io-client';
-export const socket = socketIO('http://192.168.1.218:3001/', {
+export const socket = socketIO('https://ballin-api-stage.herokuapp.com/', {
       transports: ['websocket'],
       jsonp: false,
     });

@@ -2,25 +2,17 @@
 
 //import Geolocation from 'react-native-geolocation-service';
 
-import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, PermissionsAndroid, Alert,Text } from "react-native";
+import React, { useContext} from "react";
+import { StyleSheet, View, Alert,Text } from "react-native";
 import { Button, } from "react-native-elements";
-import MapView, { Circle, Marker, Polyline } from "react-native-maps";
-import axios from "axios";
-import { getAsyncStorageKey } from "../../helpers/asynctorage";
-import { tokenExpired } from '../../helpers/jwt';
+import MapView, { Marker } from "react-native-maps";
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { UpdateMessages } from "../../helpers/socket";
 
 
 const wasteLocation = (props) => {
   const { language, socket, theme } = useContext(AppContext)
-  const [notification,setNotification] = useState(false)
-  useEffect(() => {
-    UpdateMessages(socket,setNotification)
-},[socket])
   const updateStatusComplete = async (id) => {
     socket.emit("garbage_update", id);
   }
