@@ -53,6 +53,8 @@ const authentification = (props) => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
+      setLoading(true)
+      setLogin(true);
       setMessage(selectLanguage(language).saved_keys)
       const user_rol = await getAsyncStorageKey("user_rol");
       setRol(user_rol)
@@ -60,12 +62,11 @@ const authentification = (props) => {
       setEmail(user_email)
       socket.emit("id_save", user_email)
       // Set User Info if user is already signed in
-      setLoading(false);
-      setLogin(true);
 
-      console.log("signed in " + rol);
-      console.log("signed in " + email)
+      console.log("signed in " + user_rol);
+      console.log("signed in " + user_email)
       setMessage(selectLanguage(language).user_logged)
+      setLoading(false)
       if (user_rol === "admin") {
 
         props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
@@ -73,7 +74,11 @@ const authentification = (props) => {
       else if (user_rol === "user") {
         socket.emit("join", user_email);
         console.log("LOGIN STATUS")
-        props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
+        if (user.login_status) {
+        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user_email } })
+        }
+        props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
+
       }
       else { console.log("error") }
     } else {
@@ -137,6 +142,7 @@ const authentification = (props) => {
     // It will prompt google Signin Widget
     try {
       setLoading(true);
+      setLogin(true)
       await GoogleSignin.hasPlayServices({
         // Check if device has Google Play Services installed
         // Always resolves to true on iOS
@@ -161,12 +167,16 @@ const authentification = (props) => {
       setMessage(selectLanguage(language).user_logged)
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
+      setLoading(false)
       if (userRol === "admin") {
         props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
       }
       else if (userRol === "user") {
         socket.emit("join", userEmail);
-        props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userEmail } })
+        if (user.login_status) {
+          props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user_email } })
+          }
+          props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
       }
       else { console.log("error") }
     } catch (error) {
@@ -196,11 +206,10 @@ const authentification = (props) => {
       }
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      await removeAsyncStorageKey('token');
-      await removeAsyncStorageKey('refresh_token');
       setUserInfo("")
       // Removing user Info
       setLogin(false);
+      setLoading(false)
     } catch (error) {
       console.error(error);
     }
@@ -223,7 +232,7 @@ const authentification = (props) => {
         {console.log(login)}
         <View >
           <View style={theme ? styles.darkContainer : styles.container}>
-            {login !== false ? (
+            {login ? (
               <>
                 <Image style={styles.imageStyle} source={{ uri: user?.user.photo }} />
                 <Text style={theme ? styles.darkText : styles.text}>{user?.user.givenName}</Text>
@@ -233,14 +242,14 @@ const authentification = (props) => {
                   <Text style={styles.darkText}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: email } })}><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen}, {params: { email: email } })}><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton
                 style={{ width: 312, height: 48 }}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
-                onPress={_signIn()}
+                onPress={_signIn}
               />
             )}
           </View>

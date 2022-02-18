@@ -42,30 +42,12 @@ export default function Basic(props) {
     const UpdateGarbages = async () => {
         socket.on("change_trash", getUpdate)
     }
-    const UpdateMessage = async (message) => {
-        console.log(message)
-        const saved_messages = await getAsyncStorageKey("messages");
-        let messageArr = JSON.parse(saved_messages)
-        if (!messageArr) {
-            messageArr = []
-        }
-        messageArr.push(message.message)
-        setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true);setMessage(message);setTimeout(() => setNotification(false), 5000) })
-    }
     useEffect(() => {
         getAllGarbage();
     }, []);
     useEffect(() => {
         UpdateGarbages()
-        return () => socket.off("change_data", getUpdate)
-<<<<<<< HEAD
     },[socket])
-=======
-    }, [socket])
-    useEffect(() => {
-        socket.on("notifications", UpdateMessage)
-    }, [socket])
->>>>>>> a8261532822140aba1818ce279a5db7f58e4b7ad
     const createButtonAlert = (data) =>
         Alert.alert(
             selectLanguage(language).delete,

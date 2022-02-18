@@ -26,24 +26,11 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const QrReader = () => {
   const [data, setData] = useStateWithPromise({ email: '' })
   const { socket,language } = useContext(AppContext)
-  const [notification,setNotification] = useState(false)
-  const [message,setMessage] = useState("i")
   const focused = useIsFocused()
-  useEffect(() => {
-    socket.on("notifications", UpdateMessage)
-}, [socket])
-  const UpdateMessage = async (message) => {
-    const saved_messages = await getAsyncStorageKey("messages");
-    let messageArr = JSON.parse(saved_messages)
-    if (!messageArr) {
-        messageArr = []
-    }
-    messageArr.push(message.message)
-    setAsyncStorageKey("messages", JSON.stringify(messageArr)).then(() => { setNotification(true); setMessage(message);setTimeout(() => setNotification(false), 5000) })
-}
   const onSuccess = async (e) => {
     await setData({ email: e.data })
     updateUserStatus(e.data)
+    socket.emit("qr_scanned",e.data)
     alert(e.data + " ha sido escaneado")
   }
   const badge_update = (email) => {
@@ -111,10 +98,6 @@ const QrReader = () => {
             </View>
 
             <View style={styles.bottomOverlay} />
-            {notification && focused ?  Alert.alert(message.name,message.text,[
-                { text: "OK" }
-            ])
-            : <Text>o</Text>}
           </View>
         }
       />

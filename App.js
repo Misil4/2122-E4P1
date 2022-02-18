@@ -51,12 +51,11 @@ const App = () => {
     return JSON.parse(theme)
   }
   const [language,setLanguage] = useState("euskera")
-  const [theme, setTheme] = useState("false")
+  const [theme, setTheme] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))
-    getAsyncStorageKey('token').then(response => setToken(JSON.parse(response)))
   }, [])
   useEffect(() => {
     getLanguage().then(response => response === null ? false : setLanguage(response))
@@ -105,8 +104,8 @@ const App = () => {
       }}
         drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.user.givenName}` : "Bienvenido User"} userPhoto={userInfo ? userInfo.user.photo : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
         <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color= "#61b97c" />), headerShown: false, swipeEnabled: false }} />
-        <drawer.Screen name={selectLanguage(language).qr_gen_screen} component={QrGenerator} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color= "#61b97c" />), }} />
         <drawer.Screen name={selectLanguage(language).location_screen} component={WasteReport} options={{ drawerIcon: (({ focused }) => <Icon name="location-on" size={30} color= "#61b97c" />), }} />
+        <drawer.Screen name={selectLanguage(language).qr_gen_screen} initialParams={{user : userInfo.email}} component={QrGenerator} options={{ headerShown : false,swipeEnabled : false,drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color= "#61b97c" />), }} />
         <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
         <drawer.Screen name="Chat" component={ChatUser} options={{
           drawerItemStyle: { height: 0 }
@@ -115,19 +114,18 @@ const App = () => {
     )
   }
   return (
-      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme,token,setToken}}>
+      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme}}>
         {console.log("LANG",language)}
         <NavigationContainer>
           <stack.Navigator
             screenOptions={{ 
-              gestureEnabled: true,
-              gestureDirection: "horizontal",
+              gestureEnabled: false,
               transitionSpec: {
                 open: config,
                 close: config
-              }
+              },
+              headerMode:"float"
             }}
-            headerMode="float"
           >
             <stack.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
             <stack.Screen name="User" component={User} options={{ headerShown: false }} />
