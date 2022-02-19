@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { GiftedChat ,Bubble} from "react-native-gifted-chat";
+import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import { getAsyncStorageKey, setAsyncStorageKey } from "../../../helpers/asynctorage";
-import { View, BackHandler ,ImageBackground,StyleSheet} from "react-native";
+import { View, BackHandler, ImageBackground, StyleSheet } from "react-native";
 import { Avatar } from "react-native-elements";
 import ChatContext from "../../../context/chatContext";
 import { selectLanguage } from "../../../languages/languages";
@@ -12,7 +12,7 @@ const Chat = (props) => {
   const isFocused = useIsFocused()
   const [messages, setMessages] = useState([]);
   let { userTo, userFrom } = useContext(ChatContext)
-  const { language, socket,theme } = useContext(AppContext)
+  const { language, socket, theme, user } = useContext(AppContext)
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -34,7 +34,7 @@ const Chat = (props) => {
   }
   const GetMessages = async () => {
     console.log("GET PROPS NORMALES")
-    console.log(userTo)
+    console.log(userFrom)
     const messages = await getAsyncStorageKey("messages");
     let roomMessages;
     let messageArr = JSON.parse(messages)
@@ -53,7 +53,7 @@ const Chat = (props) => {
   }
   const backButtonClick = () => {
     if (props.navigation && props.navigation.goBack) {
-      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: "QrGenerator", params: { email: userFrom.email } })
+      userFrom[0].name === "Admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : userFrom[0].login_status ? props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userFrom[0].email } })
       return true;
     }
     return false;
@@ -71,7 +71,7 @@ const Chat = (props) => {
     UpdateMessages()
     return () => socket.off("updated_messages", getUpdate);
   }, [messages])
-  const onSend = useCallback(async (messages = [],userTo) => {
+  const onSend = useCallback(async (messages = [], userTo) => {
     console.log("ONSEND PROPS")
     console.log(userTo)
     const data = {
@@ -116,39 +116,39 @@ const Chat = (props) => {
   }
   return (
     <SafeAreaProvider style={theme ? styles.darkContainer : styles.container}>
-    <ImageBackground source={{uri : "https://i.imgur.com/4jPTrzf.jpg"}} resizeMode="cover" style={{ flexGrow: 1 }}>
-      <GiftedChat
-      
-      backgroundImage='../../assets/logo_app.jpg'
-        messages={messages}
-        renderBubble={renderBubble}
-        sty
-        placeholder={selectLanguage(language).placeholder}
-        onSend={messages => onSend(messages,userTo)}
-        user={{
-          _id: userTo.name,
-          avatar: userFrom.name === "Admin" ? "" : userFrom.picture
-        }}
-      />
-    </ImageBackground>
+      <ImageBackground source={{ uri: "https://i.imgur.com/4jPTrzf.jpg" }} resizeMode="cover" style={{ flexGrow: 1 }}>
+        <GiftedChat
+
+          backgroundImage='../../assets/logo_app.jpg'
+          messages={messages}
+          renderBubble={renderBubble}
+          sty
+          placeholder={selectLanguage(language).placeholder}
+          onSend={messages => onSend(messages, userTo)}
+          user={{
+            _id: userTo.name,
+            avatar: userFrom.name === "Admin" ? "" : userFrom.picture
+          }}
+        />
+      </ImageBackground>
     </SafeAreaProvider>
   )
 }
 
 const styles = StyleSheet.create({
-container : {
-  backgroundColor : "#FDF4E3"
-},
-darkContainer : {
-  backgroundColor : "#232322"
-},
-bubbleTextRight : {
-  fontFamily : 'Gotham',
-  fontWeight: null
-},
-bubbleTextLeft : {
-  fontFamily : 'Gotham',
-  fontWeight: null
-}
+  container: {
+    backgroundColor: "#FDF4E3"
+  },
+  darkContainer: {
+    backgroundColor: "#232322"
+  },
+  bubbleTextRight: {
+    fontFamily: 'Gotham',
+    fontWeight: null
+  },
+  bubbleTextLeft: {
+    fontFamily: 'Gotham',
+    fontWeight: null
+  }
 })
 export default Chat

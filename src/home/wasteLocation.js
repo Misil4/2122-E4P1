@@ -52,7 +52,7 @@ const wasteLocation = (props) => {
           bottom: 15
        }}>
         <Button buttonStyle={styles.button} title="&#8656;" titleStyle={{ fontSize: 60, bottom: 15}}
-          onPress={() => props.navigation.navigate(selectLanguage(language).garbage_screen)} />
+          onPress={() => props.navigation.navigate("User" ,{screen : selectLanguage(language).garbage_screen})} />
         <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 10 }}
           onPress={() => createButtonAlert(props.route.params.id)}
         />

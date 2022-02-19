@@ -21,7 +21,7 @@ const WasteReport = props => {
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
-  const {socket,language,theme,token} = useContext(AppContext)
+  const {socket,language,theme} = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -42,7 +42,8 @@ const WasteReport = props => {
   }
   const getUserInfo = async () => {
     const userEmail = await getAsyncStorageKey("user_email")
-    await tokenExpired()
+    const token = await getAsyncStorageKey('token')
+    await tokenExpired(token)
     return await axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
       .then((response) => setUserData(response.data.users.filter((user) => user.email === userEmail)))
       .then((error) => console.log(error))

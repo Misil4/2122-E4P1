@@ -23,6 +23,7 @@ import { getAsyncStorageKey } from "./helpers/asynctorage";
 import { selectLanguage } from "./languages/languages.js";
 import { useStateWithPromise } from "./hooks/useStateWithPromise";
 import ChatContext from "./context/chatContext";
+import UserLocation from "./src/home/userLocation";
 
 
 
@@ -80,6 +81,7 @@ const App = () => {
           <drawer.Screen name="QrReader" component={QrReader} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code-scanner" size={30} color= "#61b97c" />), }} />
           <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color= "#61b97c" />), }} />
           <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color= "#61b97c" />), }} />
+          <drawer.Screen name={"UserLocation"} component={UserLocation} options={{drawerItemStyle : { height : 0}}} />
           <drawer.Screen name="ChatAdmin" component={ChatAdmin} options={{
             drawerItemStyle: { height: 0 }
           }} />
