@@ -18,67 +18,43 @@ const UserLocation = props => {
   const [email, setEmail] = useState(email)
   const [permission, setPermission] = useState(false);
   const [data, setData] = useState({
-    latitude: null, longitude: null, timestamp: null
+    latitude: 0, longitude: 0, timestamp: 0
   })
   const [userData, setUserData] = useState('')
-  const {socket,language,theme} = useContext(AppContext)
-  async function requestLocationPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          'title': 'Example App',
-          'message': 'Example App access to your location '
-        }
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        setPermission(true)
-      } else {
-        return false
-      }
-    } catch (err) {
-      console.warn(err)
-    }
-  }
+  const {socket,language,theme,user,location} = useContext(AppContext)
   useEffect(() => {
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
   }, [])
   useEffect(() => {
-    requestLocationPermission()
-    if (permission) {
-      Geolocation.getCurrentPosition(
-        (position) => {
-          setData({ latitude: position.coords.latitude, longitude: position.coords.longitude, timestamp: position.timestamp })
+      const data = {userEmail : props.route.params.user.email,adminEmail : user.user.email}
+      socket.emit("request_location",data)
+      socket.on("new_location",(location) =>{
+          console.log("LOCATION DATA");
+          console.log(location)
+          setData(location)
           setMapOn(true)
-        },
-        (error) => {
-          // See error code charts below.
-          console.log(error.code, error.message);
-        },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-      );
-    }
-  }, [permission])
+      })
+  },[])
 
   return (
     <SafeAreaProvider style={theme ? styles.darkContainer : styles.container}>
       {console.log("USERDATA")}
-      {console.log(props.route.params.user)}
-      {mapOn !== false ? <MapView
+      {console.log(data)}
+      {mapOn ? <MapView
         style={styles.map}
         initialRegion={{
-          latitude: data.latitude,
-          longitude: data.longitude,
+          latitude: data?.latitude,
+          longitude: data?.longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
       ><Marker coordinate={{
-        latitude: data.latitude,
-        longitude: data.longitude,
+        latitude: data?.latitude,
+        longitude: data?.longitude,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
       }} />
-      </MapView> : null}
+      </MapView> : console.log(false)}
       <View style={{
           flex: 1,
           flexDirection: 'row',

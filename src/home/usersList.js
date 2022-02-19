@@ -63,7 +63,7 @@ const UsersList = (props) => {
               <Avatar
                 size="medium"
                 source={{ uri: element.picture }}
-                onPress={() => { console.log(element); props.navigation.navigate("Admin", { screen: "UserLocation", params: { user: element } }) }}
+                onPress={() => { element.login_status ? props.navigation.navigate("Admin", { screen: "UserLocation", params: { user: element } }) : Alert.alert("Usuario no conectado") }}
                 activeOpacity={0.7}
                 titleStyle={{ color: "black" }}
                 rounded

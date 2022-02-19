@@ -21,9 +21,9 @@ import AppContext from "./context/context";
 import{ socket }from "./socket/socket";
 import { getAsyncStorageKey } from "./helpers/asynctorage";
 import { selectLanguage } from "./languages/languages.js";
-import { useStateWithPromise } from "./hooks/useStateWithPromise";
-import ChatContext from "./context/chatContext";
 import UserLocation from "./src/home/userLocation";
+import { PermissionsAndroid } from "react-native";
+import Geolocation from 'react-native-geolocation-service';
 
 
 
@@ -54,6 +54,42 @@ const App = () => {
   const [language,setLanguage] = useState("euskera")
   const [theme, setTheme] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
+  const [location,setLocation] = useState(null)
+  const [permission,setPermission] = useState(false)
+  async function requestLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Example App',
+          'message': 'Example App access to your location '
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        setPermission(true)
+      } else {
+        return false
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+  useEffect(() => {
+    requestLocationPermission()
+    if (permission) {
+      Geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude, timestamp: position.timestamp })
+
+        },
+        (error) => {
+          // See error code charts below.
+          console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+      );
+    }
+  }, [permission])
   useEffect(() => {
     SplashScreen.hide()
     getAsyncStorageKey('user_info').then(response => setUserInfo(JSON.parse(response)))
@@ -116,7 +152,7 @@ const App = () => {
     )
   }
   return (
-      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme}}>
+      <AppContext.Provider value={{ user: userInfo,setUser : setUserInfo, socket: socket ,language : language,setLanguage, theme, setTheme,location}}>
         {console.log("LANG",language)}
         <NavigationContainer>
           <stack.Navigator

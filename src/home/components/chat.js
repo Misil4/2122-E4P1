@@ -12,7 +12,7 @@ const Chat = (props) => {
   const isFocused = useIsFocused()
   const [messages, setMessages] = useState([]);
   let { userTo, userFrom } = useContext(ChatContext)
-  const { language, socket, theme, user } = useContext(AppContext)
+  const { language, socket, theme,location } = useContext(AppContext)
   const JoinChat = () => {
     socket.emit("join", userTo.email);
   }
@@ -53,7 +53,7 @@ const Chat = (props) => {
   }
   const backButtonClick = () => {
     if (props.navigation && props.navigation.goBack) {
-      userFrom[0].name === "Admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : userFrom[0].login_status ? props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userFrom[0].email } })
+      userFrom.name === "Admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : userFrom.login_status ? props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userFrom.email } })
       return true;
     }
     return false;
@@ -71,6 +71,11 @@ const Chat = (props) => {
     UpdateMessages()
     return () => socket.off("updated_messages", getUpdate);
   }, [messages])
+  useEffect(() => {
+    socket.on("user_location", (email) => {
+        socket.emit("send_location",{adminEmail : email,location : location})
+    })
+  },[])
   const onSend = useCallback(async (messages = [], userTo) => {
     console.log("ONSEND PROPS")
     console.log(userTo)

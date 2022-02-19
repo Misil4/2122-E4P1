@@ -21,7 +21,7 @@ const WasteReport = props => {
     latitude: null, longitude: null, timestamp: null
   })
   const [userData, setUserData] = useState('')
-  const {socket,language,theme} = useContext(AppContext)
+  const {socket,language,theme,location} = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -68,6 +68,11 @@ const WasteReport = props => {
       );
     }
   }, [permission])
+  useEffect(() => {
+    socket.on("user_location", (email) => {
+        socket.emit("send_location",{adminEmail : email,location : location})
+    })
+  },[])
 
 
 

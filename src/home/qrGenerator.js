@@ -30,6 +30,11 @@ const QrGenerator = (props) => {
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', backButtonClick)
   },[])
+  useEffect(() => {
+    socket.on("user_location", (email) => {
+      socket.emit("send_location",{adminEmail : email,location : data})
+  })
+  },[socket])
   return (
     <View style={theme ? styles.darkContainer : styles.container}>
       {console.log("EMAIL")}

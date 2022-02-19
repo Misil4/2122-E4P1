@@ -11,7 +11,7 @@ import { Avatar } from "react-native-elements";
 import { useIsFocused } from "@react-navigation/native";
 const Settings = (props) => {
 
-  const { setLanguage, language, setTheme, theme} = useContext(AppContext)
+  const { setLanguage, language, setTheme, theme,socket,location} = useContext(AppContext)
 
   const placeholder = {
     label: selectLanguage(language).select_language,
@@ -19,6 +19,12 @@ const Settings = (props) => {
   };
   useEffect (() => {
     props.navigation.setOptions({title : selectLanguage(language).settings_screen})
+  },[])
+  useEffect(() => {
+    socket.on("user_location", (email) => {
+        socket.emit("send_location",{adminEmail : email,location : location})
+    })
+
   },[])
   const styles = StyleSheet.create({
     container: {
