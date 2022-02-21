@@ -1,14 +1,9 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Alert, PermissionsAndroid,Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
-import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Geolocation from 'react-native-geolocation-service';
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
-import { tokenExpired } from '../../helpers/jwt';
-import { NavigationContainer } from "@react-navigation/native";
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
 
@@ -16,17 +11,15 @@ import { selectLanguage } from "../../languages/languages";
 const UserLocation = props => {
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
-  const [permission, setPermission] = useState(false);
   const [data, setData] = useState({
     latitude: 0, longitude: 0, timestamp: 0
   })
-  const [userData, setUserData] = useState('')
   const {socket,language,theme,user,location} = useContext(AppContext)
   useEffect(() => {
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
   }, [])
   useEffect(() => {
-      const data = {userEmail : props.route.params.user.email,adminEmail : user.user.email}
+      const data = {userEmail : props.route.params.user.email,adminEmail : user.email}
       socket.emit("request_location",data)
       socket.on("new_location",(location) =>{
           console.log("LOCATION DATA");
@@ -45,15 +38,21 @@ const UserLocation = props => {
         initialRegion={{
           latitude: data?.latitude,
           longitude: data?.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+          latitudeDelta: 1,
+          longitudeDelta: 1,
         }}
       ><Marker coordinate={{
         latitude: data?.latitude,
         longitude: data?.longitude,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
-      }} />
+      }} title={"User"}/>
+      <Marker coordinate={{
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }} pinColor={'green'} title={"Admin"}/>
       </MapView> : console.log(false)}
       <View style={{
           flex: 1,

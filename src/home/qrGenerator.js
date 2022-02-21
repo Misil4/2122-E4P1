@@ -1,5 +1,5 @@
 'use strict';
-import React, { Component, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import QRCode from 'react-native-qrcode-svg';
 import { StyleSheet, Text } from 'react-native';
 import {
@@ -8,13 +8,17 @@ import {
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 import { BackHandler } from 'react-native';
+import { getAsyncStorageKey } from '../../helpers/asynctorage';
 const QrGenerator = (props) => {
   const [scanned,setScanned] = useState(false)
   const { theme, language,socket,user } = useContext(AppContext)
   const backButtonClick = () => {
+    console.log(user)
      if (props.navigation && props.navigation.goBack) {
+       console.log("QR")
+       console.log(user)
       if (user.login_status) {
-        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user_email } })
+        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user.email } })
         }
         props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
      }

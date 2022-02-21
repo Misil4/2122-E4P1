@@ -10,12 +10,11 @@ import {
 import { SwipeListView } from 'react-native-swipe-list-view';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/Entypo'
-import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useIsFocused } from '@react-navigation/native';
 
 
 export default function Basic(props) {
@@ -116,10 +115,6 @@ export default function Basic(props) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
             />
-           {notification && focused ?  Alert.alert(message.name,message.text,[
-                { text: "OK" }
-            ])
-            : <Text>o</Text>}
         </SafeAreaProvider>
     );
 }

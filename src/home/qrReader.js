@@ -1,32 +1,23 @@
 'use strict';
 
-import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
 import {
-  StyleSheet,
   View,
   Dimensions,
-  Text,
-  Alert
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
-import { getAsyncStorageKey,setAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey} from '../../helpers/asynctorage';
 import { tokenExpired } from '../../helpers/jwt';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
 import AppContext from '../../context/context';
 import Icon from "react-native-vector-icons/Ionicons";
 import * as Animatable from "react-native-animatable";
-import { selectLanguage } from '../../languages/languages';
-import { Avatar } from 'react-native-elements';
-import { useIsFocused } from '@react-navigation/native';
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const QrReader = () => {
   const [data, setData] = useStateWithPromise({ email: '' })
-  const { socket,language } = useContext(AppContext)
-  const focused = useIsFocused()
+  const { socket } = useContext(AppContext)
   const onSuccess = async (e) => {
     await setData({ email: e.data })
     updateUserStatus(e.data)

@@ -8,15 +8,15 @@ import { tokenExpired } from '../../helpers/jwt';
 import AppContext from '../../context/context';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import axios from 'axios';
-import { selectLanguage } from '../../languages/languages';
 import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useStateWithPromise } from '../../hooks/useStateWithPromise';
+import useStorage from '../../hooks/useStorage';
 
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { socket, theme } = useContext(AppContext);
-  const [tkn, setTkn] = useState(null)
+  const { socket, theme,user } = useContext(AppContext);
+  const [tkn, setTkn] = useStateWithPromise(null)
 
   const focused = useIsFocused()
 
@@ -30,14 +30,16 @@ const UsersList = (props) => {
     console.log("EXECUTING UPDATE")
   }
   useEffect(() => {
-    getAsyncStorageKey('token').then((token) => setTkn(token))
+    getAsyncStorageKey('token').then(async (token) => await setTkn(token))
   }, [])
   useEffect(() => {
+    if (tkn !== null) {
     axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': tkn } })
     .then(response => {
       setUserListData(response.data.users);
         setLoading(false)
     })
+  }
   },[tkn])
   useEffect(() => {
     UpdateUsers()
@@ -51,6 +53,8 @@ const UsersList = (props) => {
   }
   return (
     <SafeAreaProvider style={theme ? styles.darkTextContainer : styles.textContainer}><View >
+      {console.log("USUARIO")}
+      {console.log(user)}
       <ScrollView>
         {usersListData.map((element, i) => {
           return (

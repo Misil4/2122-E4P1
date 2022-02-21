@@ -3,7 +3,7 @@
 import axios from 'axios';
 import App from '../../App';
 // Import React in our code
-import React, { useState, useEffect, Context, useMemo, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // Import all the components we are going to use
 import {
   SafeAreaView,
@@ -13,7 +13,6 @@ import {
   Image,
   ActivityIndicator,
   TouchableOpacity,
-  Button,
 } from 'react-native';
 import auth from '@react-native-firebase/auth'
 // Import Google Signin
@@ -22,7 +21,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { getAsyncStorageKey, setAsyncStorageKey, removeAsyncStorageKey } from '../../helpers/asynctorage';
+import { getAsyncStorageKey, setAsyncStorageKey } from '../../helpers/asynctorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
@@ -35,7 +34,7 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const { socket, user, setUser, language,theme } = useContext(AppContext);
+  const { socket, user, setUser, language, theme,setLogged,logged } = useContext(AppContext);
 
   useEffect(() => {
     // Initial configuration
@@ -62,22 +61,20 @@ const authentification = (props) => {
       setEmail(user_email)
       socket.emit("id_save", user_email)
       // Set User Info if user is already signed in
-
       console.log("signed in " + user_rol);
       console.log("signed in " + user_email)
       setMessage(selectLanguage(language).user_logged)
       setLoading(false)
       if (user_rol === "admin") {
-
         props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
       }
       else if (user_rol === "user") {
         socket.emit("join", user_email);
         console.log("LOGIN STATUS")
         if (user.login_status) {
-        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user_email } })
+          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
         }
-        props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
+        props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
 
       }
       else { console.log("error") }
@@ -132,6 +129,8 @@ const authentification = (props) => {
       .then(async response => {
         console.log("RESPONSE")
         console.log(response.data)
+        setUser(response.data.data)
+        AsyncStorage.setItem("user_info",JSON.stringify(response.data.data))
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
       })
@@ -149,7 +148,6 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
-      setUser(userInfo)
       setUserInfo(userInfo)
       console.log("ID TOKEN")
       console.log(userInfo)
@@ -157,7 +155,6 @@ const authentification = (props) => {
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
       const user = JSON.stringify(userInfo)
-      await AsyncStorage.setItem("user_info", user)
       console.log("USER TOKEN SAVED");
       console.log(token)
       await tokenSignIn(userInfo)
@@ -168,15 +165,18 @@ const authentification = (props) => {
       console.log("getuserinfo " + userRol);
       console.log("getuserinfo " + userEmail);
       setLoading(false)
+      await AsyncStorage.setItem("login","logged")
+      await setAsyncStorageKey("login",JSON.stringify(true))
+      setLogged(true)
       if (userRol === "admin") {
         props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
       }
       else if (userRol === "user") {
         socket.emit("join", userEmail);
         if (user.login_status) {
-          props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user_email } })
-          }
-          props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
+          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user } })
+        }
+        props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
       }
       else { console.log("error") }
     } catch (error) {
@@ -202,10 +202,11 @@ const authentification = (props) => {
     try {
       if (rol === "user") {
         console.log("ROOM LEAVED SUCCESFULLY")
-        socket.emit("leave", user.user.email);
+        socket.emit("leave", user.email);
       }
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
+      await AsyncStorage.removeItem("login")
       setUserInfo("")
       // Removing user Info
       setLogin(false);
@@ -234,15 +235,15 @@ const authentification = (props) => {
           <View style={theme ? styles.darkContainer : styles.container}>
             {login ? (
               <>
-                <Image style={styles.imageStyle} source={{ uri: user?.user.photo }} />
-                <Text style={theme ? styles.darkText : styles.text}>{user?.user.givenName}</Text>
+                <Image style={styles.imageStyle} source={{ uri: user?.picture }} />
+                <Text style={theme ? styles.darkText : styles.text}>{user?.name}</Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
                   <Text style={styles.darkText}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen}, {params: { email: email } })}><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }, { params: { email: email } })}><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton
@@ -264,7 +265,7 @@ export default authentification;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor : "#F5F5F5",
+    backgroundColor: "#F5F5F5",
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 20,
-    fontFamily : "Gotham-Bold"
+    fontFamily: "Gotham-Bold"
   },
   imageStyle: {
     width: 200,
@@ -295,12 +296,12 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 30,
   },
-  text : {
-    color : "#232322",
-    fontFamily : "Gotham-Bold"
+  text: {
+    color: "#232322",
+    fontFamily: "Gotham-Bold"
   },
-  darkText : {
-    color : "#F5F5F5",
-    fontFamily : "Gotham-Bold"
+  darkText: {
+    color: "#F5F5F5",
+    fontFamily: "Gotham-Bold"
   }
 });

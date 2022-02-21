@@ -1,4 +1,4 @@
-import React,{createContext} from "react";
+import React from "react";
 import Chat from "./components/chat"
 import ChatContext from "../../context/chatContext";
 
@@ -8,7 +8,7 @@ const ChatAdmin = (props) => {
         <Chat 
             navigation = {props.navigation}
         />
-        {console.log("CREDENTIALS")}
+        {console.log("PROPS")}
         {console.log(props.route.params.user)}
         </ChatContext.Provider >
     )
