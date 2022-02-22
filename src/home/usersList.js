@@ -46,7 +46,6 @@ const UsersList = (props) => {
   }
   useEffect(() => {
     getAsyncStorageKey('token').then(async (token) => await setTkn(token))
-    props.navigation.setOptions({headerRight : () => <Icon name="logout" size={40} onPress={_signOut}/>})
   }, [])
   useEffect(() => {
     if (tkn !== null) {

@@ -11,7 +11,7 @@ import { BackHandler } from 'react-native';
 import { getAsyncStorageKey } from '../../helpers/asynctorage';
 const QrGenerator = (props) => {
   const [scanned,setScanned] = useState(false)
-  const { theme, language,socket,user } = useContext(AppContext)
+  const { theme, language,socket,user, location} = useContext(AppContext)
   const backButtonClick = () => {
     console.log(user)
      if (props.navigation && props.navigation.goBack) {
@@ -36,7 +36,7 @@ const QrGenerator = (props) => {
   },[])
   useEffect(() => {
     socket.on("user_location", (email) => {
-      socket.emit("send_location",{adminEmail : email,location : data})
+      socket.emit("send_location",{adminEmail : email,location : location})
   })
   },[socket])
   return (

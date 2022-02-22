@@ -124,13 +124,13 @@ const authentification = (props) => {
       name: userInfo.user.givenName,
       email: userInfo.user.email,
       picture: userInfo.user.photo
+
     }
     await axios.post('https://ballin-api-stage.herokuapp.com/users', data)
       .then(async response => {
         console.log("RESPONSE")
         console.log(response.data)
         setUser(response.data.data)
-        AsyncStorage.setItem("user_info",JSON.stringify(response.data.data))
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
         AsyncStorage.setItem("user_info", JSON.stringify(response.data.data)).then(response => setUserInfo(response))

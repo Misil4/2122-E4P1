@@ -151,24 +151,8 @@ const App = () => {
   return (
     <AppContext.Provider value={{ user: userInfo, setUser: setUserInfo, socket: socket, language: language, setLanguage, theme, setTheme, location }}>
       {console.log("LANG", userInfo)}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={logged}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setLogged(!logged);
-        }}
-      >
-         <Authentification />
-      </Modal>
-      <Modal
-        transparent={true}
-        visible={() => setTimeout(() =>{false},5000)}>
-      </Modal>
       <NavigationContainer>
         <stack.Navigator
-        initialRouteName={userInfo?.rol === "admin" ? "Admin" : "User"}
           screenOptions={{
             gestureEnabled: false,
             transitionSpec: {
@@ -180,7 +164,6 @@ const App = () => {
         >
           <stack.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
           <stack.Screen name="User" component={User} options={{ headerShown: false }} />
-          <stack.Screen name="Logout" component={authentification} options={{headerShown : false}} />
         </stack.Navigator>
       </NavigationContainer>
     </AppContext.Provider>
