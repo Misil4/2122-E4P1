@@ -97,14 +97,11 @@ const App = () => {
   }, [])
   useEffect(() => {
     getLanguage().then(response => response === null ? false : setLanguage(response))
-  }, [language])
-  useEffect(() => {
     getTheme().then(response => response === null ? false : setTheme(response))
-  }, [theme])
+  }, [language,theme])
   const Admin = () => {
     return (
       <drawer.Navigator
-        initialRouteName={selectLanguage(language).userlist_screen}
         screenOptions={{
           activeTintColor: '#e91e63',
           itemStyle: { marginVertical: 5 },

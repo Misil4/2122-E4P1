@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Alert, PermissionsAndroid,Text } from "react-native";
+import { View, StyleSheet, Alert, PermissionsAndroid, Text } from "react-native";
 import { Button } from "react-native-elements";
 import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker } from 'react-native-maps';
@@ -14,6 +14,7 @@ import { selectLanguage } from "../../languages/languages";
 
 
 const WasteReport = props => {
+  const isCancelled = React.useRef(false);
   const [mapOn, setMapOn] = useState(false)
   const [email, setEmail] = useState(email)
   const [permission, setPermission] = useState(false);
@@ -21,7 +22,7 @@ const WasteReport = props => {
     latitude: 0, longitude: 0, timestamp: 0
   })
   const [userData, setUserData] = useState('')
-  const {socket,language,theme,location} = useContext(AppContext)
+  const { socket, language, theme, location } = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -49,8 +50,11 @@ const WasteReport = props => {
       .then((error) => console.log(error))
   }
   useEffect(() => {
-    getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
-    getUserInfo().then(response => { console.log("SETUSER"); console.log(response) });
+    getAsyncStorageKey("user_email").then(response => { if (!isCancelled) {setEmail(response); console.log(response) }})
+    getUserInfo().then(response => { if (!isCancelled) { console.log("SETUSER"); console.log(response) } });
+    return () => {
+      isCancelled.current = true;
+    };
   }, [])
   useEffect(() => {
     requestLocationPermission()
@@ -70,9 +74,9 @@ const WasteReport = props => {
   }, [permission])
   useEffect(() => {
     socket.on("user_location", (email) => {
-        socket.emit("send_location",{adminEmail : email,location : location})
+      socket.emit("send_location", { adminEmail: email, location: location })
     })
-  },[])
+  }, [])
 
 
 
@@ -118,15 +122,15 @@ const WasteReport = props => {
       }} />
       </MapView> : null}
       <View style={{
-          flex: 1,
-          flexDirection: 'row',
-          position: 'absolute',
-          alignSelf: 'center',
-          bottom: 15
-       }}>
-      <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8}}
-        onPress={() => createButtonAlert()} />
-        <Button buttonStyle={styles.button} title="&#128172;" titleStyle={{ fontSize: 40, marginBottom: 5,marginLeft: 5  }}
+        flex: 1,
+        flexDirection: 'row',
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: 15
+      }}>
+        <Button buttonStyle={styles.button} title="&#x267B;" titleStyle={{ fontSize: 40, marginBottom: 8 }}
+          onPress={() => createButtonAlert()} />
+        <Button buttonStyle={styles.button} title="&#128172;" titleStyle={{ fontSize: 40, marginBottom: 5, marginLeft: 5 }}
           onPress={() => props.navigation.navigate("User", { screen: 'Chat', params: { user: userData } })}>
         </Button>
       </View>
@@ -136,11 +140,11 @@ const WasteReport = props => {
 
 
 const styles = StyleSheet.create({
-  container : {
-    backgroundColor : "#F5F5F5"
+  container: {
+    backgroundColor: "#F5F5F5"
   },
-  darkContainer : {
-    backgroundColor : "#232322"
+  darkContainer: {
+    backgroundColor: "#232322"
   },
   map: {
     flex: 1,
@@ -153,13 +157,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   button: {
-    backgroundColor: "#61b97c", 
-    borderRadius: 50, 
-    height: 95, 
-    width: 95, 
-    alignSelf: "center", 
-    margin: 30, 
-    borderTopEndRadius: 10 
+    backgroundColor: "#61b97c",
+    borderRadius: 50,
+    height: 95,
+    width: 95,
+    alignSelf: "center",
+    margin: 30,
+    borderTopEndRadius: 10
   }
 });
 export default WasteReport;

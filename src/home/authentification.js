@@ -26,6 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 const authentification = (props) => {
+  const isCancelled = React.useRef(false);
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
   const [loading, setLoading] = useState(false);
   const [login, setLogin] = useState(false);
@@ -48,16 +49,21 @@ const authentification = (props) => {
     // Check if user is already signed in
     _isSignedIn();
     console.log("EXECUTING AUTH")
+    return () => {
+      isCancelled.current = true;
+    };
   }, []);
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
+      if (!isCancelled.current) {
       setLoading(true)
       setLogin(true);
       setMessage(selectLanguage(language).saved_keys)
       const user_rol = await getAsyncStorageKey("user_rol");
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
+      const user_status = await getAsyncStorageKey("user_info");
       setEmail(user_email)
       socket.emit("id_save", user_email)
       // Set User Info if user is already signed in
@@ -71,10 +77,13 @@ const authentification = (props) => {
       else if (user_rol === "user") {
         socket.emit("join", user_email);
         console.log("LOGIN STATUS")
+        console.log(user)
         if (user.login_status) {
-          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
+          props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
         }
-        props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
+        else if (user.login_status === false) {
+        props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
+        }
 
       }
       else { console.log("error") }
@@ -82,6 +91,7 @@ const authentification = (props) => {
       console.log('Please Login');
     }
     setGettingLoginStatus(false);
+  }
   };
 
   const tokenSignIn = async (userInfo) => {
@@ -131,7 +141,9 @@ const authentification = (props) => {
         console.log("RESPONSE")
         console.log(response.data)
         setUser(response.data.data)
-        AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
+        AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => {
+          if (!isCancelled.current) {
+          setRol(response)}})
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
         AsyncStorage.setItem("user_info", JSON.stringify(response.data.data)).then(response => setUserInfo(response))
       })
