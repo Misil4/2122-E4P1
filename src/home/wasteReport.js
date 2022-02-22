@@ -18,7 +18,7 @@ const WasteReport = props => {
   const [email, setEmail] = useState(email)
   const [permission, setPermission] = useState(false);
   const [data, setData] = useState({
-    latitude: null, longitude: null, timestamp: null
+    latitude: 0, longitude: 0, timestamp: 0
   })
   const [userData, setUserData] = useState('')
   const {socket,language,theme,location} = useContext(AppContext)
@@ -92,7 +92,7 @@ const WasteReport = props => {
             console.log(data)
             const list = { data: data, user: email }
             socket.emit("insert_garbage", list)
-            props.navigation.navigate("User", { screen : selectLanguage(language).qr_gen_screen,params : {email : email}},)
+            Alert.alert(selectLanguage(language).sended)
 
           }
         }
