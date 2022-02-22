@@ -133,6 +133,7 @@ const authentification = (props) => {
         AsyncStorage.setItem("user_info",JSON.stringify(response.data.data))
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
+        AsyncStorage.setItem("user_info", JSON.stringify(response.data.data)).then(response => setUserInfo(response))
       })
       .then((error) => console.log(error))
   }
@@ -234,7 +235,7 @@ const authentification = (props) => {
           <View style={theme ? styles.darkContainer : styles.container}>
             {login ? (
               <>
-                <Image style={styles.imageStyle} source={{ uri: user?.picture }} />
+                <Image style={styles.imageStyle} source={{ uri: user?.picture}} />
                 <Text style={theme ? styles.darkText : styles.text}>{user?.name}</Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}

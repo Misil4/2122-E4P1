@@ -57,6 +57,7 @@ const wasteLocation = (props) => {
           onPress={() => createButtonAlert(props.route.params.id)}
         />
       </View>
+      
     </SafeAreaProvider>
   );
 }
