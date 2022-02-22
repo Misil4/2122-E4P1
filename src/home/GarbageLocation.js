@@ -116,10 +116,6 @@ export default function Basic(props) {
                 previewOpenValue={-40}
                 previewOpenDelay={3000}
             />
-           {notification && focused ?  Alert.alert(message.name,message.text,[
-                { text: "OK" }
-            ])
-            : <Text>o</Text>}
         </SafeAreaProvider>
     );
 }

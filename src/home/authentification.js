@@ -134,6 +134,7 @@ const authentification = (props) => {
         console.log(response.data)
         AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
+        AsyncStorage.setItem("user_info", JSON.stringify(response.data.data)).then(response => setUserInfo(response))
       })
       .then((error) => console.log(error))
   }
@@ -157,7 +158,6 @@ const authentification = (props) => {
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
       const user = JSON.stringify(userInfo)
-      await AsyncStorage.setItem("user_info", user)
       console.log("USER TOKEN SAVED");
       console.log(token)
       await tokenSignIn(userInfo)
@@ -234,8 +234,8 @@ const authentification = (props) => {
           <View style={theme ? styles.darkContainer : styles.container}>
             {login ? (
               <>
-                <Image style={styles.imageStyle} source={{ uri: user?.user.photo }} />
-                <Text style={theme ? styles.darkText : styles.text}>{user?.user.givenName}</Text>
+                <Image style={styles.imageStyle} source={{ uri: user?.picture}} />
+                <Text style={theme ? styles.darkText : styles.text}>{user?.name}</Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
