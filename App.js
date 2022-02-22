@@ -24,10 +24,10 @@ import { selectLanguage } from "./languages/languages.js";
 import UserLocation from "./src/home/userLocation";
 import { PermissionsAndroid } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
-import { Text } from 'react-native'
+import { Modal} from 'react-native'
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import useStorage from "./hooks/useStorage";
-import { ActivityIndicator } from "react-native-paper";
+import authentification from "./src/home/authentification";
 
 
 
@@ -57,10 +57,11 @@ const App = () => {
   }
   const [language, setLanguage] = useState("euskera")
   const [theme, setTheme] = useState(false)
-  const [userInfo, setUserInfo] = useStorage("user_info", null)
+  const [userInfo, setUserInfo] = useStorage("user_info", {rol : "admin"})
   const [location, setLocation] = useState(null)
   const [permission, setPermission] = useState(false)
-  const [logged, setLogged] = useState(null)
+  const [logged, setLogged] = useState(true)
+  const [messages,setMessage] = useState('')
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -97,7 +98,7 @@ const App = () => {
   }, [permission])
   useEffect(() => {
     SplashScreen.hide()
-    GoogleSignin.isSignedIn().then(response => setLogged(response))
+    GoogleSignin.isSignedIn().then(response => response ? setLogged(false) : setLogged(true))
   }, [])
   useEffect(() => {
     getLanguage().then(response => response === null ? false : setLanguage(response))
@@ -106,38 +107,9 @@ const App = () => {
     getTheme().then(response => response === null ? false : setTheme(response))
   }, [theme])
   const Admin = () => {
-    if (logged) {
-      return (
-        <drawer.Navigator
-          initialRouteName={selectLanguage(language).userlist_screen}
-          screenOptions={{
-            activeTintColor: '#e91e63',
-            itemStyle: { marginVertical: 5 },
-            drawerLabelStyle: {
-              color: theme ? "white" : "black",
-              fontFamily: "Gotham-BookItalic"
-            }
-          }}
-          drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.name.toLowerCase()}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.picture : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
-          <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="#61b97c" />), headerShown: false, swipeEnabled: false }} />
-          <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color="#61b97c" />), }} />
-          <drawer.Screen name="QrReader" component={QrReader} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code-scanner" size={30} color="#61b97c" />), }} />
-          <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color="#61b97c" />), }} />
-          <drawer.Screen name={"UserLocation"} component={UserLocation} options={{ drawerItemStyle: { height: 0 } }} />
-          <drawer.Screen name="ChatAdmin" component={ChatAdmin} options={{
-            drawerItemStyle: { height: 0 }
-          }} />
-          <drawer.Screen name="Ubicación de basuras" component={wasteLocation}
-            options={{
-              drawerItemStyle: { height: 0 }
-            }} />
-          <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
-        </drawer.Navigator>
-      )
-    }
-    else if (logged === false) {
+    return (
       <drawer.Navigator
-        initialRouteName={selectLanguage(language).auth_screen}
+        initialRouteName={selectLanguage(language).userlist_screen}
         screenOptions={{
           activeTintColor: '#e91e63',
           itemStyle: { marginVertical: 5 },
@@ -146,8 +118,7 @@ const App = () => {
             fontFamily: "Gotham-BookItalic"
           }
         }}
-        drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.name.toLowerCase()}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.picture : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
-        <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="#61b97c" />), headerShown: false, swipeEnabled: false }} />
+        drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo?.name}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.picture : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
         <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color="#61b97c" />), }} />
         <drawer.Screen name="QrReader" component={QrReader} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code-scanner" size={30} color="#61b97c" />), }} />
         <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color="#61b97c" />), }} />
@@ -161,36 +132,10 @@ const App = () => {
           }} />
         <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
       </drawer.Navigator>
-    }
-    return (
-      <ActivityIndicator />
     )
-
   }
   const User = () => {
-    if (logged) {
-      return (
-        <drawer.Navigator
-          screenOptions={{
-            activeTintColor: '#e91e63',
-            itemStyle: { marginVertical: 5 },
-            drawerLabelStyle: {
-              color: theme ? "white" : "black",
-              fontFamily: "Gotham-BookItalic"
-            }
-          }}
-          drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.name}` : "Bienvenido User"} userPhoto={userInfo ? userInfo.picture : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
-          <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="#61b97c" />), headerShown: false, swipeEnabled: false }} />
-          <drawer.Screen name={selectLanguage(language).location_screen} component={WasteReport} options={{ drawerIcon: (({ focused }) => <Icon name="location-on" size={30} color="#61b97c" />), }} />
-          <drawer.Screen name={selectLanguage(language).qr_gen_screen} initialParams={{ user: userInfo.email }} component={QrGenerator} options={{ headerShown: false, swipeEnabled: false, drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color="#61b97c" />), }} />
-          <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
-          <drawer.Screen name="Chat" component={ChatUser} options={{
-            drawerItemStyle: { height: 0 }
-          }} />
-        </drawer.Navigator>
-      )
-    }
-    else if (logged === false) {
+    return (
       <drawer.Navigator
         screenOptions={{
           activeTintColor: '#e91e63',
@@ -200,31 +145,37 @@ const App = () => {
             fontFamily: "Gotham-BookItalic"
           }
         }}
-        drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.name.toLowerCase()}` : "Bienvenido Admin"} userPhoto={userInfo ? userInfo.picture : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
-        <drawer.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="#61b97c" />), headerShown: false, swipeEnabled: false }} />
-        <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color="#61b97c" />), }} />
-        <drawer.Screen name="QrReader" component={QrReader} options={{ drawerIcon: (({ focused }) => <Icon name="qr-code-scanner" size={30} color="#61b97c" />), }} />
-        <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color="#61b97c" />), }} />
-        <drawer.Screen name={"UserLocation"} component={UserLocation} options={{ drawerItemStyle: { height: 0 } }} />
-        <drawer.Screen name="ChatAdmin" component={ChatAdmin} options={{
+        drawerContent={(props) => <CustomSidebarMenu userName={userInfo ? `${selectLanguage(language).welcome} ${userInfo.name}` : "Bienvenido User"} userPhoto={userInfo ? userInfo.picture : "https://media-exp1.licdn.com/dms/image/C4D03AQHj0LXK6dAddA/profile-displayphoto-shrink_200_200/0/1603400414371?e=1643241600&v=beta&t=N0urNAN-gID1GjtJeZW3Dej94EjRSjvKhYQum3bQeNs"} {...props} />}>
+        <drawer.Screen name={selectLanguage(language).location_screen} component={WasteReport} options={{ drawerIcon: (({ focused }) => <Icon name="location-on" size={30} color="#61b97c" />), }} />
+        <drawer.Screen name={selectLanguage(language).qr_gen_screen} initialParams={{ user: userInfo?.email }} component={QrGenerator} options={{ headerShown: false, swipeEnabled: false, drawerIcon: (({ focused }) => <Icon name="qr-code" size={30} color="#61b97c" />), }} />
+        <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
+        <drawer.Screen name="Chat" component={ChatUser} options={{
           drawerItemStyle: { height: 0 }
         }} />
-        <drawer.Screen name="Ubicación de basuras" component={wasteLocation}
-          options={{
-            drawerItemStyle: { height: 0 }
-          }} />
-        <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
       </drawer.Navigator>
-    }
-    return (
-      <ActivityIndicator />
     )
   }
   return (
     <AppContext.Provider value={{ user: userInfo, setUser: setUserInfo, socket: socket, language: language, setLanguage, theme, setTheme, location }}>
       {console.log("LANG", userInfo)}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={logged}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setLogged(!logged);
+        }}
+      >
+         <Authentification />
+      </Modal>
+      <Modal
+        transparent={true}
+        visible={() => setTimeout(() =>{false},5000)}>
+      </Modal>
       <NavigationContainer>
         <stack.Navigator
+        initialRouteName={userInfo?.rol === "admin" ? "Admin" : "User"}
           screenOptions={{
             gestureEnabled: false,
             transitionSpec: {
@@ -234,19 +185,9 @@ const App = () => {
             headerMode: "float"
           }}
         >
-        <stack.Screen name={selectLanguage(language).auth_screen} component={Authentification} options={{ drawerIcon: (({ focused }) => <Icon name="home" size={30} color="#61b97c" />), headerShown: false, swipeEnabled: false }} />
-          {userInfo.rol === "admin" ? (
-            <>
-              <stack.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
-              <stack.Screen name="User" component={User} options={{ headerShown: false }} />
-            </>
-
-          ) : (
-            <>
-              <stack.Screen name="User" component={User} options={{ headerShown: false }} />
-              <stack.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
-            </>
-          )}
+          <stack.Screen name="Admin" component={Admin} options={{ headerShown: false }} />
+          <stack.Screen name="User" component={User} options={{ headerShown: false }} />
+          <stack.Screen name="Logout" component={authentification} options={{headerShown : false}} />
         </stack.Navigator>
       </NavigationContainer>
     </AppContext.Provider>

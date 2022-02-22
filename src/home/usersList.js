@@ -10,8 +10,9 @@ import { getAsyncStorageKey } from '../../helpers/asynctorage';
 import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
 import { useStateWithPromise } from '../../hooks/useStateWithPromise';
-import useStorage from '../../hooks/useStorage';
-
+import Icon  from 'react-native-vector-icons/MaterialIcons';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import App from '../../App';
 const UsersList = (props) => {
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,21 @@ const UsersList = (props) => {
   const [tkn, setTkn] = useStateWithPromise(null)
 
   const focused = useIsFocused()
-
+  const _signOut = async () => {
+    // Remove user session from the device.
+    try {
+      if (user.rol === "user") {
+        console.log("ROOM LEAVED SUCCESFULLY")
+        socket.emit("leave", user.email);
+      }
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      props.navigation.navigate("Logout")
+      // Removing user Info
+    } catch (error) {
+      console.error(error);
+    }
+  }
   const getUpdate = users => {
     console.log("DATOS RECOGIDOS");
     console.log(users)
@@ -31,6 +46,7 @@ const UsersList = (props) => {
   }
   useEffect(() => {
     getAsyncStorageKey('token').then(async (token) => await setTkn(token))
+    props.navigation.setOptions({headerRight : () => <Icon name="logout" size={40} onPress={_signOut}/>})
   }, [])
   useEffect(() => {
     if (tkn !== null) {

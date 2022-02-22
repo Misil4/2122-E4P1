@@ -34,7 +34,7 @@ const authentification = (props) => {
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
   const [userInfo, setUserInfo] = useState('');
-  const { socket, user, setUser, language, theme,setLogged,logged } = useContext(AppContext);
+  const { socket, user, setUser, language, theme} = useContext(AppContext);
 
   useEffect(() => {
     // Initial configuration
@@ -167,7 +167,6 @@ const authentification = (props) => {
       setLoading(false)
       await AsyncStorage.setItem("login","logged")
       await setAsyncStorageKey("login",JSON.stringify(true))
-      setLogged(true)
       if (userRol === "admin") {
         props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen });
       }
