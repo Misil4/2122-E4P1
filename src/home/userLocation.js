@@ -19,7 +19,8 @@ const UserLocation = props => {
     getAsyncStorageKey("user_email").then(response => { setEmail(response); console.log(response) })
   }, [])
   useEffect(() => {
-      const data = {userEmail : props.route.params.user.email,adminEmail : email}
+    
+      const data = {userEmail : props.route.params.user.email,adminEmail : user.user.email}
       socket.emit("request_location",data)
       socket.on("new_location",(location) =>{
           console.log("LOCATION DATA");
