@@ -12,6 +12,7 @@ export const eus = {
   cancel: "Ezeztatu",
   //waste report
   send: "Bidali",
+  sended: "Zaborraren kokalekua bidali da",
   //chat
   placeholder: "Mezu bat idatzi",
   //app.js

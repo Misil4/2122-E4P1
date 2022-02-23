@@ -12,6 +12,7 @@ export const en = {
     cancel: "Cancel",
     //waste report
     send: "Send",
+    sended: "Trash location sended",
     //chat
     placeholder: "Type a message",
     //app.js
@@ -26,4 +27,5 @@ export const en = {
     select_language : "Select your language",
     //qr code
     qr_scan : "Scan QR Code"
+
 }

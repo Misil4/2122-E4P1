@@ -256,7 +256,7 @@ const authentification = (props) => {
                   <Text style={styles.darkText}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) :user.login_status ?  props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }) : props.navigation.navigate("User", { screen : selectLanguage(language).qr_gen_screen})} ><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) :user.login_status ?  props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }) : props.navigation.navigate ><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton

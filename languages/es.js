@@ -12,6 +12,7 @@ export const es = {
     cancel: "Cancelar",
     //waste report
     send: "Enviar",
+    sended: "Localización de basura enviada",
     //chat
     placeholder: "Escribe un mensaje",
     //app.js

@@ -14,10 +14,11 @@ import Icon  from 'react-native-vector-icons/MaterialIcons';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import App from '../../App';
 const UsersList = (props) => {
+  const isCancelled = React.useRef(false);
   const [usersListData, setUserListData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { socket, theme,user } = useContext(AppContext);
-  const [tkn, setTkn] = useStateWithPromise(null)
+  const [tkn, setTkn] = useState(null)
 
   const focused = useIsFocused()
   const _signOut = async () => {
@@ -40,26 +41,38 @@ const UsersList = (props) => {
     console.log(users)
     setUserListData(users)
   }
-  const UpdateUsers = async () => {
+  const getToken = async() => {
+    getAsyncStorageKey('token').then((token) => {
+      if (!isCancelled.current) {
+      setTkn(token)}}
+      )
+  }
+  const UpdateUsers = () => {
     socket.on("change_data", getUpdate)
     console.log("EXECUTING UPDATE")
   }
   useEffect(() => {
-    getAsyncStorageKey('token').then(async (token) => await setTkn(token))
-    props.navigation.setOptions({headerRight : () => <Icon name="logout" size={40} onPress={_signOut}/>})
+    UpdateUsers()
+    getToken()
+    return () => {
+      isCancelled.current = true;
+    };
   }, [])
   useEffect(() => {
     if (tkn !== null) {
     axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': tkn } })
     .then(response => {
+      if (!isCancelled.current) {
       setUserListData(response.data.users);
         setLoading(false)
+      }
+        return () => {
+          isCancelled.current = true;
+        };
     })
   }
   },[tkn])
-  useEffect(() => {
-    UpdateUsers()
-  }, [socket])
+ 
   if (loading) {
     return (
       <View style={{ margin: "auto" }}>
