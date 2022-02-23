@@ -78,10 +78,10 @@ const authentification = (props) => {
         socket.emit("join", user_email);
         console.log("LOGIN STATUS")
         console.log(user)
-        if (user.login_status) {
+        if (user?.login_status) {
           props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
         }
-        else if (user.login_status === false) {
+        else if (user?.login_status === false) {
         props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
         }
 
@@ -186,10 +186,11 @@ const authentification = (props) => {
       else if (userRol === "user") {
         socket.emit("join", userEmail);
         if (user.login_status) {
-          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user } })
+          props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
         }
-        props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
-      }
+        else if(user.login_status === false) {
+          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user } })
+      }}
       else { console.log("error") }
     } catch (error) {
       console.log('Message', JSON.stringify(error));

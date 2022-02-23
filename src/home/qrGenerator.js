@@ -18,9 +18,10 @@ const QrGenerator = (props) => {
        console.log("QR")
        console.log(user)
       if (user.login_status) {
-        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user.email } })
-        }
         props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
+        }
+        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user.email } })
+
      }
   }
   useEffect(() => {
