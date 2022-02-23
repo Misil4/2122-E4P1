@@ -57,7 +57,6 @@ const UsersList = (props) => {
   }, [])
   useEffect(() => {
     if (tkn !== null) {
-      await tokenExpired(tkn)
     axios.get("https://ballin-api-production.herokuapp.com/users", { headers: { 'Authorization': tkn } })
     .then(response => {
       if (!isCancelled.current) {
