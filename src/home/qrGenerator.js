@@ -28,7 +28,12 @@ const QrGenerator = (props) => {
     socket.on("scanned", (value) => {
       setScanned(value)
       console.log("SCANNED")
+      if (user.login_status){
       props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
+      }
+      else if (user.login_status === false) {
+        props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen })
+      }
     })
   }, [scanned])
   useEffect(() => {
