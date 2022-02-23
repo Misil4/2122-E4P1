@@ -31,6 +31,7 @@ const authentification = (props) => {
   const [loading, setLoading] = useState(false);
   const [login, setLogin] = useState(false);
   const [rol, setRol] = useState('');
+  const [login_status,setLogin_Status] = useState('')
   const [email, setEmail] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
   const [message, setMessage] = useState('');
@@ -49,21 +50,17 @@ const authentification = (props) => {
     // Check if user is already signed in
     _isSignedIn();
     console.log("EXECUTING AUTH")
-    return () => {
-      isCancelled.current = true;
-    };
   }, []);
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-      if (!isCancelled.current) {
       setLoading(true)
       setLogin(true);
       setMessage(selectLanguage(language).saved_keys)
       const user_rol = await getAsyncStorageKey("user_rol");
       setRol(user_rol)
       const user_email = await getAsyncStorageKey("user_email")
-      const user_status = await getAsyncStorageKey("user_info");
+      const user_status = await getAsyncStorageKey("user_status");
       setEmail(user_email)
       socket.emit("id_save", user_email)
       // Set User Info if user is already signed in
@@ -78,12 +75,7 @@ const authentification = (props) => {
         socket.emit("join", user_email);
         console.log("LOGIN STATUS")
         console.log(user)
-        if (user?.login_status) {
-          props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
-        }
-        else if (user?.login_status === false) {
         props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user_email } })
-        }
 
       }
       else { console.log("error") }
@@ -91,7 +83,7 @@ const authentification = (props) => {
       console.log('Please Login');
     }
     setGettingLoginStatus(false);
-  }
+
   };
 
   const tokenSignIn = async (userInfo) => {
@@ -134,21 +126,17 @@ const authentification = (props) => {
       name: userInfo.user.givenName,
       email: userInfo.user.email,
       picture: userInfo.user.photo
-
     }
     await axios.post('https://ballin-api-production.herokuapp.com/users', data)
       .then(async response => {
         console.log("RESPONSE")
         console.log(response.data)
-        setUser(response.data.data)
-        AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => {
-          if (!isCancelled.current) {
-          setRol(response)}})
+        AsyncStorage.setItem("user_rol", response.data.data.rol).then(response => setRol(response))
         AsyncStorage.setItem("user_email", response.data.data.email).then(response => setEmail(response))
-        AsyncStorage.setItem("user_info", JSON.stringify(response.data.data)).then(response => setUserInfo(response))
       })
       .then((error) => console.log(error))
   }
+
 
   const _signIn = async () => {
     // It will prompt google Signin Widget
@@ -161,13 +149,14 @@ const authentification = (props) => {
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();
+      setUser(userInfo)
       setUserInfo(userInfo)
       console.log("ID TOKEN")
       console.log(userInfo)
       setMessage(selectLanguage(language).taking_information)
       await userInfoSignIn(userInfo)
       const token = await getAsyncStorageKey('token')
-      const user = JSON.stringify(userInfo)
+      await AsyncStorage.setItem("user_info", JSON.stringify(userInfo))
       console.log("USER TOKEN SAVED");
       console.log(token)
       await tokenSignIn(userInfo)
@@ -175,8 +164,8 @@ const authentification = (props) => {
       const userEmail = await getAsyncStorageKey("user_email")
       socket.emit("id_save", userEmail)
       setMessage(selectLanguage(language).user_logged)
-      console.log("getuserinfo " + userRol);
-      console.log("getuserinfo " + userEmail);
+      console.log("USER ROL" , userRol);
+      console.log("USER EMAIL " , userEmail);
       setLoading(false)
       await AsyncStorage.setItem("login","logged")
       await setAsyncStorageKey("login",JSON.stringify(true))
@@ -185,12 +174,7 @@ const authentification = (props) => {
       }
       else if (userRol === "user") {
         socket.emit("join", userEmail);
-        if (user.login_status) {
-          props.navigation.navigate("User", { screen: selectLanguage(language).location_screen })
-        }
-        else if(user.login_status === false) {
-          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: user } })
-      }}
+          props.navigation.navigate("User", { screen: selectLanguage(language).qr_gen_screen, params: { email: userEmail } })}
       else { console.log("error") }
     } catch (error) {
       console.log('Message', JSON.stringify(error));
@@ -248,15 +232,15 @@ const authentification = (props) => {
           <View style={theme ? styles.darkContainer : styles.container}>
             {login ? (
               <>
-                <Image style={styles.imageStyle} source={{ uri: user?.picture}} />
-                <Text style={theme ? styles.darkText : styles.text}>{user?.name}</Text>
+                <Image style={styles.imageStyle} source={{ uri: user?.user.photo}} />
+                <Text style={theme ? styles.darkText : styles.text}>{user?.user.givenName}</Text>
                 <TouchableOpacity
                   style={styles.buttonStyle}
                   onPress={_signOut}>
                   <Text style={styles.darkText}>{selectLanguage(language).logout}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle}
-                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", { screen: selectLanguage(language).location_screen }, { params: { email: email } })}><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
+                  onPress={() => rol === "admin" ? props.navigation.navigate("Admin", { screen: selectLanguage(language).userlist_screen }) : props.navigation.navigate("User", {screen : selectLanguage(language).location_screen})} ><Text style={styles.darkText}>{selectLanguage(language).return}</Text></TouchableOpacity>
               </>
             ) : (
               <GoogleSigninButton

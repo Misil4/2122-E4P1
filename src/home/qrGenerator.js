@@ -8,7 +8,6 @@ import {
 import AppContext from '../../context/context';
 import { selectLanguage } from '../../languages/languages';
 import { BackHandler } from 'react-native';
-import { getAsyncStorageKey } from '../../helpers/asynctorage';
 const QrGenerator = (props) => {
   const [scanned,setScanned] = useState(false)
   const { theme, language,socket,user, location} = useContext(AppContext)
@@ -17,10 +16,7 @@ const QrGenerator = (props) => {
      if (props.navigation && props.navigation.goBack) {
        console.log("QR")
        console.log(user)
-      if (user.login_status) {
-        props.navigation.navigate("User" ,{screen : selectLanguage(language).location_screen })
-        }
-        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: user.email } })
+        props.navigation.navigate("User" ,{screen : selectLanguage(language).qr_gen_screen,params: { email: props.route.params.email } })
 
      }
   }
