@@ -25,6 +25,9 @@ import UserLocation from "./src/home/userLocation";
 import { PermissionsAndroid } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
 import useStorage from "./hooks/useStorage";
+import { View, LogBox } from "react-native";
+
+LogBox.ignoreAllLogs();
 
 
 
@@ -116,10 +119,13 @@ const App = () => {
           <drawer.Screen name={selectLanguage(language).userlist_screen} component={UsersList} options={{ drawerIcon: (({ focused }) => <Icon name="supervised-user-circle" size={30} color= "#61b97c" />), }} />
           <drawer.Screen name={selectLanguage(language).garbage_screen} component={GarbageLocation} options={{ drawerIcon: (({ focused }) => <Icon name="restore-from-trash" size={30} color= "#61b97c" />), }} />
           <drawer.Screen name={"UserLocation"} component={UserLocation} options={{drawerItemStyle : { height : 0}}} />
+          <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
           <drawer.Screen name="ChatAdmin" component={ChatAdmin} options={{
             drawerItemStyle: { height: 0 }
           }} />
-        <drawer.Screen name="Settings" component={Settings} options={{ drawerIcon: (({ focused }) => <Icon name="settings" size={30} color="#61b97c" />), }} />
+          <drawer.Screen name="Ubicacion de Basuras" component={wasteLocation} options={{
+            drawerItemStyle: { height: 0 }
+          }} />
       </drawer.Navigator>
     )
   }

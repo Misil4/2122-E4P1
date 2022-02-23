@@ -26,6 +26,8 @@ export default function Basic(props) {
     const { socket, language, theme } = useContext(AppContext)
 
     const getUpdate = trash => {
+        console.log.apply("TRASH")
+        console.log(trash)
         setListData(trash)
     }
     const getAllGarbage = async () => {
@@ -90,7 +92,7 @@ export default function Basic(props) {
         <View style={styles.rowBack}>
             <TouchableOpacity
                 style={[styles.backRightBtn, styles.backRightBtnLeft]}
-                onPress={() => props.navigation.navigate('Ubicación de basuras', { latitude: data.item.location.latitude, longitude: data.item.location.longitude, id: data.item._id })}
+                onPress={() => props.navigation.navigate('Admin', { screen : "Ubicacion de Basuras",params : { latitude: data.item.location.latitude, longitude: data.item.location.longitude, id: data.item._id }})}
             >
                 <Icon name="location-pin" size={42} style={{ color: '#F5F5F5' }} />
             </TouchableOpacity>

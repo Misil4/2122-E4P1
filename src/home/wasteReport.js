@@ -22,7 +22,7 @@ const WasteReport = props => {
     latitude: 0, longitude: 0, timestamp: 0
   })
   const [userData, setUserData] = useState('')
-  const { socket, language, theme, location } = useContext(AppContext)
+  const { socket, language, theme, location,user } = useContext(AppContext)
   async function requestLocationPermission() {
     try {
       const granted = await PermissionsAndroid.request(
@@ -94,7 +94,7 @@ const WasteReport = props => {
         {
           text: "OK", onPress: async () => {
             console.log(data)
-            const list = { data: data, user: email }
+            const list = { data: data, user: user.email }
             socket.emit("insert_garbage", list)
             Alert.alert(selectLanguage(language).sended)
 
