@@ -45,7 +45,7 @@ const UsersList = (props) => {
   }, [])
   useEffect(() => {
     if (tkn !== null) {
-    axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': tkn } })
+    axios.get("https://ballin-api-production.herokuapp.com/users", { headers: { 'Authorization': tkn } })
     .then(response => {
       if (!isCancelled.current) {
       setUserListData(response.data.users);

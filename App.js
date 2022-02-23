@@ -124,6 +124,9 @@ const App = () => {
           <drawer.Screen name="ChatAdmin" component={ChatAdmin} options={{
             drawerItemStyle: { height: 0 }
           }} />
+          <drawer.Screen name="Ubicacion de Basuras" component={wasteLocation} options={{
+            drawerItemStyle: { height: 0 }
+          }} />
           <drawer.Screen name="Ubicación de basuras" component={wasteLocation}
             options={{
               drawerItemStyle: { height: 0 }

@@ -33,7 +33,7 @@ export default function Basic(props) {
     const getAllGarbage = async () => {
         const token = await getAsyncStorageKey('token')
         await tokenExpired(token)
-        return axios.get("https://ballin-api-stage.herokuapp.com/garbages", { headers: { 'Authorization': token } })
+        return axios.get("https://ballin-api-production.herokuapp.com/garbages", { headers: { 'Authorization': token } })
             .then(response => setListData(response.data.garbages))
             .catch(error => console.error(error))
     }
