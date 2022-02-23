@@ -112,7 +112,7 @@ const authentification = (props) => {
 
     //Validate User Token
 
-    await axios.post('https://ballin-api-stage.herokuapp.com/token', {
+    await axios.post('https://ballin-api-production.herokuapp.com/token', {
       token: idTokenResult.token,
       email: userInfo.user.email
     })
@@ -136,7 +136,7 @@ const authentification = (props) => {
       picture: userInfo.user.photo
 
     }
-    await axios.post('https://ballin-api-stage.herokuapp.com/users', data)
+    await axios.post('https://ballin-api-production.herokuapp.com/users', data)
       .then(async response => {
         console.log("RESPONSE")
         console.log(response.data)

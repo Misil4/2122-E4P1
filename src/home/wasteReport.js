@@ -1,14 +1,12 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, Alert, PermissionsAndroid, Text } from "react-native";
+import { View, StyleSheet, Alert, PermissionsAndroid} from "react-native";
 import { Button } from "react-native-elements";
-import LinearGradient from 'react-native-linear-gradient';
 import MapView, { Marker } from 'react-native-maps';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Geolocation from 'react-native-geolocation-service';
 import { getAsyncStorageKey } from "../../helpers/asynctorage";
 import { tokenExpired } from '../../helpers/jwt';
-import { NavigationContainer } from "@react-navigation/native";
 import AppContext from "../../context/context";
 import { selectLanguage } from "../../languages/languages";
 
@@ -45,7 +43,7 @@ const WasteReport = props => {
     const userEmail = await getAsyncStorageKey("user_email")
     const token = await getAsyncStorageKey('token')
     await tokenExpired(token)
-    return await axios.get("https://ballin-api-stage.herokuapp.com/users", { headers: { 'Authorization': token } })
+    return await axios.get("https://ballin-api-production.herokuapp.com/users", { headers: { 'Authorization': token } })
       .then((response) => setUserData(response.data.users.filter((user) => user.email === userEmail)))
       .then((error) => console.log(error))
   }
