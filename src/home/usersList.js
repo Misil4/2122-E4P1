@@ -21,21 +21,6 @@ const UsersList = (props) => {
   const [tkn, setTkn] = useState(null)
 
   const focused = useIsFocused()
-  const _signOut = async () => {
-    // Remove user session from the device.
-    try {
-      if (user.rol === "user") {
-        console.log("ROOM LEAVED SUCCESFULLY")
-        socket.emit("leave", user.email);
-      }
-      await GoogleSignin.revokeAccess();
-      await GoogleSignin.signOut();
-      props.navigation.navigate("Logout")
-      // Removing user Info
-    } catch (error) {
-      console.error(error);
-    }
-  }
   const getUpdate = users => {
     console.log("DATOS RECOGIDOS");
     console.log(users)

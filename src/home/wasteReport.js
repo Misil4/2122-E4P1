@@ -94,7 +94,7 @@ const WasteReport = props => {
         {
           text: "OK", onPress: async () => {
             console.log(data)
-            const list = { data: data, user: user.email }
+            const list = { data: data, user: email }
             socket.emit("insert_garbage", list)
             Alert.alert(selectLanguage(language).sended)
 
